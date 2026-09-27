@@ -1,30 +1,58 @@
 /* ============================================================
    FIREBASE CONFIGURATION
-   Replace with your actual project credentials.
+   Project: Kishanaram-Kalera-Alsar
+   Includes: Firestore, Realtime Database, Auth, Analytics
    ============================================================ */
+
 const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_PROJECT.firebaseapp.com",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_PROJECT.appspot.com",
-  messagingSenderId: "YOUR_SENDER_ID",
-  appId: "YOUR_APP_ID"
+  apiKey: "AIzaSyCCDF9CY_BamxzolSqMbWUlAT9kR5QhO5w",
+  authDomain: "kishanaram-kalera-alsar.firebaseapp.com",
+  databaseURL: "https://kishanaram-kalera-alsar-default-rtdb.firebaseio.com",
+  projectId: "kishanaram-kalera-alsar",
+  storageBucket: "kishanaram-kalera-alsar.firebasestorage.app",
+  messagingSenderId: "1009456782279",
+  appId: "1:1009456782279:web:10225c0ab112cebeb917e2",
+  measurementId: "G-2D0LCPYM5F"
 };
 
-// Initialize Firebase once
+/* ============================================================
+   INITIALIZE FIREBASE (Compat Build — works with index.html)
+   ============================================================ */
 if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig);
 }
-const auth = firebase.auth();
-const db   = firebase.firestore();
 
 /* ============================================================
-   CONFIGURATION CONSTANTS
+   FIREBASE SERVICE INSTANCES
    ============================================================ */
-const ADMIN_EMAIL = "admin@alsar.com";   // ← Change this to your admin email
-let currentLang   = 'en';                // 'en' or 'hi'
-let allSupporters = [];                  // cache for search/sort
-let dynamicUnsub  = null;                // Firestore listener
+const auth      = firebase.auth();                       // Authentication
+const db        = firebase.firestore();                  // Firestore (main data)
+const rtdb      = firebase.database();                   // Realtime Database (live counters / chat)
+const analytics = firebase.analytics ? firebase.analytics() : null; // Optional
+
+/* ============================================================
+   REALTIME DATABASE REFERENCES (Future-Ready)
+   Use these paths for live counters, online users, chat, etc.
+   ============================================================ */
+const rtdbRefs = {
+  supporterCount: rtdb.ref('stats/supporterCount'),      // Live support counter
+  onlineUsers:    rtdb.ref('presence/online'),           // Active users presence
+  liveVisits:     rtdb.ref('stats/liveVisits'),          // Page visit counter
+  announcements:  rtdb.ref('announcements'),             // Live announcements
+  liveChat:       rtdb.ref('chat/messages')              // Live chat messages
+};
+
+/* ============================================================
+   ADMIN CONFIG
+   ============================================================ */
+const ADMIN_EMAIL = "admin@alsar.com";   // ← Apna admin email yahan daalo
+
+/* ============================================================
+   GLOBAL STATE
+   ============================================================ */
+let currentLang    = 'en';
+let allSupporters  = [];
+let dynamicUnsub   = null;
 let supporterUnsub = null;
 
 /* ============================================================
