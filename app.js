@@ -1,9 +1,13 @@
+/* ============================================================================
+   KISHANARAM KALERA — SARPANCH CAMPAIGN
+   Complete app.js — Firebase + All Logic
+   Safe-mode initialization (crash-proof)
+   ============================================================================ */
+
 /* ============================================================
    FIREBASE CONFIGURATION
    Project: Kishanaram-Kalera-Alsar
-   Includes: Firestore, Realtime Database, Auth, Analytics
    ============================================================ */
-
 const firebaseConfig = {
   apiKey: "AIzaSyCCDF9CY_BamxzolSqMbWUlAT9kR5QhO5w",
   authDomain: "kishanaram-kalera-alsar.firebaseapp.com",
@@ -16,36 +20,59 @@ const firebaseConfig = {
 };
 
 /* ============================================================
-   INITIALIZE FIREBASE (Compat Build — works with index.html)
+   SAFE INITIALIZATION — prevents total app crash if any
+   individual service fails to load
    ============================================================ */
-if (!firebase.apps.length) {
-  firebase.initializeApp(firebaseConfig);
+let auth      = null;
+let db        = null;
+let rtdb      = null;
+let analytics = null;
+
+try {
+  if (!firebase.apps.length) {
+    firebase.initializeApp(firebaseConfig);
+  }
+
+  if (typeof firebase.auth === 'function') {
+    auth = firebase.auth();
+  } else {
+    console.warn("⚠️ Auth SDK not loaded");
+  }
+
+  if (typeof firebase.firestore === 'function') {
+    db = firebase.firestore();
+  } else {
+    console.warn("⚠️ Firestore SDK not loaded");
+  }
+
+  if (typeof firebase.database === 'function') {
+    rtdb = firebase.database();
+  } else {
+    console.warn("⚠️ Realtime DB SDK not loaded — rtdb features disabled");
+  }
+
+  if (typeof firebase.analytics === 'function') {
+    try { analytics = firebase.analytics(); } catch (e) {}
+  }
+} catch (err) {
+  console.error("❌ Firebase init failed:", err);
 }
 
 /* ============================================================
-   FIREBASE SERVICE INSTANCES
+   REALTIME DB REFERENCES (null-safe — future features)
    ============================================================ */
-const auth      = firebase.auth();                       // Authentication
-const db        = firebase.firestore();                  // Firestore (main data)
-const rtdb      = firebase.database();                   // Realtime Database (live counters / chat)
-const analytics = firebase.analytics ? firebase.analytics() : null; // Optional
+const rtdbRefs = rtdb ? {
+  supporterCount: rtdb.ref('stats/supporterCount'),
+  onlineUsers:    rtdb.ref('presence/online'),
+  liveVisits:     rtdb.ref('stats/liveVisits'),
+  announcements:  rtdb.ref('announcements'),
+  liveChat:       rtdb.ref('chat/messages')
+} : null;
 
 /* ============================================================
-   REALTIME DATABASE REFERENCES (Future-Ready)
-   Use these paths for live counters, online users, chat, etc.
+   CONFIGURATION CONSTANTS
    ============================================================ */
-const rtdbRefs = {
-  supporterCount: rtdb.ref('stats/supporterCount'),      // Live support counter
-  onlineUsers:    rtdb.ref('presence/online'),           // Active users presence
-  liveVisits:     rtdb.ref('stats/liveVisits'),          // Page visit counter
-  announcements:  rtdb.ref('announcements'),             // Live announcements
-  liveChat:       rtdb.ref('chat/messages')              // Live chat messages
-};
-
-/* ============================================================
-   ADMIN CONFIG
-   ============================================================ */
-const ADMIN_EMAIL = "admin@alsar.com";   // ← Apna admin email yahan daalo
+const ADMIN_EMAIL = "admin@alsar.com";   // ← Admin email
 
 /* ============================================================
    GLOBAL STATE
@@ -84,6 +111,15 @@ const DEFAULT_CONTENT = {
 };
 
 /* ============================================================
+   UTILITY — Escape HTML
+   ============================================================ */
+function escapeHtml(str) {
+  return String(str == null ? '' : str).replace(/[&<>"']/g, function (m) {
+    return ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[m];
+  });
+}
+
+/* ============================================================
    AUDIO JUKEBOX — Multi-Track Player
    ============================================================ */
 const TRACKS = [
@@ -114,19 +150,19 @@ function initJukebox() {
   loadTrack(currentTrackIndex);
 
   playBtn.addEventListener('click', togglePlay);
-  prevBtn.addEventListener('click', () => changeTrack(-1));
-  nextBtn.addEventListener('click', () => changeTrack(1));
-  trackSelect.addEventListener('change', (e) => loadTrack(parseInt(e.target.value)));
+  prevBtn.addEventListener('click', function () { changeTrack(-1); });
+  nextBtn.addEventListener('click', function () { changeTrack(1); });
+  trackSelect.addEventListener('change', function (e) {
+    loadTrack(parseInt(e.target.value));
+  });
 
-  // Progress update
   audioPlayer.addEventListener('timeupdate', updateProgress);
-  audioPlayer.addEventListener('ended', () => changeTrack(1));
+  audioPlayer.addEventListener('ended', function () { changeTrack(1); });
   audioPlayer.addEventListener('loadedmetadata', updateProgress);
 
-  // Seek on progress bar click
-  progressWrap.addEventListener('click', (e) => {
-    const rect = progressWrap.getBoundingClientRect();
-    const pct  = (e.clientX - rect.left) / rect.width;
+  progressWrap.addEventListener('click', function (e) {
+    var rect = progressWrap.getBoundingClientRect();
+    var pct  = (e.clientX - rect.left) / rect.width;
     if (audioPlayer.duration) {
       audioPlayer.currentTime = pct * audioPlayer.duration;
     }
@@ -138,20 +174,22 @@ function loadTrack(index) {
   if (index >= TRACKS.length) index = 0;
   currentTrackIndex = index;
 
-  const wasPlaying = !audioPlayer.paused;
+  var wasPlaying = !audioPlayer.paused;
   audioPlayer.src = TRACKS[index];
   audioPlayer.load();
 
   trackTitle.textContent = TRACKS[index];
   trackSelect.value = index;
 
-  if (wasPlaying) audioPlayer.play().catch(() => {});
+  if (wasPlaying) audioPlayer.play().catch(function () {});
   updatePlayButton();
 }
 
 function togglePlay() {
   if (audioPlayer.paused) {
-    audioPlayer.play().catch(err => console.warn("Playback error:", err));
+    audioPlayer.play().catch(function (err) {
+      console.warn("Playback error:", err);
+    });
   } else {
     audioPlayer.pause();
   }
@@ -160,7 +198,7 @@ function togglePlay() {
 
 function changeTrack(direction) {
   loadTrack(currentTrackIndex + direction);
-  audioPlayer.play().catch(() => {});
+  audioPlayer.play().catch(function () {});
 }
 
 function updatePlayButton() {
@@ -170,19 +208,19 @@ function updatePlayButton() {
 
 function updateProgress() {
   if (!audioPlayer.duration) return;
-  const pct = (audioPlayer.currentTime / audioPlayer.duration) * 100;
+  var pct = (audioPlayer.currentTime / audioPlayer.duration) * 100;
   progressFill.style.width = pct + "%";
 
-  const cur = formatTime(audioPlayer.currentTime);
-  const dur = formatTime(audioPlayer.duration);
-  timeDisplay.textContent = `${cur} / ${dur}`;
+  var cur = formatTime(audioPlayer.currentTime);
+  var dur = formatTime(audioPlayer.duration);
+  timeDisplay.textContent = cur + " / " + dur;
 }
 
 function formatTime(seconds) {
   if (isNaN(seconds)) return "0:00";
-  const m = Math.floor(seconds / 60);
-  const s = Math.floor(seconds % 60).toString().padStart(2, '0');
-  return `${m}:${s}`;
+  var m = Math.floor(seconds / 60);
+  var s = Math.floor(seconds % 60).toString().padStart(2, '0');
+  return m + ":" + s;
 }
 
 /* ============================================================
@@ -191,77 +229,83 @@ function formatTime(seconds) {
 function setLanguage(lang) {
   currentLang = lang;
 
-  // Toggle all elements with .lang-en / .lang-hi
-  document.querySelectorAll('.lang-en').forEach(el => {
+  document.querySelectorAll('.lang-en').forEach(function (el) {
     el.classList.toggle('active', lang === 'en');
   });
-  document.querySelectorAll('.lang-hi').forEach(el => {
+  document.querySelectorAll('.lang-hi').forEach(function (el) {
     el.classList.toggle('active', lang === 'hi');
   });
 
-  // Update toggle button label
-  const langBtn = document.getElementById('langToggle');
+  var langBtn = document.getElementById('langToggle');
   if (langBtn) {
-    langBtn.querySelector('.lang-en').classList.toggle('active', lang === 'en');
-    langBtn.querySelector('.lang-hi').classList.toggle('active', lang === 'hi');
+    var enSpan = langBtn.querySelector('.lang-en');
+    var hiSpan = langBtn.querySelector('.lang-hi');
+    if (enSpan) enSpan.classList.toggle('active', lang === 'en');
+    if (hiSpan) hiSpan.classList.toggle('active', lang === 'hi');
   }
 
-  // Update HTML lang attribute
   document.documentElement.lang = lang === 'hi' ? 'hi' : 'en';
 
-  // Filter dynamic sections by language
   applyDynamicLangFilter();
 }
 
 /* ============================================================
    MANIFESTO RENDERING
    ============================================================ */
-function renderManifesto(points) {
-  const grid = document.getElementById('manifestoGrid');
+function renderManifestoBothLanguages(data) {
+  var grid = document.getElementById('manifestoGrid');
   if (!grid) return;
-  grid.innerHTML = points.map((text, i) => `
-    <div class="manifesto-card">
-      <div class="manifesto-num">${i + 1}</div>
-      <p>${text}</p>
-    </div>
-  `).join('');
+
+  var html = '';
+  var enList = data.en.manifesto || [];
+  var hiList = data.hi.manifesto || [];
+
+  enList.forEach(function (point, i) {
+    html += '<div class="manifesto-card">' +
+      '<div class="manifesto-num">' + (i + 1) + '</div>' +
+      '<p class="lang-en active">' + escapeHtml(point) + '</p>' +
+      '<p class="lang-hi">' + escapeHtml(hiList[i] || point) + '</p>' +
+    '</div>';
+  });
+
+  grid.innerHTML = html;
+  setLanguage(currentLang);
 }
 
 /* ============================================================
    CONTENT LOADING FROM FIRESTORE
    ============================================================ */
 async function loadSiteContent() {
+  if (!db) {
+    renderManifestoBothLanguages(DEFAULT_CONTENT);
+    return;
+  }
+
   try {
-    const doc = await db.collection('site_content').doc('main').get();
-    let data = DEFAULT_CONTENT;
+    var doc = await db.collection('site_content').doc('main').get();
+    var data = DEFAULT_CONTENT;
 
     if (doc.exists) {
-      const d = doc.data();
-      // Merge with defaults
+      var d = doc.data();
       data = {
-        en: { ...DEFAULT_CONTENT.en, ...(d.en || {}) },
-        hi: { ...DEFAULT_CONTENT.hi, ...(d.hi || {}) }
+        en: Object.assign({}, DEFAULT_CONTENT.en, d.en || {}),
+        hi: Object.assign({}, DEFAULT_CONTENT.hi, d.hi || {})
       };
     } else {
-      // Seed defaults on first run (optional)
-      db.collection('site_content').doc('main').set(DEFAULT_CONTENT).catch(() => {});
+      // Seed defaults on first run
+      db.collection('site_content').doc('main').set(DEFAULT_CONTENT).catch(function () {});
     }
 
-    // Apply to DOM
-    const aboutEn = document.getElementById('aboutTextEn');
-    const aboutHi = document.getElementById('aboutTextHi');
+    var aboutEn = document.getElementById('aboutTextEn');
+    var aboutHi = document.getElementById('aboutTextHi');
     if (aboutEn) aboutEn.textContent = data.en.about;
     if (aboutHi) aboutHi.textContent = data.hi.about;
 
-    // Slogan (hero)
-    const sloganEn = document.querySelector('.hero-slogan .lang-en');
-    const sloganHi = document.querySelector('.hero-slogan .lang-hi');
+    var sloganEn = document.querySelector('.hero-slogan .lang-en');
+    var sloganHi = document.querySelector('.hero-slogan .lang-hi');
     if (sloganEn) sloganEn.textContent = data.en.slogan;
     if (sloganHi) sloganHi.textContent = data.hi.slogan;
 
-    // Manifesto — render both languages (CSS shows correct one)
-    // We render English by default; language filter handles visibility.
-    // Better: render both, hide via CSS. We'll render into two containers.
     renderManifestoBothLanguages(data);
 
   } catch (err) {
@@ -270,147 +314,150 @@ async function loadSiteContent() {
   }
 }
 
-function renderManifestoBothLanguages(data) {
-  const grid = document.getElementById('manifestoGrid');
-  if (!grid) return;
-
-  // Build combined markup with lang wrappers
-  let html = '';
-  data.en.manifesto.forEach((point, i) => {
-    html += `
-      <div class="manifesto-card">
-        <div class="manifesto-num">${i + 1}</div>
-        <p class="lang-en active">${point}</p>
-        <p class="lang-hi">${data.hi.manifesto[i] || point}</p>
-      </div>
-    `;
-  });
-  grid.innerHTML = html;
-
-  // Re-apply current language
-  setLanguage(currentLang);
-}
-
 /* ============================================================
    SUPPORTER WALL — Live Counter & Cards
    ============================================================ */
 function listenToSupporters() {
+  if (!db) return;
   if (supporterUnsub) supporterUnsub();
+
   supporterUnsub = db.collection('supporters')
     .orderBy('createdAt', 'desc')
-    .onSnapshot(snapshot => {
+    .onSnapshot(function (snapshot) {
       allSupporters = [];
-      snapshot.forEach(doc => {
-        allSupporters.push({ id: doc.id, ...doc.data() });
+      snapshot.forEach(function (doc) {
+        allSupporters.push(Object.assign({ id: doc.id }, doc.data()));
       });
 
-      // Update counter
-      const counter = document.getElementById('supporterCount');
-      if (counter) counter.textContent = allSupporters.length.toLocaleString('en-IN');
+      var counter = document.getElementById('supporterCount');
+      if (counter) {
+        counter.textContent = allSupporters.length.toLocaleString('en-IN');
+      }
 
-      // Render wall (show max 12 for performance)
       renderSupporterWall(allSupporters.slice(0, 12));
-    }, err => console.warn("Supporter listener error:", err));
+    }, function (err) {
+      console.warn("Supporter listener error:", err);
+    });
 }
 
 function renderSupporterWall(supporters) {
-  const wall = document.getElementById('supporterWall');
+  var wall = document.getElementById('supporterWall');
   if (!wall) return;
 
   if (!supporters.length) {
-    wall.innerHTML = `<p class="text-center text-gray-500 col-span-full py-4">Be the first to support!</p>`;
+    wall.innerHTML = '<p class="text-center text-gray-500 col-span-full py-4">Be the first to support!</p>';
     return;
   }
 
-  wall.innerHTML = supporters.map(s => `
-    <div class="supporter-card">
-      <div class="s-name">${escapeHtml(s.name || 'Anonymous')}</div>
-      <div class="s-ward">${escapeHtml(s.ward || 'Ward not specified')}</div>
-    </div>
-  `).join('');
-}
-
-function escapeHtml(str) {
-  return String(str).replace(/[&<>"']/g, m => ({
-    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
-  })[m]);
+  wall.innerHTML = supporters.map(function (s) {
+    return '<div class="supporter-card">' +
+      '<div class="s-name">' + escapeHtml(s.name || 'Anonymous') + '</div>' +
+      '<div class="s-ward">' + escapeHtml(s.ward || 'Ward not specified') + '</div>' +
+    '</div>';
+  }).join('');
 }
 
 /* ============================================================
    AUTHENTICATION & SUPPORT REGISTRATION
    ============================================================ */
 function initAuth() {
-  const modal      = document.getElementById('authModal');
-  const closeBtn   = document.getElementById('modalCloseBtn');
-  const supportBtn = document.getElementById('supportBtn');
-  const regBtn     = document.getElementById('registerSupportBtn');
-  const googleBtn  = document.getElementById('googleLoginBtn');
-  const emailBtn   = document.getElementById('emailLoginBtn');
-  const authInfo   = document.getElementById('authUserInfo');
+  if (!auth) {
+    console.warn("Auth not available — skipping auth init");
+    return;
+  }
 
-  // Open modal
-  supportBtn?.addEventListener('click', () => {
-    modal.style.display = 'flex';
-  });
-  closeBtn?.addEventListener('click', () => modal.style.display = 'none');
-  modal?.addEventListener('click', (e) => { if (e.target === modal) modal.style.display = 'none'; });
+  var modal      = document.getElementById('authModal');
+  var closeBtn   = document.getElementById('modalCloseBtn');
+  var supportBtn = document.getElementById('supportBtn');
+  var regBtn     = document.getElementById('registerSupportBtn');
+  var googleBtn  = document.getElementById('googleLoginBtn');
+  var emailBtn   = document.getElementById('emailLoginBtn');
+  var authInfo   = document.getElementById('authUserInfo');
+
+  if (supportBtn) {
+    supportBtn.addEventListener('click', function () {
+      if (modal) modal.style.display = 'flex';
+    });
+  }
+  if (closeBtn) {
+    closeBtn.addEventListener('click', function () {
+      if (modal) modal.style.display = 'none';
+    });
+  }
+  if (modal) {
+    modal.addEventListener('click', function (e) {
+      if (e.target === modal) modal.style.display = 'none';
+    });
+  }
 
   // Google login
-  googleBtn?.addEventListener('click', async () => {
-    const provider = new firebase.auth.GoogleAuthProvider();
-    try {
-      await auth.signInWithPopup(provider);
-      modal.style.display = 'none';
-    } catch (err) {
-      alert("Login failed: " + err.message);
-    }
-  });
-
-  // Email login / signup
-  emailBtn?.addEventListener('click', async () => {
-    const email = document.getElementById('emailInput').value.trim();
-    const pass  = document.getElementById('passwordInput').value;
-    if (!email || !pass) { alert("Enter email & password"); return; }
-
-    try {
-      await auth.signInWithEmailAndPassword(email, pass);
-      modal.style.display = 'none';
-    } catch (err) {
-      if (err.code === 'auth/user-not-found') {
-        try {
-          await auth.createUserWithEmailAndPassword(email, pass);
-          modal.style.display = 'none';
-        } catch (e2) { alert("Signup failed: " + e2.message); }
-      } else {
+  if (googleBtn) {
+    googleBtn.addEventListener('click', async function () {
+      var provider = new firebase.auth.GoogleAuthProvider();
+      try {
+        await auth.signInWithPopup(provider);
+        if (modal) modal.style.display = 'none';
+      } catch (err) {
         alert("Login failed: " + err.message);
       }
-    }
-  });
+    });
+  }
+
+  // Email login / signup
+  if (emailBtn) {
+    emailBtn.addEventListener('click', async function () {
+      var emailEl = document.getElementById('emailInput');
+      var passEl  = document.getElementById('passwordInput');
+      var email = (emailEl && emailEl.value || '').trim();
+      var pass  = (passEl && passEl.value) || '';
+
+      if (!email || !pass) { alert("Enter email & password"); return; }
+
+      try {
+        await auth.signInWithEmailAndPassword(email, pass);
+        if (modal) modal.style.display = 'none';
+      } catch (err) {
+        if (err.code === 'auth/user-not-found') {
+          try {
+            await auth.createUserWithEmailAndPassword(email, pass);
+            if (modal) modal.style.display = 'none';
+          } catch (e2) {
+            alert("Signup failed: " + e2.message);
+          }
+        } else {
+          alert("Login failed: " + err.message);
+        }
+      }
+    });
+  }
 
   // Auth state listener
-  auth.onAuthStateChanged(user => {
+  auth.onAuthStateChanged(function (user) {
     if (user) {
-      supportBtn.style.display = 'none';
-      regBtn.style.display = 'inline-block';
-      if (authInfo) authInfo.textContent = `Signed in as ${user.displayName || user.email}`;
+      if (supportBtn) supportBtn.style.display = 'none';
+      if (regBtn) regBtn.style.display = 'inline-block';
+      if (authInfo) authInfo.textContent = "Signed in as " + (user.displayName || user.email);
     } else {
-      supportBtn.style.display = 'inline-block';
-      regBtn.style.display = 'none';
+      if (supportBtn) supportBtn.style.display = 'inline-block';
+      if (regBtn) regBtn.style.display = 'none';
       if (authInfo) authInfo.textContent = '';
     }
   });
 
-  // Register support
-  regBtn?.addEventListener('click', registerSupport);
+  if (regBtn) {
+    regBtn.addEventListener('click', registerSupport);
+  }
 }
 
 async function registerSupport() {
-  const user = auth.currentUser;
+  if (!auth || !db) { alert("Firebase not ready"); return; }
+
+  var user = auth.currentUser;
   if (!user) { alert("Please sign in first."); return; }
 
-  const name = prompt("Enter your name (or leave blank for Anonymous):", user.displayName || "");
+  var name = prompt("Enter your name (or leave blank for Anonymous):", user.displayName || "");
   if (name === null) return;
-  const ward = prompt("Enter your ward / village part:", "");
+  var ward = prompt("Enter your ward / village part:", "");
   if (ward === null) return;
 
   try {
@@ -432,17 +479,19 @@ async function registerSupport() {
    DYNAMIC SECTIONS (Custom HTML Injector)
    ============================================================ */
 function loadDynamicSections() {
+  if (!db) return;
   if (dynamicUnsub) dynamicUnsub();
+
   dynamicUnsub = db.collection('dynamic_sections')
     .orderBy('order', 'asc')
-    .onSnapshot(snapshot => {
-      const container = document.getElementById('dynamicSectionsContainer');
+    .onSnapshot(function (snapshot) {
+      var container = document.getElementById('dynamicSectionsContainer');
       if (!container) return;
       container.innerHTML = '';
 
-      snapshot.forEach(doc => {
-        const data = doc.data();
-        const wrapper = document.createElement('div');
+      snapshot.forEach(function (doc) {
+        var data = doc.data();
+        var wrapper = document.createElement('div');
         wrapper.className = 'dynamic-block';
         wrapper.setAttribute('data-lang', data.lang || 'both');
         wrapper.setAttribute('data-id', doc.id);
@@ -451,12 +500,14 @@ function loadDynamicSections() {
       });
 
       applyDynamicLangFilter();
-    }, err => console.warn("Dynamic listener error:", err));
+    }, function (err) {
+      console.warn("Dynamic listener error:", err);
+    });
 }
 
 function applyDynamicLangFilter() {
-  document.querySelectorAll('.dynamic-block').forEach(block => {
-    const lang = block.getAttribute('data-lang');
+  document.querySelectorAll('.dynamic-block').forEach(function (block) {
+    var lang = block.getAttribute('data-lang');
     if (!lang || lang === 'both') {
       block.style.display = 'block';
     } else {
@@ -470,23 +521,28 @@ function applyDynamicLangFilter() {
    ============================================================ */
 function initPublicPage() {
   // Language toggle
-  const langToggle = document.getElementById('langToggle');
-  langToggle?.addEventListener('click', () => {
-    setLanguage(currentLang === 'en' ? 'hi' : 'en');
-  });
+  var langToggle = document.getElementById('langToggle');
+  if (langToggle) {
+    langToggle.addEventListener('click', function () {
+      setLanguage(currentLang === 'en' ? 'hi' : 'en');
+    });
+  }
 
   // Mobile hamburger
-  const hamburger = document.getElementById('hamburger');
-  const navLinks  = document.getElementById('navLinks');
-  hamburger?.addEventListener('click', () => {
-    navLinks.classList.toggle('open');
-  });
-  // Close nav on link click (mobile)
-  navLinks?.querySelectorAll('a').forEach(a => {
-    a.addEventListener('click', () => navLinks.classList.remove('open'));
-  });
+  var hamburger = document.getElementById('hamburger');
+  var navLinks  = document.getElementById('navLinks');
+  if (hamburger && navLinks) {
+    hamburger.addEventListener('click', function () {
+      navLinks.classList.toggle('open');
+    });
+    navLinks.querySelectorAll('a').forEach(function (a) {
+      a.addEventListener('click', function () {
+        navLinks.classList.remove('open');
+      });
+    });
+  }
 
-  // Load everything
+  // Boot everything
   initJukebox();
   initAuth();
   loadSiteContent();
@@ -497,263 +553,417 @@ function initPublicPage() {
 
 /* ============================================================
    ADMIN DASHBOARD LOGIC
+   Called from admin.html
    ============================================================ */
 function initAdminPage() {
-  const gate       = document.getElementById('adminLoginGate');
-  const dashboard  = document.getElementById('adminDashboard');
-  const loginBtn   = document.getElementById('adminLoginBtn');
-  const logoutBtn  = document.getElementById('adminLogoutBtn');
-  const errorEl    = document.getElementById('adminLoginError');
-  const emailEl    = document.getElementById('adminEmail');
+  console.log("🔐 Admin page initializing...");
 
-  // Auth guard
-  auth.onAuthStateChanged(user => {
+  var gate      = document.getElementById('adminLoginGate');
+  var dashboard = document.getElementById('adminDashboard');
+  var loginBtn  = document.getElementById('adminLoginBtn');
+  var logoutBtn = document.getElementById('adminLogoutBtn');
+  var emailIn   = document.getElementById('adminEmailInput');
+  var passIn    = document.getElementById('adminPasswordInput');
+  var errorEl   = document.getElementById('adminLoginError');
+  var emailDisp = document.getElementById('adminEmailDisplay');
+  var loginText = document.getElementById('loginBtnText');
+
+  if (!gate || !dashboard) {
+    console.error("❌ Admin DOM elements missing");
+    return;
+  }
+
+  if (!auth) {
+    console.error("❌ Firebase Auth not available");
+    if (errorEl) errorEl.textContent = "Firebase Auth not loaded.";
+    return;
+  }
+
+  // Toast helper
+  function showToast(msg, type) {
+    type = type || 'info';
+    var t = document.createElement('div');
+    t.className = 'toast ' + type;
+    t.textContent = msg;
+    document.body.appendChild(t);
+    setTimeout(function () { t.remove(); }, 3200);
+  }
+  window.__adminToast = showToast;
+
+  // AUTH STATE GUARD
+  auth.onAuthStateChanged(function (user) {
+    console.log("👤 Auth state:", user ? user.email : "logged out");
+
     if (user && user.email === ADMIN_EMAIL) {
-      gate.style.display = 'none';
+      gate.style.display      = 'none';
       dashboard.style.display = 'block';
-      if (emailEl) emailEl.textContent = user.email;
+      if (emailDisp) emailDisp.textContent = user.email;
 
       initAdminTabs();
       initContentManager();
       initSupporterLog();
       initInjector();
+
+      showToast("✅ Welcome, Admin!", "success");
     } else {
-      gate.style.display = 'flex';
+      gate.style.display      = 'flex';
       dashboard.style.display = 'none';
-    }
-  });
 
-  // Admin login (email/password)
-  loginBtn?.addEventListener('click', async () => {
-    const email = prompt("Admin email:");
-    if (!email) return;
-    const pass = prompt("Admin password:");
-    if (!pass) return;
-
-    try {
-      await auth.signInWithEmailAndPassword(email, pass);
-      if (auth.currentUser.email !== ADMIN_EMAIL) {
-        await auth.signOut();
-        errorEl.textContent = "❌ Not authorized as admin.";
+      if (user && user.email !== ADMIN_EMAIL) {
+        auth.signOut();
+        if (errorEl) errorEl.textContent = "❌ Not authorized as admin.";
       }
-    } catch (err) {
-      errorEl.textContent = "❌ " + err.message;
     }
   });
 
-  logoutBtn?.addEventListener('click', () => auth.signOut());
+  // LOGIN BUTTON
+  if (loginBtn) {
+    loginBtn.addEventListener('click', async function () {
+      var email = (emailIn && emailIn.value || '').trim();
+      var pass  = (passIn && passIn.value) || '';
+
+      if (!email || !pass) {
+        if (errorEl) errorEl.textContent = "❌ Enter both email and password.";
+        return;
+      }
+
+      if (loginText) loginText.innerHTML = '<span class="loader"></span> Signing in...';
+      loginBtn.disabled = true;
+      if (errorEl) errorEl.textContent = '';
+
+      try {
+        await auth.signInWithEmailAndPassword(email, pass);
+        // onAuthStateChanged will handle the rest
+      } catch (err) {
+        console.error(err);
+        if (errorEl) errorEl.textContent = "❌ " + (err.message || "Login failed");
+      } finally {
+        if (loginText) loginText.textContent = "Sign In";
+        loginBtn.disabled = false;
+      }
+    });
+  }
+
+  if (passIn) {
+    passIn.addEventListener('keypress', function (e) {
+      if (e.key === 'Enter' && loginBtn) loginBtn.click();
+    });
+  }
+
+  // LOGOUT
+  if (logoutBtn) {
+    logoutBtn.addEventListener('click', async function () {
+      if (confirm("Logout from admin panel?")) {
+        await auth.signOut();
+        showToast("👋 Logged out", "info");
+      }
+    });
+  }
 }
 
-/* ---------- Admin Tabs ---------- */
+/* ============================================================
+   ADMIN TABS
+   ============================================================ */
 function initAdminTabs() {
-  const tabs   = document.querySelectorAll('.admin-tab');
-  const panels = document.querySelectorAll('.admin-panel');
+  var tabs   = document.querySelectorAll('.admin-tab');
+  var panels = document.querySelectorAll('.admin-panel');
 
-  tabs.forEach(tab => {
-    tab.addEventListener('click', () => {
-      const target = tab.getAttribute('data-tab');
-      tabs.forEach(t => t.classList.toggle('active', t === tab));
-      panels.forEach(p => {
-        p.classList.toggle('active', p.id === `tab-${target}`);
+  tabs.forEach(function (tab) {
+    tab.addEventListener('click', function () {
+      var target = tab.getAttribute('data-tab');
+
+      tabs.forEach(function (t) { t.classList.toggle('active', t === tab); });
+      panels.forEach(function (p) {
+        p.classList.toggle('active', p.id === 'tab-' + target);
       });
     });
   });
 }
 
-/* ---------- Content Manager ---------- */
+/* ============================================================
+   CONTENT MANAGER
+   ============================================================ */
 function initContentManager() {
-  const form = document.getElementById('contentForm');
-  if (!form) return;
+  var form = document.getElementById('contentForm');
+  if (!form || !db) return;
 
-  // Load current content
-  db.collection('site_content').doc('main').get().then(doc => {
-    const data = doc.exists ? doc.data() : DEFAULT_CONTENT;
-    const en = data.en || DEFAULT_CONTENT.en;
-    const hi = data.hi || DEFAULT_CONTENT.hi;
+  db.collection('site_content').doc('main').get().then(function (doc) {
+    if (!doc.exists) return;
+    var data = doc.data();
+    var en = data.en || {};
+    var hi = data.hi || {};
 
-    document.getElementById('sloganEn').value      = en.slogan || '';
-    document.getElementById('sloganHi').value      = hi.slogan || '';
-    document.getElementById('aboutEn').value       = en.about || '';
-    document.getElementById('aboutHi').value       = hi.about || '';
-    document.getElementById('manifestoEn').value   = (en.manifesto || []).join('\n');
-    document.getElementById('manifestoHi').value   = (hi.manifesto || []).join('\n');
+    var el;
+    if ((el = document.getElementById('sloganEn')))    el.value = en.slogan || '';
+    if ((el = document.getElementById('sloganHi')))    el.value = hi.slogan || '';
+    if ((el = document.getElementById('aboutEn')))     el.value = en.about || '';
+    if ((el = document.getElementById('aboutHi')))     el.value = hi.about || '';
+    if ((el = document.getElementById('manifestoEn'))) el.value = (en.manifesto || []).join('\n');
+    if ((el = document.getElementById('manifestoHi'))) el.value = (hi.manifesto || []).join('\n');
+  }).catch(function (err) {
+    console.warn("Content load error:", err);
   });
 
-  // Save content
-  form.addEventListener('submit', async (e) => {
+  form.addEventListener('submit', async function (e) {
     e.preventDefault();
-    const payload = {
+    var btn = document.getElementById('saveContentBtn');
+
+    var payload = {
       en: {
-        slogan:    document.getElementById('sloganEn').value.trim(),
-        about:     document.getElementById('aboutEn').value.trim(),
-        manifesto: document.getElementById('manifestoEn').value.split('\n').map(l => l.trim()).filter(Boolean)
+        slogan:    (document.getElementById('sloganEn').value || '').trim(),
+        about:     (document.getElementById('aboutEn').value || '').trim(),
+        manifesto: (document.getElementById('manifestoEn').value || '')
+                     .split('\n').map(function (l) { return l.trim(); }).filter(Boolean)
       },
       hi: {
-        slogan:    document.getElementById('sloganHi').value.trim(),
-        about:     document.getElementById('aboutHi').value.trim(),
-        manifesto: document.getElementById('manifestoHi').value.split('\n').map(l => l.trim()).filter(Boolean)
+        slogan:    (document.getElementById('sloganHi').value || '').trim(),
+        about:     (document.getElementById('aboutHi').value || '').trim(),
+        manifesto: (document.getElementById('manifestoHi').value || '')
+                     .split('\n').map(function (l) { return l.trim(); }).filter(Boolean)
       }
     };
 
+    if (btn) {
+      btn.disabled = true;
+      btn.innerHTML = '<span class="loader"></span> Saving...';
+    }
+
     try {
       await db.collection('site_content').doc('main').set(payload, { merge: true });
-      alert("✅ Content saved successfully!");
+      if (window.__adminToast) window.__adminToast("✅ Content saved!", "success");
     } catch (err) {
-      alert("❌ Error saving: " + err.message);
-    }
-  });
-}
-
-/* ---------- Supporter Log ---------- */
-function initSupporterLog() {
-  const tbody    = document.getElementById('supporterTableBody');
-  const searchEl = document.getElementById('supporterSearch');
-  const sortEl   = document.getElementById('supporterSort');
-  const exportBtn = document.getElementById('exportCsvBtn');
-
-  if (!tbody) return;
-
-  let liveData = [];
-
-  db.collection('supporters').orderBy('createdAt', 'desc').onSnapshot(snapshot => {
-    liveData = [];
-    snapshot.forEach(doc => liveData.push({ id: doc.id, ...doc.data() }));
-    renderSupporterTable(liveData);
-  });
-
-  function renderSupporterTable(data) {
-    const query  = (searchEl?.value || '').toLowerCase();
-    const sort   = sortEl?.value || 'newest';
-
-    let filtered = data.filter(s =>
-      (s.name || '').toLowerCase().includes(query) ||
-      (s.ward || '').toLowerCase().includes(query)
-    );
-
-    if (sort === 'name') {
-      filtered.sort((a, b) => (a.name || '').localeCompare(b.name || ''));
-    } else if (sort === 'oldest') {
-      filtered.sort((a, b) => (a.createdAt?.seconds || 0) - (b.createdAt?.seconds || 0));
-    } else {
-      filtered.sort((a, b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0));
-    }
-
-    if (!filtered.length) {
-      tbody.innerHTML = `<tr><td colspan="5" class="text-center py-4 text-gray-500">No supporters found.</td></tr>`;
-      return;
-    }
-
-    tbody.innerHTML = filtered.map((s, i) => `
-      <tr>
-        <td>${i + 1}</td>
-        <td>${escapeHtml(s.name || '—')}</td>
-        <td>${escapeHtml(s.ward || '—')}</td>
-        <td><code>${escapeHtml((s.uid || '').slice(0, 8))}…</code></td>
-        <td>${s.createdAt ? new Date(s.createdAt.seconds * 1000).toLocaleString() : '—'}</td>
-      </tr>
-    `).join('');
-  }
-
-  searchEl?.addEventListener('input', () => renderSupporterTable(liveData));
-  sortEl?.addEventListener('change', () => renderSupporterTable(liveData));
-
-  // CSV Export
-  exportBtn?.addEventListener('click', () => {
-    const rows = [['Name', 'Ward', 'UID', 'Email', 'Date']];
-    liveData.forEach(s => {
-      rows.push([
-        s.name || '',
-        s.ward || '',
-        s.uid || '',
-        s.email || '',
-        s.createdAt ? new Date(s.createdAt.seconds * 1000).toISOString() : ''
-      ]);
-    });
-
-    const csv = rows.map(r => r.map(cell => `"${String(cell).replace(/"/g, '""')}"`).join(',')).join('\n');
-    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-    const link = document.createElement('a');
-    link.href = URL.createObjectURL(blob);
-    link.download = `supporters_${Date.now()}.csv`;
-    link.click();
-  });
-}
-
-/* ---------- Custom Code Injector ---------- */
-function initInjector() {
-  const form      = document.getElementById('injectorForm');
-  const listEl    = document.getElementById('dynamicListContainer');
-  if (!form) return;
-
-  // Load existing dynamic sections
-  db.collection('dynamic_sections').orderBy('order', 'asc').onSnapshot(snapshot => {
-    listEl.innerHTML = '';
-    if (snapshot.empty) {
-      listEl.innerHTML = `<p class="text-gray-500 text-sm">No dynamic sections published yet.</p>`;
-      return;
-    }
-
-    snapshot.forEach(doc => {
-      const data = doc.data();
-      const item = document.createElement('div');
-      item.className = 'dynamic-item';
-      item.innerHTML = `
-        <div>
-          <code>${escapeHtml((data.html || '').slice(0, 80))}${(data.html || '').length > 80 ? '…' : ''}</code>
-          <div class="text-xs text-gray-500 mt-1">
-            Order: <strong>${data.order}</strong> · Lang: <strong>${data.lang}</strong>
-          </div>
-        </div>
-        <button class="btn-delete" data-id="${doc.id}">Delete</button>
-      `;
-      listEl.appendChild(item);
-    });
-
-    // Attach delete handlers
-    listEl.querySelectorAll('.btn-delete').forEach(btn => {
-      btn.addEventListener('click', async () => {
-        const id = btn.getAttribute('data-id');
-        if (confirm("Delete this dynamic section?")) {
-          await db.collection('dynamic_sections').doc(id).delete();
-        }
-      });
-    });
-  });
-
-  // Publish new section
-  form.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const html  = document.getElementById('customCode').value.trim();
-    const order = parseInt(document.getElementById('codeOrder').value) || 1;
-    const lang  = document.getElementById('codeLang').value;
-
-    if (!html) { alert("Please enter some HTML/CSS/JS code."); return; }
-
-    try {
-      await db.collection('dynamic_sections').add({
-        html, order, lang,
-        createdAt: firebase.firestore.FieldValue.serverTimestamp()
-      });
-      alert("✅ Section published! It will appear on the public site.");
-      form.reset();
-      document.getElementById('codeOrder').value = 1;
-    } catch (err) {
-      alert("❌ Error publishing: " + err.message);
+      console.error(err);
+      if (window.__adminToast) window.__adminToast("❌ Save failed: " + err.message, "error");
+    } finally {
+      if (btn) {
+        btn.disabled = false;
+        btn.innerHTML = "💾 Save Content";
+      }
     }
   });
 }
 
 /* ============================================================
-   EXPOSE ADMIN INIT (called from admin.html)
+   SUPPORTER LOG (Live table + search + sort + CSV)
+   ============================================================ */
+function initSupporterLog() {
+  var tbody     = document.getElementById('supporterTableBody');
+  var searchEl  = document.getElementById('supporterSearch');
+  var sortEl    = document.getElementById('supporterSort');
+  var exportBtn = document.getElementById('exportCsvBtn');
+  var countLbl  = document.getElementById('supporterCountLabel');
+
+  if (!tbody || !db) return;
+
+  var liveData = [];
+
+  db.collection('supporters').orderBy('createdAt', 'desc')
+    .onSnapshot(function (snapshot) {
+      liveData = [];
+      snapshot.forEach(function (doc) {
+        liveData.push(Object.assign({ id: doc.id }, doc.data()));
+      });
+      renderSupporterTable(liveData);
+      if (countLbl) countLbl.textContent = "Total: " + liveData.length + " supporters";
+    }, function (err) {
+      console.warn("Supporter listener error:", err);
+      tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:#dc2626;padding:1rem;">Failed to load</td></tr>';
+    });
+
+  function renderSupporterTable(data) {
+    var query = (searchEl.value || '').toLowerCase();
+    var sort  = sortEl.value;
+
+    var filtered = data.filter(function (s) {
+      return (s.name || '').toLowerCase().indexOf(query) !== -1 ||
+             (s.ward || '').toLowerCase().indexOf(query) !== -1;
+    });
+
+    if (sort === 'name') {
+      filtered.sort(function (a, b) {
+        return (a.name || '').localeCompare(b.name || '');
+      });
+    } else if (sort === 'oldest') {
+      filtered.sort(function (a, b) {
+        return ((a.createdAt && a.createdAt.seconds) || 0) - ((b.createdAt && b.createdAt.seconds) || 0);
+      });
+    } else {
+      filtered.sort(function (a, b) {
+        return ((b.createdAt && b.createdAt.seconds) || 0) - ((a.createdAt && a.createdAt.seconds) || 0);
+      });
+    }
+
+    if (!filtered.length) {
+      tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:#94a3b8;padding:1.5rem;">No supporters found</td></tr>';
+      return;
+    }
+
+    tbody.innerHTML = filtered.map(function (s, i) {
+      return '<tr>' +
+        '<td>' + (i + 1) + '</td>' +
+        '<td>' + escapeHtml(s.name || '—') + '</td>' +
+        '<td>' + escapeHtml(s.ward || '—') + '</td>' +
+        '<td><code style="font-size:0.78rem;">' + escapeHtml((s.uid || '').slice(0, 10)) + '…</code></td>' +
+        '<td>' + (s.createdAt ? new Date(s.createdAt.seconds * 1000).toLocaleString() : '—') + '</td>' +
+      '</tr>';
+    }).join('');
+  }
+
+  if (searchEl) searchEl.addEventListener('input', function () { renderSupporterTable(liveData); });
+  if (sortEl)   sortEl.addEventListener('change', function () { renderSupporterTable(liveData); });
+
+  if (exportBtn) {
+    exportBtn.addEventListener('click', function () {
+      if (!liveData.length) {
+        if (window.__adminToast) window.__adminToast("No data to export", "info");
+        return;
+      }
+
+      var rows = [['Name', 'Ward', 'UID', 'Email', 'Date']];
+      liveData.forEach(function (s) {
+        rows.push([
+          s.name || '',
+          s.ward || '',
+          s.uid || '',
+          s.email || '',
+          s.createdAt ? new Date(s.createdAt.seconds * 1000).toISOString() : ''
+        ]);
+      });
+
+      var csv = rows.map(function (r) {
+        return r.map(function (cell) {
+          return '"' + String(cell).replace(/"/g, '""') + '"';
+        }).join(',');
+      }).join('\n');
+
+      var blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      var url  = URL.createObjectURL(blob);
+      var link = document.createElement('a');
+      link.href = url;
+      link.download = 'supporters_' + Date.now() + '.csv';
+      link.click();
+      URL.revokeObjectURL(url);
+
+      if (window.__adminToast) window.__adminToast("✅ CSV downloaded", "success");
+    });
+  }
+}
+
+/* ============================================================
+   CUSTOM CODE INJECTOR
+   ============================================================ */
+function initInjector() {
+  var form   = document.getElementById('injectorForm');
+  var listEl = document.getElementById('dynamicListContainer');
+  if (!form || !listEl || !db) return;
+
+  db.collection('dynamic_sections').orderBy('order', 'asc')
+    .onSnapshot(function (snapshot) {
+      if (snapshot.empty) {
+        listEl.innerHTML = '<p style="color:#94a3b8; font-size:0.9rem;">No dynamic sections published yet.</p>';
+        return;
+      }
+
+      listEl.innerHTML = '';
+      snapshot.forEach(function (doc) {
+        var data = doc.data();
+        var html = data.html || '';
+        var preview = html.length > 80 ? html.slice(0, 80) + '…' : html;
+
+        var item = document.createElement('div');
+        item.className = 'dynamic-item';
+        item.innerHTML =
+          '<div style="flex:1; min-width:0;">' +
+            '<code>' + escapeHtml(preview) + '</code>' +
+            '<div class="meta">Order: <strong>' + (data.order || '—') + '</strong> · ' +
+            'Lang: <strong>' + (data.lang || 'both') + '</strong></div>' +
+          '</div>' +
+          '<button class="btn-danger" data-id="' + doc.id + '">Delete</button>';
+
+        listEl.appendChild(item);
+      });
+
+      listEl.querySelectorAll('.btn-danger').forEach(function (btn) {
+        btn.addEventListener('click', async function () {
+          var id = btn.getAttribute('data-id');
+          if (confirm("Delete this dynamic section?")) {
+            try {
+              await db.collection('dynamic_sections').doc(id).delete();
+              if (window.__adminToast) window.__adminToast("🗑 Deleted", "success");
+            } catch (err) {
+              if (window.__adminToast) window.__adminToast("❌ Delete failed", "error");
+            }
+          }
+        });
+      });
+    }, function (err) {
+      console.warn("Dynamic list error:", err);
+      listEl.innerHTML = '<p style="color:#dc2626;">Failed to load sections</p>';
+    });
+
+  form.addEventListener('submit', async function (e) {
+    e.preventDefault();
+
+    var html  = (document.getElementById('customCode').value || '').trim();
+    var order = parseInt(document.getElementById('codeOrder').value) || 1;
+    var lang  = document.getElementById('codeLang').value;
+    var btn   = document.getElementById('publishSectionBtn');
+
+    if (!html) {
+      if (window.__adminToast) window.__adminToast("❌ Enter some code first", "error");
+      return;
+    }
+
+    if (btn) {
+      btn.disabled = true;
+      btn.innerHTML = '<span class="loader"></span> Publishing...';
+    }
+
+    try {
+      await db.collection('dynamic_sections').add({
+        html: html,
+        order: order,
+        lang: lang,
+        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+      });
+
+      if (window.__adminToast) window.__adminToast("✅ Section published!", "success");
+
+      form.reset();
+      document.getElementById('codeOrder').value = 1;
+    } catch (err) {
+      console.error(err);
+      if (window.__adminToast) window.__adminToast("❌ Publish failed: " + err.message, "error");
+    } finally {
+      if (btn) {
+        btn.disabled = false;
+        btn.innerHTML = "🚀 Publish Section";
+      }
+    }
+  });
+}
+
+/* ============================================================
+   EXPOSE TO GLOBAL
    ============================================================ */
 window.initAdminPage = initAdminPage;
 
 /* ============================================================
    AUTO-DETECT PAGE & BOOTSTRAP
+   - If public page → initPublicPage
+   - If admin page → initAdminPage
    ============================================================ */
-document.addEventListener('DOMContentLoaded', () => {
-  // If public page elements exist → init public
+document.addEventListener('DOMContentLoaded', function () {
+  // Public page detection (has manifestoGrid)
   if (document.getElementById('manifestoGrid')) {
     initPublicPage();
+  }
+
+  // Admin page detection (has adminLoginGate)
+  if (document.getElementById('adminLoginGate')) {
+    // Slight delay to ensure Firebase is ready
+    setTimeout(function () {
+      initAdminPage();
+    }, 200);
   }
 });
