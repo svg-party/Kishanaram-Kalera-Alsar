@@ -1,12 +1,11 @@
 /* ============================================================================
    KISHANARAM KALERA — SARPANCH CAMPAIGN
    Complete app.js — Firebase + All Logic
-   Safe-mode initialization (crash-proof)
+   Admin: sovereignvanguardgovernance.svg@gmail.com (Google Login)
    ============================================================================ */
 
 /* ============================================================
    FIREBASE CONFIGURATION
-   Project: Kishanaram-Kalera-Alsar
    ============================================================ */
 const firebaseConfig = {
   apiKey: "AIzaSyCCDF9CY_BamxzolSqMbWUlAT9kR5QhO5w",
@@ -20,8 +19,7 @@ const firebaseConfig = {
 };
 
 /* ============================================================
-   SAFE INITIALIZATION — prevents total app crash if any
-   individual service fails to load
+   SAFE INITIALIZATION — prevents total app crash
    ============================================================ */
 let auth      = null;
 let db        = null;
@@ -59,7 +57,7 @@ try {
 }
 
 /* ============================================================
-   REALTIME DB REFERENCES (null-safe — future features)
+   REALTIME DB REFERENCES (null-safe)
    ============================================================ */
 const rtdbRefs = rtdb ? {
   supporterCount: rtdb.ref('stats/supporterCount'),
@@ -70,9 +68,9 @@ const rtdbRefs = rtdb ? {
 } : null;
 
 /* ============================================================
-   CONFIGURATION CONSTANTS
+   ADMIN EMAIL — tumhari Gmail
    ============================================================ */
-const ADMIN_EMAIL = "sovereignvanguardgovernance.svg@gmail.com";   // ← Admin email
+const ADMIN_EMAIL = "sovereignvanguardgovernance.svg@gmail.com";
 
 /* ============================================================
    GLOBAL STATE
@@ -292,7 +290,6 @@ async function loadSiteContent() {
         hi: Object.assign({}, DEFAULT_CONTENT.hi, d.hi || {})
       };
     } else {
-      // Seed defaults on first run
       db.collection('site_content').doc('main').set(DEFAULT_CONTENT).catch(function () {});
     }
 
@@ -358,7 +355,7 @@ function renderSupporterWall(supporters) {
 }
 
 /* ============================================================
-   AUTHENTICATION & SUPPORT REGISTRATION
+   PUBLIC AUTH — Support Now
    ============================================================ */
 function initAuth() {
   if (!auth) {
@@ -390,7 +387,6 @@ function initAuth() {
     });
   }
 
-  // Google login
   if (googleBtn) {
     googleBtn.addEventListener('click', async function () {
       var provider = new firebase.auth.GoogleAuthProvider();
@@ -403,7 +399,6 @@ function initAuth() {
     });
   }
 
-  // Email login / signup
   if (emailBtn) {
     emailBtn.addEventListener('click', async function () {
       var emailEl = document.getElementById('emailInput');
@@ -431,7 +426,6 @@ function initAuth() {
     });
   }
 
-  // Auth state listener
   auth.onAuthStateChanged(function (user) {
     if (user) {
       if (supportBtn) supportBtn.style.display = 'none';
@@ -476,7 +470,7 @@ async function registerSupport() {
 }
 
 /* ============================================================
-   DYNAMIC SECTIONS (Custom HTML Injector)
+   DYNAMIC SECTIONS
    ============================================================ */
 function loadDynamicSections() {
   if (!db) return;
@@ -520,7 +514,6 @@ function applyDynamicLangFilter() {
    PUBLIC PAGE INITIALIZER
    ============================================================ */
 function initPublicPage() {
-  // Language toggle
   var langToggle = document.getElementById('langToggle');
   if (langToggle) {
     langToggle.addEventListener('click', function () {
@@ -528,7 +521,6 @@ function initPublicPage() {
     });
   }
 
-  // Mobile hamburger
   var hamburger = document.getElementById('hamburger');
   var navLinks  = document.getElementById('navLinks');
   if (hamburger && navLinks) {
@@ -542,7 +534,6 @@ function initPublicPage() {
     });
   }
 
-  // Boot everything
   initJukebox();
   initAuth();
   loadSiteContent();
@@ -552,8 +543,7 @@ function initPublicPage() {
 }
 
 /* ============================================================
-   ADMIN DASHBOARD LOGIC
-   Called from admin.html
+   ADMIN DASHBOARD — initAdminPage
    ============================================================ */
 function initAdminPage() {
   console.log("🔐 Admin page initializing...");
@@ -590,9 +580,11 @@ function initAdminPage() {
   }
   window.__adminToast = showToast;
 
+  // ============================================================
   // AUTH STATE GUARD
+  // ============================================================
   auth.onAuthStateChanged(function (user) {
-    console.log("👤 Auth state:", user ? user.email : "logged out");
+    console.log("👤 Admin auth state:", user ? user.email : "logged out");
 
     if (user && user.email === ADMIN_EMAIL) {
       gate.style.display      = 'none';
@@ -616,7 +608,45 @@ function initAdminPage() {
     }
   });
 
-  // LOGIN BUTTON
+  // ============================================================
+  // GOOGLE LOGIN (ADMIN)
+  // ============================================================
+  var googleAdminBtn = document.getElementById('googleAdminLoginBtn');
+  if (googleAdminBtn) {
+    googleAdminBtn.addEventListener('click', async function () {
+      var provider = new firebase.auth.GoogleAuthProvider();
+      provider.setCustomParameters({ prompt: 'select_account' });
+
+      googleAdminBtn.disabled = true;
+      var originalHTML = googleAdminBtn.innerHTML;
+      googleAdminBtn.innerHTML = '⏳ Signing in...';
+      if (errorEl) errorEl.textContent = '';
+
+      try {
+        var result = await auth.signInWithPopup(provider);
+        var user = result.user;
+
+        if (user.email !== ADMIN_EMAIL) {
+          await auth.signOut();
+          if (errorEl) {
+            errorEl.textContent = "❌ " + user.email + " is not authorized as admin.";
+          }
+          showToast("❌ Unauthorized account", "error");
+        }
+        // If authorized → onAuthStateChanged handles the rest
+      } catch (err) {
+        console.error("Google login error:", err);
+        if (errorEl) errorEl.textContent = "❌ " + (err.message || "Google sign-in failed");
+      } finally {
+        googleAdminBtn.disabled = false;
+        googleAdminBtn.innerHTML = originalHTML;
+      }
+    });
+  }
+
+  // ============================================================
+  // EMAIL/PASSWORD LOGIN (Fallback)
+  // ============================================================
   if (loginBtn) {
     loginBtn.addEventListener('click', async function () {
       var email = (emailIn && emailIn.value || '').trim();
@@ -627,18 +657,17 @@ function initAdminPage() {
         return;
       }
 
-      if (loginText) loginText.innerHTML = '<span class="loader"></span> Signing in...';
+      if (loginText) loginText.innerHTML = '⏳ Signing in...';
       loginBtn.disabled = true;
       if (errorEl) errorEl.textContent = '';
 
       try {
         await auth.signInWithEmailAndPassword(email, pass);
-        // onAuthStateChanged will handle the rest
       } catch (err) {
         console.error(err);
         if (errorEl) errorEl.textContent = "❌ " + (err.message || "Login failed");
       } finally {
-        if (loginText) loginText.textContent = "Sign In";
+        if (loginText) loginText.textContent = "Sign In with Email";
         loginBtn.disabled = false;
       }
     });
@@ -650,7 +679,9 @@ function initAdminPage() {
     });
   }
 
+  // ============================================================
   // LOGOUT
+  // ============================================================
   if (logoutBtn) {
     logoutBtn.addEventListener('click', async function () {
       if (confirm("Logout from admin panel?")) {
@@ -671,7 +702,6 @@ function initAdminTabs() {
   tabs.forEach(function (tab) {
     tab.addEventListener('click', function () {
       var target = tab.getAttribute('data-tab');
-
       tabs.forEach(function (t) { t.classList.toggle('active', t === tab); });
       panels.forEach(function (p) {
         p.classList.toggle('active', p.id === 'tab-' + target);
@@ -725,7 +755,7 @@ function initContentManager() {
 
     if (btn) {
       btn.disabled = true;
-      btn.innerHTML = '<span class="loader"></span> Saving...';
+      btn.innerHTML = '⏳ Saving...';
     }
 
     try {
@@ -744,7 +774,7 @@ function initContentManager() {
 }
 
 /* ============================================================
-   SUPPORTER LOG (Live table + search + sort + CSV)
+   SUPPORTER LOG
    ============================================================ */
 function initSupporterLog() {
   var tbody     = document.getElementById('supporterTableBody');
@@ -916,7 +946,7 @@ function initInjector() {
 
     if (btn) {
       btn.disabled = true;
-      btn.innerHTML = '<span class="loader"></span> Publishing...';
+      btn.innerHTML = '⏳ Publishing...';
     }
 
     try {
@@ -950,18 +980,15 @@ window.initAdminPage = initAdminPage;
 
 /* ============================================================
    AUTO-DETECT PAGE & BOOTSTRAP
-   - If public page → initPublicPage
-   - If admin page → initAdminPage
    ============================================================ */
 document.addEventListener('DOMContentLoaded', function () {
-  // Public page detection (has manifestoGrid)
+  // Public page (has manifestoGrid)
   if (document.getElementById('manifestoGrid')) {
     initPublicPage();
   }
 
-  // Admin page detection (has adminLoginGate)
+  // Admin page (has adminLoginGate)
   if (document.getElementById('adminLoginGate')) {
-    // Slight delay to ensure Firebase is ready
     setTimeout(function () {
       initAdminPage();
     }, 200);
