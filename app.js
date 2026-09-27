@@ -72,7 +72,7 @@ const rtdbRefs = rtdb ? {
 /* ============================================================
    CONFIGURATION CONSTANTS
    ============================================================ */
-const ADMIN_EMAIL = "admin@alsar.com";   // ← Admin email
+const ADMIN_EMAIL = "sovereignvanguardgovernance.svg@gmail.com";   // ← Admin email
 
 /* ============================================================
    GLOBAL STATE
