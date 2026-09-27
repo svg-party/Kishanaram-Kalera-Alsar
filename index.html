@@ -1,1 +1,294 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"/><link rel="icon" href="./favicon.ico"/><meta name="viewport" content="width=device-width,initial-scale=1"/><meta name="theme-color" content="#000000"/><meta name="description" content="Web site created using create-react-app"/><link rel="apple-touch-icon" href="./logo192.png"/><link rel="manifest" href="./manifest.json"/><title>React App</title><link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"><link href="./static/css/main.6fb94a25.chunk.css" rel="stylesheet"></head><body><noscript>You need to enable JavaScript to run this app.</noscript><div id="root"></div><script>!function(e){function r(r){for(var n,i,a=r[0],c=r[1],f=r[2],s=0,p=[];s<a.length;s++)i=a[s],Object.prototype.hasOwnProperty.call(o,i)&&o[i]&&p.push(o[i][0]),o[i]=0;for(n in c)Object.prototype.hasOwnProperty.call(c,n)&&(e[n]=c[n]);for(l&&l(r);p.length;)p.shift()();return u.push.apply(u,f||[]),t()}function t(){for(var e,r=0;r<u.length;r++){for(var t=u[r],n=!0,a=1;a<t.length;a++){var c=t[a];0!==o[c]&&(n=!1)}n&&(u.splice(r--,1),e=i(i.s=t[0]))}return e}var n={},o={1:0},u=[];function i(r){if(n[r])return n[r].exports;var t=n[r]={i:r,l:!1,exports:{}};return e[r].call(t.exports,t,t.exports,i),t.l=!0,t.exports}i.e=function(e){var r=[],t=o[e];if(0!==t)if(t)r.push(t[2]);else{var n=new Promise((function(r,n){t=o[e]=[r,n]}));r.push(t[2]=n);var u,a=document.createElement("script");a.charset="utf-8",a.timeout=120,i.nc&&a.setAttribute("nonce",i.nc),a.src=function(e){return i.p+"static/js/"+({}[e]||e)+"."+{3:"f0561e6c"}[e]+".chunk.js"}(e);var c=new Error;u=function(r){a.onerror=a.onload=null,clearTimeout(f);var t=o[e];if(0!==t){if(t){var n=r&&("load"===r.type?"missing":r.type),u=r&&r.target&&r.target.src;c.message="Loading chunk "+e+" failed.\n("+n+": "+u+")",c.name="ChunkLoadError",c.type=n,c.request=u,t[1](c)}o[e]=void 0}};var f=setTimeout((function(){u({type:"timeout",target:a})}),12e4);a.onerror=a.onload=u,document.head.appendChild(a)}return Promise.all(r)},i.m=e,i.c=n,i.d=function(e,r,t){i.o(e,r)||Object.defineProperty(e,r,{enumerable:!0,get:t})},i.r=function(e){"undefined"!=typeof Symbol&&Symbol.toStringTag&&Object.defineProperty(e,Symbol.toStringTag,{value:"Module"}),Object.defineProperty(e,"__esModule",{value:!0})},i.t=function(e,r){if(1&r&&(e=i(e)),8&r)return e;if(4&r&&"object"==typeof e&&e&&e.__esModule)return e;var t=Object.create(null);if(i.r(t),Object.defineProperty(t,"default",{enumerable:!0,value:e}),2&r&&"string"!=typeof e)for(var n in e)i.d(t,n,function(r){return e[r]}.bind(null,n));return t},i.n=function(e){var r=e&&e.__esModule?function(){return e.default}:function(){return e};return i.d(r,"a",r),r},i.o=function(e,r){return Object.prototype.hasOwnProperty.call(e,r)},i.p="./",i.oe=function(e){throw console.error(e),e};var a=this["webpackJsonppsg-form"]=this["webpackJsonppsg-form"]||[],c=a.push.bind(a);a.push=r,a=a.slice();for(var f=0;f<a.length;f++)r(a[f]);var l=c;t()}([])</script><script src="./static/js/2.81fd11bd.chunk.js"></script><script src="./static/js/main.3e8037f4.chunk.js"></script></body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Shri Kishanaram Kalera - Sarpanch Candidate, Gram Panchayat Alsar, Churu, Rajasthan" />
+  <title>Shri Kishanaram Kalera | Sarpanch Candidate · Alsar</title>
+
+  <!-- Tailwind CDN (for rapid mobile-first styling) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Custom Stylesheet -->
+  <link rel="stylesheet" href="styles.css" />
+
+  <!-- Fonts: Preconnect for speed -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;600;700&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <!-- ===================== NAVBAR (STICKY) ===================== -->
+  <header class="navbar" id="navbar">
+    <div class="nav-container">
+      <!-- Brand / Logo -->
+      <a href="#home" class="brand">
+        <span class="brand-hi lang-hi">श्री किशनाराम कालेरा</span>
+        <span class="brand-en lang-en active">Shri Kishanaram Kalera</span>
+      </a>
+
+      <!-- Nav Links -->
+      <nav class="nav-links" id="navLinks">
+        <a href="#home" class="lang-en active">Home</a>
+        <a href="#home" class="lang-hi">होम</a>
+
+        <a href="#about" class="lang-en active">About</a>
+        <a href="#about" class="lang-hi">परिचय</a>
+
+        <a href="#manifesto" class="lang-en active">Manifesto</a>
+        <a href="#manifesto" class="lang-hi">संकल्प</a>
+
+        <a href="#jukebox" class="lang-en active">Campaign Songs</a>
+        <a href="#jukebox" class="lang-hi">प्रचार गीत</a>
+
+        <a href="#support" class="lang-en active">Supporters</a>
+        <a href="#support" class="lang-hi">समर्थक</a>
+      </nav>
+
+      <!-- Language Toggle + Support Button -->
+      <div class="nav-actions">
+        <button id="langToggle" class="lang-btn" aria-label="Toggle Language">
+          <span class="lang-en active">हिंदी</span>
+          <span class="lang-hi">English</span>
+        </button>
+        <button class="btn-primary" id="supportBtn">
+          <span class="lang-en active">Support Now</span>
+          <span class="lang-hi">समर्थन करें</span>
+        </button>
+        <!-- Mobile menu toggle -->
+        <button class="hamburger" id="hamburger" aria-label="Menu">☰</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===================== HERO SECTION ===================== -->
+  <section class="hero" id="home">
+    <div class="hero-grid">
+      <!-- Left Column: Text Content -->
+      <div class="hero-text">
+        <p class="hero-tag">
+          <span class="lang-en active">Gram Panchayat Alsar · Churu, Rajasthan</span>
+          <span class="lang-hi">ग्राम पंचायत आलसर · चूरू, राजस्थान</span>
+        </p>
+
+        <h1 class="hero-name">
+          <span class="lang-en active">Shri Kishanaram Kalera</span>
+          <span class="lang-hi">श्री किशनाराम कालेरा</span>
+        </h1>
+
+        <p class="hero-lineage">
+          <span class="lang-en active">Son of Shri Ladhuram Ji Kalera</span>
+          <span class="lang-hi">सपुत्र श्री लादूराम जी कालेरा</span>
+        </p>
+
+        <p class="hero-region">
+          <span class="lang-en active">PIN 331802 · Ratangarh Tehsil · Churu District</span>
+          <span class="lang-hi">पिन 331802 · तहसील रतनगढ़ · जिला चूरू</span>
+        </p>
+
+        <blockquote class="hero-slogan">
+          <span class="lang-en active">"Your Trust, My Strength... Village Development, Our Resolve..."</span>
+          <span class="lang-hi">"आपका भरोसा, मेरी ताकत... गाँव का विकास, हमारा संकल्प..."</span>
+        </blockquote>
+
+        <!-- ===== Custom Multi-Track Audio Jukebox ===== -->
+        <div class="jukebox" id="jukebox">
+          <div class="jukebox-header">
+            <span class="jukebox-icon">🎵</span>
+            <span class="lang-en active">Campaign Jukebox</span>
+            <span class="lang-hi">प्रचार ज्यूकबॉक्स</span>
+          </div>
+
+          <div class="jukebox-body">
+            <div class="jukebox-now-playing">
+              <span class="lang-en active">Now Playing:</span>
+              <span class="lang-hi">अभी चल रहा है:</span>
+              <strong id="trackTitle">sarpanch1.mp3</strong>
+            </div>
+
+            <!-- Progress bar -->
+            <div class="progress-wrap" id="progressWrap">
+              <div class="progress-fill" id="progressFill"></div>
+            </div>
+
+            <!-- Controls -->
+            <div class="jukebox-controls">
+              <button id="prevBtn" class="ctrl-btn" aria-label="Previous Track">⏮</button>
+              <button id="playBtn" class="ctrl-btn play-btn" aria-label="Play/Pause">▶</button>
+              <button id="nextBtn" class="ctrl-btn" aria-label="Next Track">⏭</button>
+              <span class="time-display" id="timeDisplay">0:00 / 0:00</span>
+            </div>
+
+            <!-- Playlist Dropdown -->
+            <select id="trackSelect" class="track-select" aria-label="Select Track">
+              <option value="0">1. अनुभव री सोच, विकास रो संकल्प</option>
+              <option value="1">2. सुख-दुख रा साथी (भावुक वोट अपील)</option>
+              <option value="2">3. कालेरा जी रो डंको बाजै (चुनावी लोकगीत)</option>
+              <option value="3">4. जन-जन री आ पुकार, कालेरा जी अबकी बार</option>
+              <option value="4">5. सुणो आलसर री जनता (ढोल-नगाड़ा विशेष)</option>
+              <option value="5">6. आलसर रो लाल (किशनाराम कालेरा)</option>
+            </select>
+          </div>
+
+          <!-- Hidden audio element -->
+          <audio id="audioPlayer" preload="none"></audio>
+        </div>
+      </div>
+
+      <!-- Right Column: Candidate Portrait -->
+      <div class="hero-image">
+        <img src="sarpanch.png" alt="Shri Kishanaram Kalera - Full Length Portrait"
+             class="candidate-photo" loading="lazy" />
+        <div class="photo-glow"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== ABOUT SECTION ===================== -->
+  <section class="section" id="about">
+    <div class="section-container">
+      <h2 class="section-title">
+        <span class="lang-en active">About the Candidate</span>
+        <span class="lang-hi">उम्मीदवार का परिचय</span>
+      </h2>
+
+      <div class="about-grid">
+        <div class="about-text">
+          <p class="lang-en active" id="aboutTextEn">
+            Shri Kishanaram Kalera, son of Shri Ladhuram Ji Kalera, is a dedicated
+            social worker from Gram Panchayat Alsar (Churu, Rajasthan). With over
+            20 years of grassroots service, he represents maturity, integrity, and
+            an unwavering commitment to the village's holistic development.
+          </p>
+          <p class="lang-hi" id="aboutTextHi">
+            श्री किशनाराम कालेरा, सपुत्र श्री लादूराम जी कालेरा, ग्राम पंचायत आलसर
+            (चूरू, राजस्थान) के एक समर्पित समाजसेवी हैं। 20 वर्षों से अधिक के
+            जमीनी सेवा के अनुभव के साथ, वे परिपक्वता, ईमानदारी और गाँव के
+            सर्वांगीण विकास के प्रति अटूट प्रतिबद्धता का प्रतीक हैं।
+          </p>
+
+          <ul class="about-facts">
+            <li>
+              <span class="lang-en active">✓ Clean public image, no criminal record</span>
+              <span class="lang-hi">✓ स्वच्छ छवि, कोई आपराधिक रिकॉर्ड नहीं</span>
+            </li>
+            <li>
+              <span class="lang-en active">✓ Age 45 — Mature, experienced leadership</span>
+              <span class="lang-hi">✓ आयु 45 — परिपक्व, अनुभवी नेतृत्व</span>
+            </li>
+            <li>
+              <span class="lang-en active">✓ Lifelong dedication to Alsar's families</span>
+              <span class="lang-hi">✓ आलसर के परिवारों के लिए आजीवन समर्पण</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== MANIFESTO SECTION ===================== -->
+  <section class="section section-alt" id="manifesto">
+    <div class="section-container">
+      <h2 class="section-title">
+        <span class="lang-en active">My Resolve — Manifesto</span>
+        <span class="lang-hi">मेरे संकल्प — घोषणापत्र</span>
+      </h2>
+
+      <div class="manifesto-grid" id="manifestoGrid">
+        <!-- Cards will be injected from Firestore or fallback -->
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== SUPPORTER WALL ===================== -->
+  <section class="section" id="support">
+    <div class="section-container">
+      <h2 class="section-title">
+        <span class="lang-en active">Live Supporter Wall</span>
+        <span class="lang-hi">लाइव समर्थक दीवार</span>
+      </h2>
+
+      <!-- Animated Live Counter -->
+      <div class="counter-wrap">
+        <div class="counter-badge">
+          <span id="supporterCount">0</span>+
+        </div>
+        <p class="counter-text">
+          <span class="lang-en active">Supporters Registered</span>
+          <span class="lang-hi">समर्थक पंजीकृत</span>
+        </p>
+      </div>
+
+      <!-- Supporter Cards Wall -->
+      <div class="supporter-wall" id="supporterWall">
+        <!-- Populated live from Firestore -->
+      </div>
+
+      <!-- CTA -->
+      <div class="text-center mt-8">
+        <button class="btn-primary" id="registerSupportBtn">
+          <span class="lang-en active">Register My Support</span>
+          <span class="lang-hi">मेरा समर्थन दर्ज करें</span>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== DYNAMIC SECTIONS CONTAINER ===================== -->
+  <div id="dynamicSectionsContainer"></div>
+
+  <!-- ===================== FOOTER ===================== -->
+  <footer class="footer">
+    <div class="footer-content">
+      <p>
+        <span class="lang-en active">© 2026 Shri Kishanaram Kalera · Gram Panchayat Alsar</span>
+        <span class="lang-hi">© 2026 श्री किशनाराम कालेरा · ग्राम पंचायत आलसर</span>
+      </p>
+      <p class="footer-sub">
+        <span class="lang-en active">Churu, Rajasthan · PIN 331802</span>
+        <span class="lang-hi">चूरू, राजस्थान · पिन 331802</span>
+      </p>
+    </div>
+  </footer>
+
+  <!-- ===================== AUTH MODAL ===================== -->
+  <div class="modal-overlay" id="authModal" style="display:none;">
+    <div class="modal-box">
+      <button class="modal-close" id="modalCloseBtn">✕</button>
+      <h3 class="modal-title">
+        <span class="lang-en active">Sign in to Support</span>
+        <span class="lang-hi">समर्थन के लिए साइन इन करें</span>
+      </h3>
+
+      <button class="btn-google" id="googleLoginBtn">
+        <span class="lang-en active">Continue with Google</span>
+        <span class="lang-hi">गूगल से जारी रखें</span>
+      </button>
+
+      <div class="modal-divider">
+        <span class="lang-en active">or</span>
+        <span class="lang-hi">या</span>
+      </div>
+
+      <input type="email" id="emailInput" class="modal-input" placeholder="Email" />
+      <input type="password" id="passwordInput" class="modal-input" placeholder="Password" />
+
+      <button class="btn-primary w-full" id="emailLoginBtn">
+        <span class="lang-en active">Sign in with Email</span>
+        <span class="lang-hi">ईमेल से साइन इन करें</span>
+      </button>
+
+      <p class="modal-note" id="authUserInfo"></p>
+    </div>
+  </div>
+
+  <!-- Firebase SDKs (compat build for simplicity & mobile speed) -->
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+
+  <!-- App Logic -->
+  <script src="app.js"></script>
+</body>
+</html>
