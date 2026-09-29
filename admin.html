@@ -4,464 +4,52 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="robots" content="noindex, nofollow" />
-  <title>Admin Dashboard · Kishanaram Kalera Campaign</title>
+  <title>Admin · Lachharsar Portal</title>
 
-  <!-- Tailwind CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
-
-  <!-- Custom Stylesheet -->
   <link rel="stylesheet" href="styles.css" />
-
-  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;600;700&display=swap" rel="stylesheet" />
-
-  <!-- Admin-specific inline styles -->
-  <style>
-    .admin-body {
-      background: #f1f5f9;
-      min-height: 100vh;
-      font-family: 'Inter', system-ui, sans-serif;
-    }
-
-    /* ============ LOGIN GATE ============ */
-    .admin-gate {
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: linear-gradient(135deg, #0c2340 0%, #1e3a5f 100%);
-      padding: 1rem;
-    }
-    .admin-login-box {
-      background: #fff;
-      border-radius: 24px;
-      padding: 2.5rem 2rem;
-      max-width: 420px;
-      width: 100%;
-      text-align: center;
-      box-shadow: 0 24px 60px rgba(0,0,0,0.3);
-    }
-    .admin-logo {
-      font-size: 1.6rem;
-      font-weight: 800;
-      color: #0c2340;
-      margin-bottom: 0.5rem;
-    }
-    .admin-login-box input {
-      width: 100%;
-      padding: 0.75rem 1rem;
-      border: 1.5px solid #e2e8f0;
-      border-radius: 12px;
-      margin-bottom: 0.75rem;
-      font-size: 0.95rem;
-      font-family: inherit;
-      transition: all 0.25s;
-    }
-    .admin-login-box input:focus {
-      outline: none;
-      border-color: #ff9933;
-      box-shadow: 0 0 0 3px rgba(255,153,51,0.15);
-    }
-
-    /* ============ TOPBAR ============ */
-    .admin-topbar {
-      background: #0c2340;
-      color: #fff;
-      padding: 1rem 1.5rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 1rem;
-      box-shadow: 0 4px 16px rgba(0,0,0,0.15);
-      position: sticky;
-      top: 0;
-      z-index: 100;
-    }
-    .admin-brand { display: flex; align-items: center; flex-wrap: wrap; gap: 0.75rem; }
-    .admin-brand .logo { font-size: 1.3rem; font-weight: 800; }
-    .admin-brand .subtitle { font-size: 0.8rem; color: #94a3b8; }
-
-    .btn-outline-light {
-      background: transparent;
-      border: 2px solid #ff9933;
-      color: #ff9933;
-      border-radius: 40px;
-      padding: 0.45rem 1.2rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.25s;
-      font-size: 0.85rem;
-    }
-    .btn-outline-light:hover {
-      background: #ff9933;
-      color: #0c2340;
-    }
-
-    /* ============ MAIN ============ */
-    .admin-main {
-      max-width: 1280px;
-      margin: 0 auto;
-      padding: 2rem 1.5rem;
-    }
-
-    /* ============ TABS ============ */
-    .admin-tabs {
-      display: flex;
-      gap: 0.5rem;
-      margin-bottom: 1.5rem;
-      border-bottom: 2px solid #e2e8f0;
-      flex-wrap: wrap;
-    }
-    .admin-tab {
-      background: none;
-      border: none;
-      padding: 0.85rem 1.3rem;
-      font-weight: 600;
-      color: #64748b;
-      cursor: pointer;
-      border-bottom: 3px solid transparent;
-      transition: all 0.25s;
-      font-size: 0.95rem;
-      font-family: inherit;
-    }
-    .admin-tab:hover { color: #0c2340; }
-    .admin-tab.active {
-      color: #0c2340;
-      border-bottom-color: #ff9933;
-    }
-
-    .admin-panel { display: none; animation: fadeIn 0.3s ease; }
-    .admin-panel.active { display: block; }
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(6px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-
-    .admin-section-title {
-      font-size: 1.5rem;
-      font-weight: 800;
-      color: #0c2340;
-      margin-bottom: 0.5rem;
-    }
-
-    /* ============ FORMS ============ */
-    .admin-form {
-      background: #fff;
-      border-radius: 16px;
-      padding: 1.75rem;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-    }
-    .form-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1.25rem;
-    }
-    .form-group {
-      display: flex;
-      flex-direction: column;
-    }
-    .form-group label {
-      font-weight: 600;
-      font-size: 0.85rem;
-      color: #334155;
-      margin-bottom: 0.4rem;
-    }
-    .form-group textarea,
-    .form-group input,
-    .form-group select {
-      width: 100%;
-      padding: 0.7rem 0.9rem;
-      border: 1.5px solid #e2e8f0;
-      border-radius: 10px;
-      font-family: inherit;
-      font-size: 0.92rem;
-      transition: all 0.25s;
-      resize: vertical;
-    }
-    .form-group textarea:focus,
-    .form-group input:focus,
-    .form-group select:focus {
-      border-color: #ff9933;
-      outline: none;
-      box-shadow: 0 0 0 3px rgba(255,153,51,0.15);
-    }
-
-    /* ============ BUTTONS ============ */
-    .btn-primary {
-      background: #ff9933;
-      color: #0c2340;
-      border: none;
-      border-radius: 60px;
-      padding: 0.7rem 1.6rem;
-      font-weight: 700;
-      font-size: 0.95rem;
-      cursor: pointer;
-      transition: all 0.25s;
-      box-shadow: 0 4px 14px rgba(255,153,51,0.35);
-      font-family: inherit;
-    }
-    .btn-primary:hover {
-      background: #e07e1a;
-      color: #fff;
-      transform: translateY(-2px);
-      box-shadow: 0 10px 24px rgba(255,153,51,0.5);
-    }
-    .btn-primary:disabled {
-      opacity: 0.6;
-      cursor: not-allowed;
-      transform: none;
-    }
-    .btn-danger {
-      background: #fee2e2;
-      color: #dc2626;
-      border: none;
-      padding: 0.45rem 0.9rem;
-      border-radius: 8px;
-      font-weight: 600;
-      font-size: 0.8rem;
-      cursor: pointer;
-      transition: all 0.25s;
-      font-family: inherit;
-    }
-    .btn-danger:hover {
-      background: #dc2626;
-      color: #fff;
-    }
-
-    /* ============ SUPPORTER TABLE ============ */
-    .supporter-toolbar {
-      display: flex;
-      gap: 0.75rem;
-      margin-bottom: 1rem;
-      flex-wrap: wrap;
-    }
-    .admin-input,
-    .admin-select {
-      padding: 0.65rem 1rem;
-      border: 1.5px solid #e2e8f0;
-      border-radius: 10px;
-      font-size: 0.9rem;
-      transition: all 0.25s;
-      font-family: inherit;
-      background: #fff;
-    }
-    .admin-input { flex: 1; min-width: 200px; }
-    .admin-input:focus,
-    .admin-select:focus {
-      border-color: #ff9933;
-      outline: none;
-      box-shadow: 0 0 0 3px rgba(255,153,51,0.15);
-    }
-
-    .table-wrap {
-      overflow-x: auto;
-      background: #fff;
-      border-radius: 16px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-    }
-    .admin-table {
-      width: 100%;
-      border-collapse: collapse;
-      min-width: 600px;
-    }
-    .admin-table th {
-      background: #0c2340;
-      color: #fff;
-      text-align: left;
-      padding: 0.85rem 1rem;
-      font-weight: 600;
-      font-size: 0.85rem;
-      letter-spacing: 0.3px;
-    }
-    .admin-table td {
-      padding: 0.85rem 1rem;
-      border-bottom: 1px solid #e2e8f0;
-      font-size: 0.9rem;
-      color: #334155;
-    }
-    .admin-table tbody tr:hover td {
-      background: #fff8ee;
-    }
-
-    /* ============ CODE INJECTOR ============ */
-    .code-textarea {
-      width: 100%;
-      padding: 1rem;
-      background: #0f172a;
-      color: #e2e8f0;
-      border-radius: 12px;
-      font-family: 'Courier New', Consolas, monospace;
-      font-size: 0.85rem;
-      border: 2px solid #ff9933;
-      resize: vertical;
-      line-height: 1.55;
-      min-height: 200px;
-    }
-    .code-textarea:focus {
-      outline: none;
-      border-color: #e07e1a;
-      box-shadow: 0 0 0 4px rgba(255,153,51,0.2);
-    }
-
-    .dynamic-list {
-      display: flex;
-      flex-direction: column;
-      gap: 0.75rem;
-      margin-top: 1rem;
-    }
-    .dynamic-item {
-      background: #fff;
-      border-radius: 12px;
-      padding: 1rem 1.25rem;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-left: 4px solid #ff9933;
-      gap: 1rem;
-      flex-wrap: wrap;
-    }
-    .dynamic-item code {
-      font-size: 0.8rem;
-      color: #64748b;
-      background: #f1f5f9;
-      padding: 0.25rem 0.55rem;
-      border-radius: 6px;
-      word-break: break-all;
-      font-family: 'Courier New', monospace;
-    }
-    .dynamic-item .meta {
-      font-size: 0.75rem;
-      color: #94a3b8;
-      margin-top: 0.4rem;
-    }
-    .dynamic-item .meta strong { color: #0c2340; }
-
-    /* ============ LOADER ============ */
-    .loader {
-      display: inline-block;
-      width: 16px;
-      height: 16px;
-      border: 2px solid rgba(255,255,255,0.3);
-      border-top-color: #fff;
-      border-radius: 50%;
-      animation: spin 0.7s linear infinite;
-      margin-right: 6px;
-      vertical-align: middle;
-    }
-    @keyframes spin { to { transform: rotate(360deg); } }
-
-    /* ============ TOAST ============ */
-    .toast {
-      position: fixed;
-      top: 1.5rem;
-      right: 1.5rem;
-      padding: 0.9rem 1.3rem;
-      border-radius: 12px;
-      font-weight: 600;
-      font-size: 0.9rem;
-      color: #fff;
-      z-index: 9999;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-      animation: slideIn 0.3s ease;
-      max-width: 320px;
-    }
-    .toast.success { background: #16a34a; }
-    .toast.error   { background: #dc2626; }
-    .toast.info    { background: #0c2340; }
-    @keyframes slideIn {
-      from { opacity: 0; transform: translateX(30px); }
-      to   { opacity: 1; transform: translateX(0); }
-    }
-
-    /* ============ RESPONSIVE ============ */
-    @media (max-width: 700px) {
-      .form-grid { grid-template-columns: 1fr; }
-      .admin-main { padding: 1.25rem 1rem; }
-      .admin-brand .subtitle { display: none; }
-      .admin-tab { padding: 0.7rem 1rem; font-size: 0.85rem; }
-    }
-  </style>
 </head>
 <body class="admin-body">
 
   <!-- ============================================================
-       SECTION 1: LOGIN GATE (visible until admin authenticates)
+       LOGIN GATE
        ============================================================ -->
-<div id="adminLoginGate" class="admin-gate">
-  <div class="admin-login-box">
-    <div class="admin-logo">🔐 Admin Access</div>
-    <p style="color:#64748b; margin-bottom: 1.5rem; font-size: 0.9rem;">
-      Authorized personnel only. Please sign in with Google.
-    </p>
+  <div id="adminLoginGate" class="admin-gate">
+    <div class="admin-login-box">
+      <h1 class="admin-logo">🔐 Admin Access</h1>
+      <p style="color:#64748b; margin-bottom:1.5rem; font-size:0.9rem;">
+        Lachharsar Village Portal Management
+      </p>
 
-    <!-- Google Login Button -->
-    <button id="googleAdminLoginBtn" style="
-      width:100%;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      gap:0.65rem;
-      background:#fff;
-      border:2px solid #e2e8f0;
-      border-radius:60px;
-      padding:0.85rem 1.5rem;
-      font-weight:600;
-      font-size:0.95rem;
-      color:#0c2340;
-      cursor:pointer;
-      transition:all 0.25s;
-      font-family:inherit;
-      margin-bottom:1rem;
-    "
-    onmouseover="this.style.borderColor='#ff9933'; this.style.background='#fff8ee';"
-    onmouseout="this.style.borderColor='#e2e8f0'; this.style.background='#fff';"
-    >
-      <svg width="20" height="20" viewBox="0 0 48 48">
-        <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
-        <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
-        <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
-        <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
-      </svg>
-      <span>Sign in with Google</span>
-    </button>
+      <button id="googleAdminLoginBtn" class="google-btn">
+        <svg width="20" height="20" viewBox="0 0 48 48">
+          <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+          <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+          <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+          <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+        </svg>
+        Sign in with Google
+      </button>
 
-    <!-- Divider -->
-    <div style="display:flex;align-items:center;gap:0.75rem;margin:1rem 0;">
-      <div style="flex:1;height:1px;background:#e2e8f0;"></div>
-      <span style="font-size:0.78rem;color:#94a3b8;">or</span>
-      <div style="flex:1;height:1px;background:#e2e8f0;"></div>
+      <p id="adminLoginError" style="color:#dc2626; margin-top:0.75rem; font-size:0.85rem; min-height:1.2em;"></p>
+
+      <p style="margin-top:1.5rem; font-size:0.75rem; color:#94a3b8;">
+        Authorized: <strong>sovereignvanguardgovernance.svg@gmail.com</strong>
+      </p>
     </div>
-
-    <!-- Email/Password Login (Optional) -->
-    <input type="email" id="adminEmailInput" placeholder="Admin email" autocomplete="email" />
-    <input type="password" id="adminPasswordInput" placeholder="Password" autocomplete="current-password" />
-
-    <button id="adminLoginBtn" class="btn-primary" style="width:100%;">
-      <span id="loginBtnText">Sign In with Email</span>
-    </button>
-
-    <p id="adminLoginError" style="color:#dc2626; font-size:0.85rem; margin-top:0.75rem; min-height:1.2em;"></p>
-
-    <p style="margin-top:1.5rem; font-size:0.75rem; color:#94a3b8;">
-      Access restricted to <strong>sovereignvanguardgovernance.svg@gmail.com</strong>
-    </p>
   </div>
-</div>
 
   <!-- ============================================================
-       SECTION 2: DASHBOARD (visible after successful admin login)
+       DASHBOARD
        ============================================================ -->
   <div id="adminDashboard" style="display:none;">
-
-    <!-- ===== TOP BAR ===== -->
     <header class="admin-topbar">
       <div class="admin-brand">
-        <span class="logo">⚙️ Admin Dashboard</span>
-        <span class="subtitle">Kishanaram Kalera · Alsar Campaign</span>
+        <span class="logo">⚙️ Lachharsar Admin</span>
+        <span class="subtitle">Village Portal CMS</span>
       </div>
       <div style="display:flex; align-items:center; gap:1rem;">
         <span id="adminEmailDisplay" style="font-size:0.85rem; color:#cbd5e1;"></span>
@@ -469,180 +57,313 @@
       </div>
     </header>
 
-    <!-- ===== MAIN CONTENT ===== -->
     <main class="admin-main">
-
-      <!-- Tab Navigation -->
+      <!-- TABS -->
       <div class="admin-tabs">
-        <button class="admin-tab active" data-tab="content">📝 Content Manager</button>
-        <button class="admin-tab" data-tab="supporters">👥 Supporter Log</button>
-        <button class="admin-tab" data-tab="injector">🧩 Code Injector</button>
+        <button class="admin-tab active" data-tab="general">🏠 General</button>
+        <button class="admin-tab" data-tab="hero">🎨 Hero</button>
+        <button class="admin-tab" data-tab="about">📖 About</button>
+        <button class="admin-tab" data-tab="panchayat">🏛️ Panchayat</button>
+        <button class="admin-tab" data-tab="gallery">📸 Gallery</button>
+        <button class="admin-tab" data-tab="contact">📞 Contact</button>
+        <button class="admin-tab" data-tab="notices">📢 Notices</button>
+        <button class="admin-tab" data-tab="popup">🎉 Popup</button>
+        <button class="admin-tab" data-tab="theme">🎨 Theme</button>
       </div>
 
-      <!-- ====================================================
-           TAB 1: CONTENT MANAGER
-           ==================================================== -->
-      <section class="admin-panel active" id="tab-content">
-        <h2 class="admin-section-title">📝 Content Manager</h2>
-        <p style="color:#64748b; margin-bottom:1.5rem;">
-          Update hero slogans, about text, and manifesto points in both English and Hindi.
-        </p>
-
-        <form id="contentForm" class="admin-form">
+      <!-- General Tab -->
+      <section class="admin-panel active" id="tab-general">
+        <h2 class="admin-section-title">🏠 General Settings</h2>
+        <p style="color:#64748b; margin-bottom:1.5rem;">Site name, logo, favicon manage karo.</p>
+        <form id="generalForm" class="admin-form">
           <div class="form-grid">
             <div class="form-group">
-              <label>Hero Slogan (English)</label>
-              <textarea id="sloganEn" rows="2" placeholder="Your Trust, My Strength..."></textarea>
+              <label>Site Name (Hindi)</label>
+              <input type="text" id="siteNameHi" placeholder="लाछड़सर" />
             </div>
             <div class="form-group">
-              <label>Hero Slogan (Hindi)</label>
-              <textarea id="sloganHi" rows="2" placeholder="आपका भरोसा, मेरी ताकत..."></textarea>
-            </div>
-
-            <div class="form-group">
-              <label>About Text (English)</label>
-              <textarea id="aboutEn" rows="4" placeholder="Shri Kishanaram Kalera..."></textarea>
-            </div>
-            <div class="form-group">
-              <label>About Text (Hindi)</label>
-              <textarea id="aboutHi" rows="4" placeholder="श्री किशनाराम कालेरा..."></textarea>
+              <label>Site Name (English)</label>
+              <input type="text" id="siteNameEn" placeholder="Lachharsar" />
             </div>
           </div>
-
-          <h3 style="margin-top:2rem; margin-bottom:0.75rem; font-weight:700; font-size:1.1rem; color:#0c2340;">
-            Manifesto Points <span style="font-weight:400; font-size:0.85rem; color:#64748b;">(one point per line)</span>
-          </h3>
-
-          <div class="form-grid">
-            <div class="form-group">
-              <label>Manifesto (English)</label>
-              <textarea id="manifestoEn" rows="6" placeholder="Accelerating development works..."></textarea>
-            </div>
-            <div class="form-group">
-              <label>Manifesto (Hindi)</label>
-              <textarea id="manifestoHi" rows="6" placeholder="गाँव में विकास कार्यों को तेजी देना..."></textarea>
-            </div>
-          </div>
-
-          <button type="submit" id="saveContentBtn" class="btn-primary" style="margin-top:1.75rem;">
-            💾 Save Content
-          </button>
-        </form>
-      </section>
-
-      <!-- ====================================================
-           TAB 2: SUPPORTER LOG
-           ==================================================== -->
-      <section class="admin-panel" id="tab-supporters">
-        <h2 class="admin-section-title">👥 Live Supporter Log</h2>
-        <p style="color:#64748b; margin-bottom:1.5rem;">
-          Real-time list of all authenticated supporters. Search, sort, or export.
-        </p>
-
-        <div class="supporter-toolbar">
-          <input type="text" id="supporterSearch" placeholder="🔍 Search by name or ward..." class="admin-input" />
-          <select id="supporterSort" class="admin-select">
-            <option value="newest">Newest First</option>
-            <option value="oldest">Oldest First</option>
-            <option value="name">Name (A–Z)</option>
-          </select>
-          <button id="exportCsvBtn" class="btn-primary">⬇ Export CSV</button>
-        </div>
-
-        <div class="table-wrap">
-          <table class="admin-table">
-            <thead>
-              <tr>
-                <th>#</th>
-                <th>Name</th>
-                <th>Ward</th>
-                <th>UID</th>
-                <th>Date</th>
-              </tr>
-            </thead>
-            <tbody id="supporterTableBody">
-              <tr><td colspan="5" style="text-align:center; padding:1.5rem; color:#94a3b8;">Loading supporters...</td></tr>
-            </tbody>
-          </table>
-        </div>
-
-        <p id="supporterCountLabel" style="margin-top:1rem; font-size:0.85rem; color:#64748b;"></p>
-      </section>
-
-      <!-- ====================================================
-           TAB 3: CUSTOM CODE INJECTOR
-           ==================================================== -->
-      <section class="admin-panel" id="tab-injector">
-        <h2 class="admin-section-title">🧩 Custom Code & Section Injector</h2>
-        <p style="color:#64748b; margin-bottom:1.5rem;">
-          Paste raw HTML / CSS / JS. It will be injected into
-          <code style="background:#f1f5f9; padding:0.15rem 0.4rem; border-radius:4px;">index.html</code>
-          inside <code style="background:#f1f5f9; padding:0.15rem 0.4rem; border-radius:4px;">#dynamicSectionsContainer</code>.
-        </p>
-
-        <form id="injectorForm" class="admin-form">
           <div class="form-group">
-            <label>Raw HTML / CSS / JS Code</label>
-            <textarea id="customCode" class="code-textarea" rows="10"
-              placeholder="<div style='padding:1rem; background:#ff9933; border-radius:12px;'>🎉 Custom Section</div>"></textarea>
+            <label>Logo URL (image link)</label>
+            <input type="text" id="logoUrl" placeholder="https://..." />
           </div>
-
-          <div class="form-grid" style="margin-top:1rem;">
-            <div class="form-group">
-              <label>Display Order (1 = top)</label>
-              <input type="number" id="codeOrder" value="1" min="1" />
-            </div>
-            <div class="form-group">
-              <label>Language Profile</label>
-              <select id="codeLang">
-                <option value="both">Both (English + Hindi)</option>
-                <option value="en">English only</option>
-                <option value="hi">Hindi only</option>
-              </select>
-            </div>
+          <div class="form-group">
+            <label>Favicon URL (tab icon)</label>
+            <input type="text" id="faviconUrl" placeholder="https://..." />
           </div>
-
-          <button type="submit" id="publishSectionBtn" class="btn-primary" style="margin-top:1.5rem;">
-            🚀 Publish Section
-          </button>
+          <div class="form-group">
+            <label>Footer Text (Hindi)</label>
+            <input type="text" id="footerHi" placeholder="© 2026 लाछड़सर ग्राम पंचायत" />
+          </div>
+          <div class="form-group">
+            <label>Footer Text (English)</label>
+            <input type="text" id="footerEn" placeholder="© 2026 Lachharsar Gram Panchayat" />
+          </div>
+          <button type="submit" class="btn-primary">💾 Save Settings</button>
         </form>
+      </section>
 
-        <h3 style="margin-top:2.5rem; margin-bottom:1rem; font-weight:700; font-size:1.1rem; color:#0c2340;">
-          📦 Published Dynamic Sections
-        </h3>
-        <div id="dynamicListContainer" class="dynamic-list">
-          <p style="color:#94a3b8; font-size:0.9rem;">Loading...</p>
+      <!-- Hero Tab -->
+      <section class="admin-panel" id="tab-hero">
+        <h2 class="admin-section-title">🎨 Hero Section</h2>
+        <p style="color:#64748b; margin-bottom:1.5rem;">Home page ka main banner.</p>
+        <form id="heroForm" class="admin-form">
+          <div class="form-grid">
+            <div class="form-group">
+              <label>Tagline (Hindi)</label>
+              <input type="text" id="heroTagHi" placeholder="चूरू जिला · राजस्थान" />
+            </div>
+            <div class="form-group">
+              <label>Tagline (English)</label>
+              <input type="text" id="heroTagEn" placeholder="Churu District · Rajasthan" />
+            </div>
+            <div class="form-group">
+              <label>Village Name (Hindi)</label>
+              <input type="text" id="heroNameHi" placeholder="लाछड़सर" />
+            </div>
+            <div class="form-group">
+              <label>Village Name (English)</label>
+              <input type="text" id="heroNameEn" placeholder="Lachharsar" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Description (Hindi)</label>
+            <textarea id="heroDescHi" rows="3" placeholder="गर्व है हमें अपने गाँव पर..."></textarea>
+          </div>
+          <div class="form-group">
+            <label>Description (English)</label>
+            <textarea id="heroDescEn" rows="3" placeholder="Proud of our village..."></textarea>
+          </div>
+          <div class="form-group">
+            <label>Hero Image URL</label>
+            <input type="text" id="heroImageUrl" placeholder="https://..." />
+          </div>
+          <button type="submit" class="btn-primary">💾 Save Hero</button>
+        </form>
+      </section>
+
+      <!-- About Tab -->
+      <section class="admin-panel" id="tab-about">
+        <h2 class="admin-section-title">📖 About Section</h2>
+        <p style="color:#64748b; margin-bottom:1.5rem;">HTML allowed — p, br, strong, img etc.</p>
+        <form id="aboutForm" class="admin-form">
+          <div class="form-group">
+            <label>Content (Hindi) — HTML allowed</label>
+            <textarea id="aboutHi" class="code-textarea" rows="10" placeholder="<p>लाछड़सर गाँव...</p>"></textarea>
+          </div>
+          <div class="form-group">
+            <label>Content (English) — HTML allowed</label>
+            <textarea id="aboutEn" class="code-textarea" rows="10" placeholder="<p>Lachharsar village...</p>"></textarea>
+          </div>
+          <button type="submit" class="btn-primary">💾 Save About</button>
+        </form>
+      </section>
+
+      <!-- Panchayat Tab -->
+      <section class="admin-panel" id="tab-panchayat">
+        <h2 class="admin-section-title">🏛️ Panchayat Info</h2>
+        <form id="panchayatForm" class="admin-form">
+          <div class="form-grid">
+            <div class="form-group">
+              <label>Sarpanch Name</label>
+              <input type="text" id="sarpanchName" placeholder="धापू देवी" />
+            </div>
+            <div class="form-group">
+              <label>Sarpanch Phone</label>
+              <input type="text" id="sarpanchPhone" placeholder="+91 ..." />
+            </div>
+            <div class="form-group">
+              <label>Secretary Name</label>
+              <input type="text" id="secretaryName" placeholder="पीथाराम" />
+            </div>
+            <div class="form-group">
+              <label>Secretary Phone</label>
+              <input type="text" id="secretaryPhone" placeholder="+91 ..." />
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Full Address</label>
+            <textarea id="panchayatAddress" rows="2" placeholder="ग्राम पंचायत लाछड़सर, रतनगढ़, चूरू, राजस्थान - 331802"></textarea>
+          </div>
+          <button type="submit" class="btn-primary">💾 Save Panchayat</button>
+        </form>
+      </section>
+
+      <!-- Gallery Tab -->
+      <section class="admin-panel" id="tab-gallery">
+        <h2 class="admin-section-title">📸 Gallery Manager</h2>
+        <p style="color:#64748b; margin-bottom:1.5rem;">Image URL daalo — home page pe dikhega.</p>
+        <form id="galleryForm" class="admin-form">
+          <div class="form-group">
+            <label>Image URL</label>
+            <input type="text" id="galleryImageUrl" placeholder="https://..." />
+          </div>
+          <div class="form-grid">
+            <div class="form-group">
+              <label>Caption (Hindi)</label>
+              <input type="text" id="galleryCaptionHi" placeholder="क्रिकेट स्टेडियम" />
+            </div>
+            <div class="form-group">
+              <label>Caption (English)</label>
+              <input type="text" id="galleryCaptionEn" placeholder="Cricket Stadium" />
+            </div>
+          </div>
+          <button type="submit" class="btn-primary">➕ Add to Gallery</button>
+        </form>
+        <h3 style="margin-top:2rem; margin-bottom:1rem; color:#0c2340; font-weight:700;">Existing Images</h3>
+        <div id="galleryList" class="dynamic-list">
+          <p style="color:#94a3b8;">Loading...</p>
         </div>
       </section>
 
+      <!-- Contact Tab -->
+      <section class="admin-panel" id="tab-contact">
+        <h2 class="admin-section-title">📞 Contact Info</h2>
+        <form id="contactForm" class="admin-form">
+          <div class="form-grid">
+            <div class="form-group">
+              <label>Phone 1</label>
+              <input type="text" id="contactPhone1" placeholder="+91 ..." />
+            </div>
+            <div class="form-group">
+              <label>Phone 2</label>
+              <input type="text" id="contactPhone2" placeholder="+91 ..." />
+            </div>
+            <div class="form-group">
+              <label>Email</label>
+              <input type="email" id="contactEmail" placeholder="info@lachharsar.in" />
+            </div>
+            <div class="form-group">
+              <label>WhatsApp Number</label>
+              <input type="text" id="contactWhatsapp" placeholder="+91 ..." />
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Full Address</label>
+            <textarea id="contactAddress" rows="2"></textarea>
+          </div>
+          <button type="submit" class="btn-primary">💾 Save Contact</button>
+        </form>
+      </section>
+
+      <!-- Notices Tab -->
+      <section class="admin-panel" id="tab-notices">
+        <h2 class="admin-section-title">📢 Notice Board</h2>
+        <p style="color:#64748b; margin-bottom:1.5rem;">Latest active notice home page pe automatically dikhega.</p>
+        <form id="noticeForm" class="admin-form">
+          <div class="form-grid">
+            <div class="form-group">
+              <label>Title (Hindi)</label>
+              <input type="text" id="noticeTitleHi" placeholder="गाँव की सभा" />
+            </div>
+            <div class="form-group">
+              <label>Title (English)</label>
+              <input type="text" id="noticeTitleEn" placeholder="Village Meeting" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Body (Hindi)</label>
+            <textarea id="noticeBodyHi" rows="3" placeholder="25 अक्टूबर शाम 5 बजे..."></textarea>
+          </div>
+          <div class="form-group">
+            <label>Body (English)</label>
+            <textarea id="noticeBodyEn" rows="3" placeholder="Meeting on 25th Oct at 5 PM..."></textarea>
+          </div>
+          <div style="display:flex; gap:1.5rem; margin-top:0.75rem; flex-wrap:wrap;">
+            <label style="display:flex; align-items:center; gap:0.5rem; cursor:pointer;">
+              <input type="checkbox" id="noticeActive" checked />
+              <span>Active (dikhao)</span>
+            </label>
+            <label style="display:flex; align-items:center; gap:0.5rem; cursor:pointer;">
+              <input type="checkbox" id="noticePinned" />
+              <span>📌 Pin to top</span>
+            </label>
+          </div>
+          <button type="submit" class="btn-primary" style="margin-top:1rem;">📢 Publish Notice</button>
+        </form>
+        <h3 style="margin-top:2rem; margin-bottom:1rem; color:#0c2340; font-weight:700;">All Notices</h3>
+        <div id="noticesList" class="dynamic-list">
+          <p style="color:#94a3b8;">Loading...</p>
+        </div>
+      </section>
+
+      <!-- Popup Tab -->
+      <section class="admin-panel" id="tab-popup">
+        <h2 class="admin-section-title">🎉 Popup Manager</h2>
+        <p style="color:#64748b; margin-bottom:1.5rem;">Site pe entry popup — image, HTML, ya notice style.</p>
+        <form id="popupForm" class="admin-form">
+          <div class="form-group">
+            <label>Popup Type</label>
+            <select id="popupType">
+              <option value="image">🖼️ Image</option>
+              <option value="html">🧩 Custom HTML</option>
+              <option value="notice">📢 Notice Style</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Content</label>
+            <textarea id="popupContent" class="code-textarea" rows="8"
+              placeholder="Image mode: paste image URL&#10;HTML mode: paste full HTML&#10;Notice mode: paste text"></textarea>
+          </div>
+          <div class="form-group">
+            <label>Show Frequency</label>
+            <select id="popupFrequency">
+              <option value="once">Once per session</option>
+              <option value="always">Every visit</option>
+              <option value="daily">Once per day</option>
+            </select>
+          </div>
+          <label style="display:flex; align-items:center; gap:0.5rem; margin-top:0.75rem; cursor:pointer;">
+            <input type="checkbox" id="popupActive" />
+            <span>Enable Popup</span>
+          </label>
+          <button type="submit" class="btn-primary" style="margin-top:1rem;">💾 Save Popup</button>
+        </form>
+        <div style="margin-top:1rem; display:flex; gap:0.75rem; flex-wrap:wrap;">
+          <button id="popupPreviewBtn" class="btn-outline-light" style="border-color:#0c2340; color:#0c2340;">👁️ Preview</button>
+          <button id="popupDisableBtn" class="btn-danger">🚫 Disable Popup</button>
+        </div>
+      </section>
+
+      <!-- Theme Tab -->
+      <section class="admin-panel" id="tab-theme">
+        <h2 class="admin-section-title">🎨 Theme Customizer</h2>
+        <p style="color:#64748b; margin-bottom:1.5rem;">Site ke colors badlo — turant apply hoga.</p>
+        <form id="themeForm" class="admin-form">
+          <div class="form-grid">
+            <div class="form-group">
+              <label>Primary Color (navy)</label>
+              <input type="color" id="themePrimary" value="#0c2340" />
+            </div>
+            <div class="form-group">
+              <label>Accent Color (saffron)</label>
+              <input type="color" id="themeAccent" value="#ff9933" />
+            </div>
+            <div class="form-group">
+              <label>Background</label>
+              <input type="color" id="themeBg" value="#ffffff" />
+            </div>
+            <div class="form-group">
+              <label>Text Color</label>
+              <input type="color" id="themeText" value="#1e293b" />
+            </div>
+          </div>
+          <button type="submit" class="btn-primary">💾 Save Theme</button>
+        </form>
+      </section>
     </main>
   </div>
 
-  <!-- ============================================================
-       FIREBASE SDKs (must match index.html)
-       ============================================================ -->
+  <!-- Firebase SDKs -->
   <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-analytics-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-storage-compat.js"></script>
 
-  <!-- Shared App Logic (contains initAdminPage, auth, db, etc.) -->
   <script src="app.js"></script>
-
-  <!-- Admin bootstrap: call the admin initializer after app.js loads -->
-  <script>
-    document.addEventListener('DOMContentLoaded', function () {
-      // Safe check — wait for Firebase config to be ready in app.js
-      setTimeout(function () {
-        if (typeof window.initAdminPage === 'function') {
-          window.initAdminPage();
-        } else {
-          console.error("❌ initAdminPage() not found. Check app.js is loaded.");
-        }
-      }, 300);
-    });
-  </script>
-
+  <script src="admin.js"></script>
 </body>
 </html>
