@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Dashboard · Lachharsar Admin</title>
+  <link rel="stylesheet" href="admin.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span>⚙️ Lachharsar Admin</span>
+    </div>
+    <div class="actions">
+      <span id="userEmail"></span>
+      <button id="logoutBtn" class="btn-logout">Logout</button>
+    </div>
+  </header>
+
+  <nav class="tabs">
+    <button class="active" onclick="location.href='index.html'">📊 Overview</button>
+    <button onclick="location.href='themes.html'">🎨 Themes</button>
+    <button onclick="location.href='popups.html'">📢 Popups</button>
+    <button onclick="location.href='gallery.html'">📸 Gallery</button>
+    <button onclick="location.href='legal.html'">📄 Legal Pages</button>
+  </nav>
+
+  <main class="container">
+    <h2>📊 Dashboard Overview</h2>
+    <p class="hint">Welcome to Lachharsar Village Portal Admin Panel.</p>
+
+    <div class="list" id="statsList">
+      <div class="list-item">
+        <div>
+          <strong>🎨 Themes</strong>
+          <div class="meta">Site ka theme aur colors change karo</div>
+        </div>
+        <button class="btn-primary" onclick="location.href='themes.html'">Open →</button>
+      </div>
+      <div class="list-item">
+        <div>
+          <strong>📢 Popups</strong>
+          <div class="meta">Site pe announcement popup banao</div>
+        </div>
+        <button class="btn-primary" onclick="location.href='popups.html'">Open →</button>
+      </div>
+      <div class="list-item">
+        <div>
+          <strong>📸 Gallery</strong>
+          <div class="meta">Photos add/remove karo</div>
+        </div>
+        <button class="btn-primary" onclick="location.href='gallery.html'">Open →</button>
+      </div>
+      <div class="list-item">
+        <div>
+          <strong>📄 Legal Pages</strong>
+          <div class="meta">Privacy, Terms, Disclaimer edit karo</div>
+        </div>
+        <button class="btn-primary" onclick="location.href='legal.html'">Open →</button>
+      </div>
+    </div>
+  </main>
+
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+  <script src="../firebase-config.js"></script>
+  <script src="js/admin-core.js"></script>
+</body>
+</html>

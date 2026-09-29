@@ -2,78 +2,44 @@
 <html lang="hi">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
-  <meta name="description" content="लाछड़सर गाँव - चूरू, राजस्थान | Lachharsar Village Portal" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="लाच्छरसर गाँव — चूरू, राजस्थान | Lachharsar Village Portal" />
   <meta name="theme-color" content="#0c2340" />
-  <title id="pageTitle">लाछड़सर · Lachharsar Village</title>
-  <link rel="icon" id="faviconLink" type="image/png" href="logo.png" />
-  <link rel="apple-touch-icon" href="logo.png" />
-
-  <script src="https://cdn.tailwindcss.com"></script>
+  <title>लाच्छरसर · Lachharsar Village</title>
+  <link rel="icon" type="image/png" href="logo.png" />
   <link rel="stylesheet" href="styles.css" />
-
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;600;700;800&display=swap" rel="stylesheet" />
 </head>
-<body data-lang="hi">
+<body>
 
-  <!-- ============================================================
-       NAVBAR
-       ============================================================ -->
-  <header class="navbar" id="navbar">
+  <header class="navbar">
     <div class="nav-container">
-      <a href="#home" class="brand" id="brandLink">
-        <img id="brandLogo" src="logo.png" alt="Logo" class="brand-logo" onerror="this.style.display='none'" />
-        <span class="brand-text" id="brandText">लाछड़सर</span>
+      <a href="index.html" class="brand">
+        <img src="logo.png" alt="Logo" class="brand-logo" onerror="this.style.display='none'" />
+        <span id="brandText">लाच्छरसर</span>
       </a>
-
       <nav class="nav-links" id="navLinks">
-        <a href="#home">होम</a>
-        <a href="#about">गाँव के बारे में</a>
-        <a href="#panchayat">पंचायत</a>
-        <a href="#gallery">गैलरी</a>
-        <a href="#contact">संपर्क</a>
+        <a href="index.html" class="active">होम</a>
+        <a href="about.html">गाँव के बारे में</a>
+        <a href="panchayat.html">पंचायत</a>
+        <a href="gallery.html">गैलरी</a>
+        <a href="contact.html">संपर्क</a>
       </nav>
-
-      <div class="nav-actions">
-        <button id="langToggle" class="lang-btn">
-          <span class="lang-hi">English</span>
-          <span class="lang-en" style="display:none;">हिंदी</span>
-        </button>
-        <button class="hamburger" id="hamburger" aria-label="Menu">☰</button>
-      </div>
+      <button class="hamburger" id="hamburger">☰</button>
     </div>
   </header>
 
-  <!-- ============================================================
-       NOTICE BAR
-       ============================================================ -->
-  <div id="noticeBar" class="notice-bar" style="display:none;">
-    <div class="notice-inner">
-      <span class="notice-icon">📢</span>
-      <div class="notice-content">
-        <strong id="noticeTitle">सूचना</strong>
-        <span id="noticeBody">...</span>
-      </div>
-      <button id="noticeClose" class="notice-close" aria-label="Close">✕</button>
-    </div>
-  </div>
-
-  <!-- ============================================================
-       HERO SECTION
-       ============================================================ -->
-  <section class="hero" id="home">
+  <section class="hero">
     <div class="hero-grid">
       <div class="hero-text">
-        <p class="hero-tag" id="heroTag">चूरू जिला · राजस्थान</p>
-        <h1 class="hero-name" id="heroName">लाछड़सर</h1>
-        <p class="hero-subtitle" id="heroSubtitle">Lachharsar Village</p>
-        <p class="hero-desc" id="heroDesc">
-          गर्व है हमें अपने गाँव पर — जहाँ है इंटरनेशनल क्रिकेट स्टेडियम, डिजिटल लाइब्रेरी, और हर दिल में अपनापन।
+        <p class="hero-tag">चूरू जिला · राजस्थान · PIN 331802</p>
+        <h1 class="hero-name">लाच्छरसर</h1>
+        <p class="hero-subtitle">Lachharsar Village</p>
+        <p class="hero-desc">
+          बीकानेर संभाग में स्थित, चूरू जिले का एक विकसित गाँव। यहाँ का इंटरनेशनल लेवल क्रिकेट स्टेडियम, डिजिटल लाइब्रेरी, और शिक्षा के प्रति समर्पण हमें गर्वित करता है।
         </p>
-
-        <div class="hero-stats" id="heroStats">
+        <div class="hero-stats">
           <div class="stat-box">
             <strong>9,459</strong>
             <span>जनसंख्या</span>
@@ -83,108 +49,80 @@
             <span>परिवार</span>
           </div>
           <div class="stat-box">
-            <strong>331802</strong>
-            <span>PIN कोड</span>
+            <strong>100.9 km²</strong>
+            <span>क्षेत्रफल</span>
           </div>
         </div>
-
         <div class="hero-cta">
-          <a href="#about" class="btn-primary">गाँव के बारे में</a>
-          <a href="#gallery" class="btn-outline">गैलरी देखें</a>
+          <a href="about.html" class="btn-primary">गाँव के बारे में जानें</a>
+          <a href="gallery.html" class="btn-outline">गैलरी देखें</a>
         </div>
       </div>
-
       <div class="hero-image">
-        <img id="heroImage" 
-          src="https://images.unsplash.com/photo-1542640244-7e672d6cef4e?w=600&auto=format&fit=crop" 
-          alt="Lachharsar Village" 
-          class="hero-img" 
-          loading="lazy" />
+        <img src="https://images.unsplash.com/photo-1542640244-7e672d6cef4e?w=600" alt="Lachharsar" class="hero-img" loading="lazy" />
       </div>
     </div>
   </section>
 
-  <!-- ============================================================
-       ABOUT SECTION
-       ============================================================ -->
-  <section class="section" id="about">
+  <section class="section">
     <div class="section-container">
-      <h2 class="section-title" id="aboutTitle">गाँव के बारे में</h2>
-      <div class="about-grid">
-        <div class="about-text" id="aboutContent">
-          <p>लाछड़सर, चूरू जिले के रतनगढ़ तहसील में स्थित एक विकसित गाँव है। यहाँ का शहीद भगत सिंह क्रिकेट स्टेडियम इंटरनेशनल लेवल का है, जिसमें बरमुडा घास और ड्रिप सिस्टम लगाए गए हैं।</p>
-          <p>गाँव की डिजिटल लाइब्रेरी में 51 छात्रों के बैठने की व्यवस्था है, जो पूरी तरह वातानुकूलित और वाई-फाई युक्त है। सरकारी स्कूल के कमरों को ट्रेन के कोच का रूप दिया गया है।</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============================================================
-       PANCHAYAT SECTION
-       ============================================================ -->
-  <section class="section section-alt" id="panchayat">
-    <div class="section-container">
-      <h2 class="section-title" id="panchayatTitle">ग्राम पंचायत</h2>
-      <div class="panchayat-grid" id="panchayatGrid">
+      <h2 class="section-title">तेज़ जानकारी</h2>
+      <div class="info-grid">
         <div class="info-card">
           <div class="icon">🏛️</div>
-          <h4>लोड हो रहा है...</h4>
-          <p>कृपया प्रतीक्षा करें</p>
+          <h4>ग्राम पंचायत</h4>
+          <p>लाच्छरसर</p>
+        </div>
+        <div class="info-card">
+          <div class="icon">📍</div>
+          <h4>तहसील</h4>
+          <p>रतनगढ़ / राजलदेसर</p>
+        </div>
+        <div class="info-card">
+          <div class="icon">📮</div>
+          <h4>पिन कोड</h4>
+          <p>331802</p>
+        </div>
+        <div class="info-card">
+          <div class="icon">🚂</div>
+          <h4>नज़दीकी रेलवे</h4>
+          <p>परसनेउ (8.3 km)</p>
+        </div>
+        <div class="info-card">
+          <div class="icon">🗺️</div>
+          <h4>क्षेत्रफल</h4>
+          <p>10,090 हेक्टेयर</p>
+        </div>
+        <div class="info-card">
+          <div class="icon">🗳️</div>
+          <h4>विधानसभा</h4>
+          <p>रतनगढ़</p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ============================================================
-       GALLERY SECTION
-       ============================================================ -->
-  <section class="section" id="gallery">
-    <div class="section-container">
-      <h2 class="section-title" id="galleryTitle">फोटो गैलरी</h2>
-      <div class="gallery-grid" id="galleryGrid">
-        <p style="text-align:center; color:#94a3b8; grid-column:1/-1;">लोड हो रहा है...</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============================================================
-       CONTACT SECTION
-       ============================================================ -->
-  <section class="section section-alt" id="contact">
-    <div class="section-container">
-      <h2 class="section-title" id="contactTitle">संपर्क करें</h2>
-      <div class="contact-grid" id="contactGrid">
-        <p style="text-align:center; color:#94a3b8; grid-column:1/-1;">लोड हो रहा है...</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============================================================
-       FOOTER
-       ============================================================ -->
   <footer class="footer">
     <div class="footer-content">
-      <p id="footerText">© 2026 लाछड़सर ग्राम पंचायत · चूरू, राजस्थान</p>
-      <p class="footer-sub">बनाया गया ❤️ के साथ</p>
+      <p>© 2026 लाच्छरसर ग्राम पंचायत · चूरू, राजस्थान</p>
+      <div class="footer-links">
+        <a href="privacy.html">Privacy</a>
+        <a href="terms.html">Terms</a>
+        <a href="disclaimer.html">Disclaimer</a>
+        <a href="contact.html">Contact</a>
+      </div>
+      <p class="footer-sub">पिन कोड 331802 · रतनगढ़ तहसील · बीकानेर संभाग</p>
     </div>
   </footer>
 
-  <!-- ============================================================
-       POPUP
-       ============================================================ -->
-  <div id="sitePopup" class="popup-overlay" style="display:none;">
-    <div class="popup-box">
-      <button id="popupClose" class="popup-close" aria-label="Close">✕</button>
-      <div id="popupContent" class="popup-content"></div>
-    </div>
-  </div>
-
-  <!-- Firebase SDKs -->
   <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-storage-compat.js"></script>
-
-  <script src="app.js"></script>
+  <script src="firebase-config.js"></script>
+  <script src="public-loader.js"></script>
+  <script>
+    document.getElementById('hamburger')?.addEventListener('click', () => {
+      document.getElementById('navLinks').classList.toggle('open');
+    });
+  </script>
 </body>
 </html>

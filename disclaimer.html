@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="लाच्छरसर वेबसाइट अस्वीकरण (Disclaimer)" />
+  <title>Disclaimer · लाच्छरसर</title>
+  <link rel="icon" type="image/png" href="logo.png" />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;600;700;800&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <header class="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="brand">
+        <img src="logo.png" alt="Logo" class="brand-logo" onerror="this.style.display='none'" />
+        <span>लाच्छरसर</span>
+      </a>
+      <nav class="nav-links" id="navLinks">
+        <a href="index.html">होम</a>
+        <a href="about.html">गाँव के बारे में</a>
+        <a href="panchayat.html">पंचायत</a>
+        <a href="gallery.html">गैलरी</a>
+        <a href="contact.html">संपर्क</a>
+      </nav>
+      <button class="hamburger" id="hamburger">☰</button>
+    </div>
+  </header>
+
+  <section class="section">
+    <div class="section-container legal-container">
+      <h1 class="section-title">⚠️ Disclaimer</h1>
+      <p class="legal-updated" id="disclaimerUpdated"></p>
+
+      <article class="legal-content" id="disclaimerContent">
+        <div class="loading-placeholder">Loading...</div>
+      </article>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="footer-content">
+      <p>© 2026 लाच्छरसर ग्राम पंचायत · चूरू, राजस्थान</p>
+      <div class="footer-links">
+        <a href="privacy.html">Privacy</a>
+        <a href="terms.html">Terms</a>
+        <a href="disclaimer.html">Disclaimer</a>
+        <a href="contact.html">Contact</a>
+      </div>
+      <p class="footer-sub">पिन कोड 331802 · रतनगढ़ तहसील · बीकानेर संभाग</p>
+    </div>
+  </footer>
+
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+  <script src="firebase-config.js"></script>
+  <script src="public-loader.js"></script>
+  <script>
+    document.getElementById('hamburger')?.addEventListener('click', () => {
+      document.getElementById('navLinks').classList.toggle('open');
+    });
+
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        if (typeof firebase === 'undefined' || !firebase.apps.length) return;
+        const db = firebase.firestore();
+        db.collection('pages').doc('disclaimer').get().then(doc => {
+          const el = document.getElementById('disclaimerContent');
+          const upd = document.getElementById('disclaimerUpdated');
+          if (!doc.exists || !doc.data().content) {
+            el.innerHTML = getDefaultDisclaimer();
+            return;
+          }
+          const d = doc.data();
+          el.innerHTML = d.content;
+          if (d.updatedAt) {
+            upd.textContent = 'अंतिम अपडेट: ' + new Date(d.updatedAt.seconds * 1000).toLocaleDateString('hi-IN');
+          }
+        }).catch(() => {
+          document.getElementById('disclaimerContent').innerHTML = getDefaultDisclaimer();
+        });
+      }, 400);
+    });
+
+    function getDefaultDisclaimer() {
+      return `
+        <div class="disclaimer-alert">
+          <strong>⚠️ महत्वपूर्ण सूचना:</strong> इस वेबसाइट पर दी गई जानकारी केवल सामान्य जानकारी के उद्देश्य से है।
+        </div>
+
+        <h2>1. सामान्य जानकारी</h2>
+        <p>लाच्छरसर वेबसाइट (lachharsar.votesense.com) पर उपलब्ध सभी जानकारी सामान्य जानकारी के उद्देश्य से प्रकाशित की गई है। यह जानकारी लाच्छरसर गाँव, ग्राम पंचायत, और स्थानीय समुदाय के बारे में है।</p>
+
+        <h2>2. सटीकता की गारंटी नहीं</h2>
+        <p>हम वेबसाइट पर उपलब्ध जानकारी की सटीकता, पूर्णता, या उपयोगिता की कोई गारंटी नहीं देते। जानकारी समय-समय पर बदल सकती है। महत्वपूर्ण निर्णय लेने से पहले, कृपया संबंधित सरकारी कार्यालयों से सत्यापित करें।</p>
+
+        <h2>3. बाहरी लिंक</h2>
+        <p>यह वेबसाइट अन्य वेबसाइटों के लिंक प्रदान कर सकती है। इन बाहरी वेबसाइटों की सामग्री, सटीकता, या उपलब्धता के लिए लाच्छरसर ग्राम पंचायत जिम्मेदार नहीं है। इन लिंक का समावेश केवल उपयोगकर्ता की सुविधा के लिए है।</p>
+
+        <h2>4. पेशेवर सलाह नहीं</h2>
+        <p>इस वेबसाइट पर दी गई जानकारी किसी भी प्रकार की कानूनी, चिकित्सीय, वित्तीय, या पेशेवर सलाह का विकल्प नहीं है। किसी भी महत्वपूर्ण मामले में, कृपया संबंधित विशेषज्ञ से परामर्श करें।</p>
+
+        <h2>5. त्रुटियाँ और चूक</h2>
+        <p>वेबसाइट पर तकनीकी त्रुटियाँ, टाइपिंग गलतियाँ, या जानकारी में चूक हो सकती है। हम किसी भी त्रुटि या चूक के लिए उत्तरदायी नहीं हैं। यदि आपको कोई गलती दिखे, तो कृपया हमें सूचित करें।</p>
+
+        <h2>6. वेबसाइट उपलब्धता</h2>
+        <p>हम वेबसाइट की निरंतर उपलब्धता की गारंटी नहीं देते। तकनीकी समस्याओं, रखरखाव, या अन्य कारणों से वेबसाइट कुछ समय के लिए उपलब्ध नहीं हो सकती।</p>
+
+        <h2>7. सामग्री का उपयोग</h2>
+        <p>वेबसाइट पर उपलब्ध सामग्री का उपयोग व्यक्तिगत, गैर-व्यावसायिक उद्देश्यों के लिए किया जा सकता है। व्यावसायिक उपयोग के लिए पूर्व लिखित अनुमति आवश्यक है।</p>
+
+        <h2>8. सोशल मीडिया</h2>
+        <p>वेबसाइट पर सोशल मीडिया प्लेटफॉर्म के लिंक हो सकते हैं। उन प्लेटफॉर्म्स की सामग्री और नीतियों के लिए हम जिम्मेदार नहीं हैं।</p>
+
+        <h2>9. कानूनी अस्वीकरण</h2>
+        <p>यह अस्वीकरण भारतीय कानूनों के अधीन है। किसी भी विवाद का समाधान चूरू, राजस्थान के अधिकार क्षेत्र के न्यायालयों में किया जाएगा।</p>
+
+        <h2>10. संपर्क</h2>
+        <p>इस अस्वीकरण के बारे में किसी भी प्रश्न के लिए:</p>
+        <ul>
+          <li>📞 फोन: STD कोड 01567</li>
+          <li>📍 पता: ग्राम पंचायत लाच्छरसर, रतनगढ़, चूरू, राजस्थान — 331802</li>
+        </ul>
+
+        <p class="legal-note"><em>अंतिम अपडेट: 30 सितंबर 2026</em></p>
+      `;
+    }
+  </script>
+</body>
+</html>

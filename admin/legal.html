@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Legal Pages · Lachharsar Admin</title>
+  <link rel="stylesheet" href="admin.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand"><span>📄 Legal Pages</span></div>
+    <div class="actions">
+      <span id="userEmail"></span>
+      <button id="logoutBtn" class="btn-logout">Logout</button>
+    </div>
+  </header>
+
+  <nav class="tabs">
+    <button onclick="location.href='index.html'">📊 Overview</button>
+    <button onclick="location.href='themes.html'">🎨 Themes</button>
+    <button onclick="location.href='popups.html'">📢 Popups</button>
+    <button onclick="location.href='gallery.html'">📸 Gallery</button>
+    <button class="active" onclick="location.href='legal.html'">📄 Legal Pages</button>
+  </nav>
+
+  <main class="container">
+    <h2>📄 Legal Pages Editor</h2>
+    <p class="hint">Privacy, Terms, Disclaimer content edit karo. HTML allowed.</p>
+
+    <div class="legal-tabs">
+      <button class="legal-tab active" data-page="privacy">🔒 Privacy Policy</button>
+      <button class="legal-tab" data-page="terms">📜 Terms</button>
+      <button class="legal-tab" data-page="disclaimer">⚠️ Disclaimer</button>
+    </div>
+
+    <form id="legalForm" class="form">
+      <div class="field">
+        <label id="legalLabel">Content (HTML allowed)</label>
+        <textarea id="legalContent" class="code-input" rows="20"></textarea>
+      </div>
+      <div class="form-actions">
+        <button type="submit" class="btn-primary">💾 Save</button>
+        <button type="button" id="legalReset" class="btn-danger">🔄 Reset to Default</button>
+      </div>
+    </form>
+  </main>
+
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+  <script src="../firebase-config.js"></script>
+  <script src="js/admin-core.js"></script>
+  <script src="js/legal.js"></script>
+</body>
+</html>

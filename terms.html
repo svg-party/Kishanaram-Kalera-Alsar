@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="लाच्छरसर वेबसाइट की नियम एवं शर्तें (Terms & Conditions)" />
+  <title>Terms & Conditions · लाच्छरसर</title>
+  <link rel="icon" type="image/png" href="logo.png" />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;600;700;800&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <header class="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="brand">
+        <img src="logo.png" alt="Logo" class="brand-logo" onerror="this.style.display='none'" />
+        <span>लाच्छरसर</span>
+      </a>
+      <nav class="nav-links" id="navLinks">
+        <a href="index.html">होम</a>
+        <a href="about.html">गाँव के बारे में</a>
+        <a href="panchayat.html">पंचायत</a>
+        <a href="gallery.html">गैलरी</a>
+        <a href="contact.html">संपर्क</a>
+      </nav>
+      <button class="hamburger" id="hamburger">☰</button>
+    </div>
+  </header>
+
+  <section class="section">
+    <div class="section-container legal-container">
+      <h1 class="section-title">📜 Terms & Conditions</h1>
+      <p class="legal-updated" id="termsUpdated"></p>
+
+      <article class="legal-content" id="termsContent">
+        <div class="loading-placeholder">Loading...</div>
+      </article>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="footer-content">
+      <p>© 2026 लाच्छरसर ग्राम पंचायत · चूरू, राजस्थान</p>
+      <div class="footer-links">
+        <a href="privacy.html">Privacy</a>
+        <a href="terms.html">Terms</a>
+        <a href="disclaimer.html">Disclaimer</a>
+        <a href="contact.html">Contact</a>
+      </div>
+      <p class="footer-sub">पिन कोड 331802 · रतनगढ़ तहसील · बीकानेर संभाग</p>
+    </div>
+  </footer>
+
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+  <script src="firebase-config.js"></script>
+  <script src="public-loader.js"></script>
+  <script>
+    document.getElementById('hamburger')?.addEventListener('click', () => {
+      document.getElementById('navLinks').classList.toggle('open');
+    });
+
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        if (typeof firebase === 'undefined' || !firebase.apps.length) return;
+        const db = firebase.firestore();
+        db.collection('pages').doc('terms').get().then(doc => {
+          const el = document.getElementById('termsContent');
+          const upd = document.getElementById('termsUpdated');
+          if (!doc.exists || !doc.data().content) {
+            el.innerHTML = getDefaultTerms();
+            return;
+          }
+          const d = doc.data();
+          el.innerHTML = d.content;
+          if (d.updatedAt) {
+            upd.textContent = 'अंतिम अपडेट: ' + new Date(d.updatedAt.seconds * 1000).toLocaleDateString('hi-IN');
+          }
+        }).catch(() => {
+          document.getElementById('termsContent').innerHTML = getDefaultTerms();
+        });
+      }, 400);
+    });
+
+    function getDefaultTerms() {
+      return `
+        <h2>1. स्वीकृति</h2>
+        <p>लाच्छरसर वेबसाइट (lachharsar.votesense.com) का उपयोग करके आप इन नियम एवं शर्तों से सहमत होते हैं। यदि आप इन शर्तों से सहमत नहीं हैं, तो कृपया वेबसाइट का उपयोग न करें।</p>
+
+        <h2>2. वेबसाइट का उद्देश्य</h2>
+        <p>यह वेबसाइट लाच्छरसर ग्राम पंचायत की आधिकारिक ऑनलाइन उपस्थिति है। इसका उद्देश्य है:</p>
+        <ul>
+          <li>गाँव की जानकारी और समाचार उपलब्ध कराना</li>
+          <li>पंचायत की सेवाओं और योजनाओं की जानकारी देना</li>
+          <li>ग्रामवासियों को जोड़ने का मंच प्रदान करना</li>
+          <li>महत्वपूर्ण सूचनाएँ और अपडेट प्रसारित करना</li>
+        </ul>
+
+        <h2>3. बौद्धिक संपदा (Intellectual Property)</h2>
+        <p>इस वेबसाइट पर उपलब्ध सभी सामग्री — जिसमें टेक्स्ट, चित्र, ग्राफिक्स, लोगो, वीडियो, और डिज़ाइन शामिल हैं — लाच्छरसर ग्राम पंचायत की संपत्ति है या उचित अनुमति के साथ उपयोग की गई है। इस सामग्री की नकल, पुनरुत्पादन, या वितरण बिना लिखित अनुमति के प्रतिबंधित है।</p>
+
+        <h2>4. उपयोगकर्ता के दायित्व</h2>
+        <p>वेबसाइट का उपयोग करते समय, आप निम्नलिखित बातों का पालन करने के लिए सहमत हैं:</p>
+        <ul>
+          <li>किसी भी अवैध गतिविधि के लिए वेबसाइट का उपयोग नहीं करना</li>
+          <li>वेबसाइट की सुरक्षा को भंग करने का प्रयास नहीं करना</li>
+          <li>अन्य उपयोगकर्ताओं के अनुभव में बाधा नहीं डालना</li>
+          <li>गलत या भ्रामक जानकारी प्रदान नहीं करना</li>
+        </ul>
+
+        <h2>5. सामग्री की सटीकता</h2>
+        <p>हम वेबसाइट पर उपलब्ध जानकारी को सही और अद्यतित रखने का प्रयास करते हैं। हालाँकि, हम किसी भी जानकारी की पूर्ण सटीकता, पूर्णता, या विश्वसनीयता की गारंटी नहीं देते। उपयोगकर्ताओं को सलाह दी जाती है कि वे महत्वपूर्ण निर्णयों के लिए संबंधित अधिकारियों से सत्यापित करें।</p>
+
+        <h2>6. बाहरी लिंक</h2>
+        <p>हमारी वेबसाइट में तीसरे पक्ष की वेबसाइटों के लिंक हो सकते हैं। इन वेबसाइटों की सामग्री या उपलब्धता के लिए हम जिम्मेदार नहीं हैं। इन लिंक का समावेश केवल सुविधा के लिए है।</p>
+
+        <h2>7. दायित्व की सीमा</h2>
+        <p>लाच्छरसर ग्राम पंचायत किसी भी प्रत्यक्ष, अप्रत्यक्ष, आकस्मिक, या परिणामी नुकसान के लिए उत्तरदायी नहीं होगी, जो वेबसाइट के उपयोग या उपयोग में असमर्थता से उत्पन्न हो।</p>
+
+        <h2>8. सेवा में परिवर्तन</h2>
+        <p>हम बिना पूर्व सूचना के वेबसाइट की सामग्री, सुविधाओं, या पहुँच को बदलने, निलंबित करने, या बंद करने का अधिकार सुरक्षित रखते हैं।</p>
+
+        <h2>9. लागू कानून</h2>
+        <p>ये नियम एवं शर्तें भारतीय कानूनों के अधीन हैं। किसी भी विवाद का समाधान चूरू, राजस्थान के अधिकार क्षेत्र के न्यायालयों में किया जाएगा।</p>
+
+        <h2>10. संशोधन</h2>
+        <p>हम इन नियमों और शर्तों को समय-समय पर संशोधित कर सकते हैं। संशोधित शर्तें इस पृष्ठ पर प्रकाशित होते ही प्रभावी हो जाएँगी।</p>
+
+        <h2>11. संपर्क</h2>
+        <p>इन शर्तों के बारे में किसी भी प्रश्न के लिए, कृपया हमसे संपर्क करें:</p>
+        <ul>
+          <li>📞 फोन: STD कोड 01567</li>
+          <li>📍 पता: ग्राम पंचायत लाच्छरसर, रतनगढ़, चूरू, राजस्थान — 331802</li>
+        </ul>
+
+        <p class="legal-note"><em>अंतिम अपडेट: 30 सितंबर 2026</em></p>
+      `;
+    }
+  </script>
+</body>
+</html>

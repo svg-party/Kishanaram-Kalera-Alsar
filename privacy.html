@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="लाच्छरसर वेबसाइट की गोपनीयता नीति (Privacy Policy)" />
+  <title>Privacy Policy · लाच्छरसर</title>
+  <link rel="icon" type="image/png" href="logo.png" />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;600;700;800&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <header class="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="brand">
+        <img src="logo.png" alt="Logo" class="brand-logo" onerror="this.style.display='none'" />
+        <span>लाच्छरसर</span>
+      </a>
+      <nav class="nav-links" id="navLinks">
+        <a href="index.html">होम</a>
+        <a href="about.html">गाँव के बारे में</a>
+        <a href="panchayat.html">पंचायत</a>
+        <a href="gallery.html">गैलरी</a>
+        <a href="contact.html">संपर्क</a>
+      </nav>
+      <button class="hamburger" id="hamburger">☰</button>
+    </div>
+  </header>
+
+  <!-- PAGE CONTENT -->
+  <section class="section">
+    <div class="section-container legal-container">
+      <h1 class="section-title">🔒 Privacy Policy</h1>
+      <p class="legal-updated" id="privacyUpdated"></p>
+
+      <article class="legal-content" id="privacyContent">
+        <!-- Content Firestore se load hoga -->
+        <div class="loading-placeholder">Loading...</div>
+      </article>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-content">
+      <p>© 2026 लाच्छरसर ग्राम पंचायत · चूरू, राजस्थान</p>
+      <div class="footer-links">
+        <a href="privacy.html">Privacy</a>
+        <a href="terms.html">Terms</a>
+        <a href="disclaimer.html">Disclaimer</a>
+        <a href="contact.html">Contact</a>
+      </div>
+      <p class="footer-sub">पिन कोड 331802 · रतनगढ़ तहसील · बीकानेर संभाग</p>
+    </div>
+  </footer>
+
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+  <script src="firebase-config.js"></script>
+  <script src="public-loader.js"></script>
+  <script>
+    document.getElementById('hamburger')?.addEventListener('click', () => {
+      document.getElementById('navLinks').classList.toggle('open');
+    });
+
+    // Load privacy policy from Firestore
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        if (typeof firebase === 'undefined' || !firebase.apps.length) return;
+        const db = firebase.firestore();
+        db.collection('pages').doc('privacy').get().then(doc => {
+          const el = document.getElementById('privacyContent');
+          const upd = document.getElementById('privacyUpdated');
+          if (!doc.exists || !doc.data().content) {
+            el.innerHTML = getDefaultPrivacy();
+            return;
+          }
+          const d = doc.data();
+          el.innerHTML = d.content;
+          if (d.updatedAt) {
+            upd.textContent = 'अंतिम अपडेट: ' + new Date(d.updatedAt.seconds * 1000).toLocaleDateString('hi-IN');
+          }
+        }).catch(() => {
+          document.getElementById('privacyContent').innerHTML = getDefaultPrivacy();
+        });
+      }, 400);
+    });
+
+    // Default content (agar Firestore mein nahi hai)
+    function getDefaultPrivacy() {
+      return `
+        <h2>1. परिचय</h2>
+        <p>यह गोपनीयता नीति (Privacy Policy) लाच्छरसर ग्राम पंचायत की आधिकारिक वेबसाइट (lachharsar.votesense.com) पर लागू होती है। इस वेबसाइट का उद्देश्य गाँव की जानकारी, समाचार, और सेवाओं को जनता तक पहुँचाना है।</p>
+
+        <h2>2. हम कौन सी जानकारी एकत्र करते हैं</h2>
+        <p>हम निम्नलिखित प्रकार की जानकारी एकत्र कर सकते हैं:</p>
+        <ul>
+          <li><strong>व्यक्तिगत जानकारी:</strong> नाम, ईमेल पता, फोन नंबर — केवल तब जब आप स्वेच्छा से संपर्क फॉर्म या किसी अन्य माध्यम से प्रदान करें।</li>
+          <li><strong>तकनीकी जानकारी:</strong> ब्राउज़र का प्रकार, डिवाइस की जानकारी, IP पता, और वेबसाइट उपयोग के आंकड़े (analytics)।</li>
+          <li><strong>कुकीज़ (Cookies):</strong> बेहतर अनुभव के लिए हम कुकीज़ का उपयोग कर सकते हैं।</li>
+        </ul>
+
+        <h2>3. जानकारी का उपयोग</h2>
+        <p>एकत्र की गई जानकारी का उपयोग निम्नलिखित उद्देश्यों के लिए किया जाता है:</p>
+        <ul>
+          <li>वेबसाइट की सेवाओं और सामग्री को बेहतर बनाना</li>
+          <li>आपके सवालों और सुझावों का जवाब देना</li>
+          <li>गाँव की महत्वपूर्ण सूचनाएँ और अपडेट भेजना</li>
+          <li>वेबसाइट की सुरक्षा और तकनीकी समस्याओं का समाधान</li>
+        </ul>
+
+        <h2>4. जानकारी की सुरक्षा</h2>
+        <p>हम आपकी व्यक्तिगत जानकारी की सुरक्षा के लिए उचित तकनीकी और संगठनात्मक उपाय करते हैं। हालाँकि, इंटरनेट पर किसी भी ट्रांसमिशन की 100% सुरक्षा की गारंटी नहीं दी जा सकती।</p>
+
+        <h2>5. तीसरे पक्ष के साथ साझा करना</h2>
+        <p>हम आपकी व्यक्तिगत जानकारी किसी तीसरे पक्ष को बेचते या किराए पर नहीं देते। हालाँकि, हम निम्नलिखित मामलों में जानकारी साझा कर सकते हैं:</p>
+        <ul>
+          <li>कानूनी आवश्यकता होने पर सरकारी अधिकारियों के साथ</li>
+          <li>वेबसाइट के तकनीकी सेवा प्रदाताओं के साथ (जैसे Firebase, Vercel)</li>
+        </ul>
+
+        <h2>6. बाहरी लिंक</h2>
+        <p>हमारी वेबसाइट में बाहरी वेबसाइटों के लिंक हो सकते हैं। उन वेबसाइटों की गोपनीयता नीतियों के लिए हम जिम्मेदार नहीं हैं। कृपया उनकी नीतियाँ अलग से पढ़ें।</p>
+
+        <h2>7. बच्चों की गोपनीयता</h2>
+        <p>हम 13 वर्ष से कम आयु के बच्चों से जानबूझकर कोई व्यक्तिगत जानकारी एकत्र नहीं करते। यदि आपको लगता है कि किसी बच्चे की जानकारी हमारे पास है, तो कृपया हमसे संपर्क करें।</p>
+
+        <h2>8. आपके अधिकार</h2>
+        <p>आपको निम्नलिखित अधिकार हैं:</p>
+        <ul>
+          <li>अपनी व्यक्तिगत जानकारी देखने का अधिकार</li>
+          <li>गलत जानकारी सुधारने का अधिकार</li>
+          <li>जानकारी हटाने का अनुरोध करने का अधिकार</li>
+        </ul>
+
+        <h2>9. नीति में बदलाव</h2>
+        <p>हम समय-समय पर इस गोपनीयता नीति को अपडेट कर सकते हैं। बदलाव इस पृष्ठ पर प्रकाशित किए जाएँगे।</p>
+
+        <h2>10. संपर्क</h2>
+        <p>इस गोपनीयता नीति के बारे में किसी भी प्रश्न के लिए, कृपया हमसे संपर्क करें:</p>
+        <ul>
+          <li>📧 ईमेल: (ग्राम पंचायत कार्यालय से संपर्क करें)</li>
+          <li>📞 फोन: STD कोड 01567</li>
+          <li>📍 पता: ग्राम पंचायत लाच्छरसर, रतनगढ़, चूरू, राजस्थान — 331802</li>
+        </ul>
+
+        <p class="legal-note"><em>अंतिम अपडेट: 30 सितंबर 2026</em></p>
+      `;
+    }
+  </script>
+</body>
+</html>

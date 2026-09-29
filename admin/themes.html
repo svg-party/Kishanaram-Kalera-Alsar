@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Themes · Lachharsar Admin</title>
+  <link rel="stylesheet" href="admin.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand"><span>🎨 Theme Manager</span></div>
+    <div class="actions">
+      <span id="userEmail"></span>
+      <button id="logoutBtn" class="btn-logout">Logout</button>
+    </div>
+  </header>
+
+  <nav class="tabs">
+    <button onclick="location.href='index.html'">📊 Overview</button>
+    <button class="active" onclick="location.href='themes.html'">🎨 Themes</button>
+    <button onclick="location.href='popups.html'">📢 Popups</button>
+    <button onclick="location.href='gallery.html'">📸 Gallery</button>
+    <button onclick="location.href='legal.html'">📄 Legal Pages</button>
+  </nav>
+
+  <main class="container">
+    <h2>🎨 Theme Customizer</h2>
+    <p class="hint">
+      Puri website ka theme yahan se control hota hai. Change karo → turant site pe apply hoga.
+    </p>
+
+    <div id="activeThemeInfo" class="list-item" style="margin-bottom:1.5rem;">
+      <div><strong>Active theme:</strong> <span id="activeThemeName">Default</span></div>
+    </div>
+
+    <!-- PRESET THEMES -->
+    <h3>🎭 Preset Themes</h3>
+    <div id="presetGrid" class="theme-grid"></div>
+
+    <!-- CUSTOM COLORS -->
+    <h3>🎨 Custom Colors</h3>
+    <form id="themeForm" class="form">
+      <div class="color-grid">
+        <div class="color-field">
+          <label>Primary</label>
+          <input type="color" id="themePrimary" value="#0c2340" />
+        </div>
+        <div class="color-field">
+          <label>Accent</label>
+          <input type="color" id="themeAccent" value="#ff9933" />
+        </div>
+        <div class="color-field">
+          <label>Background</label>
+          <input type="color" id="themeBg" value="#ffffff" />
+        </div>
+        <div class="color-field">
+          <label>Text</label>
+          <input type="color" id="themeText" value="#1e293b" />
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Custom CSS (optional)</label>
+        <textarea id="themeCSS" class="code-input" rows="6" placeholder="body { font-family: 'Poppins', sans-serif; }"></textarea>
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" class="btn-primary">💾 Apply Custom Theme</button>
+        <button type="button" id="resetBtn" class="btn-danger">🔄 Reset to Default</button>
+      </div>
+    </form>
+  </main>
+
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+  <script src="../firebase-config.js"></script>
+  <script src="js/admin-core.js"></script>
+  <script src="js/themes.js"></script>
+</body>
+</html>

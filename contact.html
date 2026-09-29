@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="लाच्छरसर ग्राम पंचायत से संपर्क करें" />
+  <title>संपर्क करें · लाच्छरसर</title>
+  <link rel="icon" type="image/png" href="logo.png" />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;600;700;800&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <header class="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="brand">
+        <img src="logo.png" alt="Logo" class="brand-logo" onerror="this.style.display='none'" />
+        <span>लाच्छरसर</span>
+      </a>
+      <nav class="nav-links" id="navLinks">
+        <a href="index.html">होम</a>
+        <a href="about.html">गाँव के बारे में</a>
+        <a href="panchayat.html">पंचायत</a>
+        <a href="gallery.html">गैलरी</a>
+        <a href="contact.html" class="active">संपर्क</a>
+      </nav>
+      <button class="hamburger" id="hamburger">☰</button>
+    </div>
+  </header>
+
+  <section class="section">
+    <div class="section-container">
+      <h1 class="section-title">📞 संपर्क करें</h1>
+
+      <div class="contact-grid">
+        <div class="contact-card">
+          <div class="icon">📍</div>
+          <h4>पता</h4>
+          <p>ग्राम पंचायत कार्यालय,<br>लाच्छरसर, तहसील रतनगढ़,<br>जिला चूरू, राजस्थान — 331802</p>
+        </div>
+
+        <div class="contact-card">
+          <div class="icon">📞</div>
+          <h4>फोन / STD कोड</h4>
+          <p>01567</p>
+        </div>
+
+        <div class="contact-card">
+          <div class="icon">📮</div>
+          <h4>डाकघर</h4>
+          <p>राजलदेसर — 331802</p>
+        </div>
+
+        <div class="contact-card">
+          <div class="icon">🚂</div>
+          <h4>नज़दीकी रेलवे स्टेशन</h4>
+          <p>परसनेउ (8.3 किमी)</p>
+        </div>
+
+        <div class="contact-card">
+          <div class="icon">🏛️</div>
+          <h4>ग्राम पंचायत</h4>
+          <p>लाच्छरसर</p>
+        </div>
+
+        <div class="contact-card">
+          <div class="icon">👩‍💼</div>
+          <h4>सरपंच</h4>
+          <p>श्रीमती धापू देवी</p>
+        </div>
+      </div>
+
+      <!-- Google Map -->
+      <div class="map-container">
+        <iframe 
+          src="https://www.google.com/maps?q=Lachharsar+Ratangarh+Churu+Rajasthan&output=embed"
+          width="100%" height="450" style="border:0; display:block;"
+          allowfullscreen loading="lazy">
+        </iframe>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="footer-content">
+      <p>© 2026 लाच्छरसर ग्राम पंचायत · चूरू, राजस्थान</p>
+      <div class="footer-links">
+        <a href="privacy.html">Privacy</a>
+        <a href="terms.html">Terms</a>
+        <a href="disclaimer.html">Disclaimer</a>
+        <a href="contact.html">Contact</a>
+      </div>
+      <p class="footer-sub">पिन कोड 331802 · रतनगढ़ तहसील · बीकानेर संभाग</p>
+    </div>
+  </footer>
+
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+  <script src="firebase-config.js"></script>
+  <script src="public-loader.js"></script>
+  <script>
+    document.getElementById('hamburger')?.addEventListener('click', () => {
+      document.getElementById('navLinks').classList.toggle('open');
+    });
+  </script>
+</body>
+</html>

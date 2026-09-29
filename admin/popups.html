@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Popups · Lachharsar Admin</title>
+  <link rel="stylesheet" href="admin.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand"><span>📢 Popup Manager</span></div>
+    <div class="actions">
+      <span id="userEmail"></span>
+      <button id="logoutBtn" class="btn-logout">Logout</button>
+    </div>
+  </header>
+
+  <nav class="tabs">
+    <button onclick="location.href='index.html'">📊 Overview</button>
+    <button onclick="location.href='themes.html'">🎨 Themes</button>
+    <button class="active" onclick="location.href='popups.html'">📢 Popups</button>
+    <button onclick="location.href='gallery.html'">📸 Gallery</button>
+    <button onclick="location.href='legal.html'">📄 Legal Pages</button>
+  </nav>
+
+  <main class="container">
+    <h2>📢 Popup Manager</h2>
+    <p class="hint">Site pe entry popup — image, HTML, ya text.</p>
+
+    <form id="popupForm" class="form">
+      <div class="row">
+        <div class="field">
+          <label>Title</label>
+          <input type="text" id="pTitle" placeholder="सूचना" />
+        </div>
+        <div class="field">
+          <label>Category Badge</label>
+          <input type="text" id="pCategory" placeholder="Notice" />
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Body text</label>
+        <textarea id="pBody" rows="2"></textarea>
+      </div>
+
+      <div class="field">
+        <label>Custom HTML (replaces body)</label>
+        <textarea id="pCustomHTML" class="code-input" rows="4"></textarea>
+      </div>
+
+      <div class="row">
+        <div class="field">
+          <label>Image URL</label>
+          <input type="url" id="pImageUrl" />
+        </div>
+        <div class="field">
+          <label>Button Label</label>
+          <input type="text" id="pButtonLabel" value="Learn More" />
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Button URL</label>
+        <input type="url" id="pUrl" />
+      </div>
+
+      <div class="row">
+        <div class="field">
+          <label>Scope</label>
+          <select id="pScope">
+            <option value="global">All Pages</option>
+            <option value="list">Specific Pages</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Priority (1 = highest)</label>
+          <input type="number" id="pRank" value="1" min="1" />
+        </div>
+      </div>
+
+      <div class="field" id="scopeListWrap" style="display:none;">
+        <label>Page paths (comma separated)</label>
+        <input type="text" id="pScopeList" placeholder="/about.html, /gallery.html" />
+      </div>
+
+      <label class="checkbox">
+        <input type="checkbox" id="pActive" checked />
+        <span>Enable this popup</span>
+      </label>
+
+      <div class="form-actions">
+        <button type="submit" class="btn-primary">💾 Save</button>
+        <button type="button" id="cancelBtn" class="btn-secondary">Clear</button>
+      </div>
+    </form>
+
+    <h3>All Popups</h3>
+    <div id="popupsList" class="list"></div>
+  </main>
+
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+  <script src="../firebase-config.js"></script>
+  <script src="js/admin-core.js"></script>
+  <script src="js/popups.js"></script>
+</body>
+</html>

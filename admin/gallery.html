@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Gallery · Lachharsar Admin</title>
+  <link rel="stylesheet" href="admin.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand"><span>📸 Gallery Manager</span></div>
+    <div class="actions">
+      <span id="userEmail"></span>
+      <button id="logoutBtn" class="btn-logout">Logout</button>
+    </div>
+  </header>
+
+  <nav class="tabs">
+    <button onclick="location.href='index.html'">📊 Overview</button>
+    <button onclick="location.href='themes.html'">🎨 Themes</button>
+    <button onclick="location.href='popups.html'">📢 Popups</button>
+    <button class="active" onclick="location.href='gallery.html'">📸 Gallery</button>
+    <button onclick="location.href='legal.html'">📄 Legal Pages</button>
+  </nav>
+
+  <main class="container">
+    <h2>📸 Gallery Manager</h2>
+    <p class="hint">Image URL add karo — Gallery page pe dikhega.</p>
+
+    <form id="galleryForm" class="form">
+      <div class="field">
+        <label>Image URL</label>
+        <input type="url" id="gImgUrl" placeholder="https://..." required />
+      </div>
+      <div class="row">
+        <div class="field">
+          <label>Caption (Hindi)</label>
+          <input type="text" id="gCapHi" />
+        </div>
+        <div class="field">
+          <label>Caption (English)</label>
+          <input type="text" id="gCapEn" />
+        </div>
+      </div>
+      <button type="submit" class="btn-primary">➕ Add Image</button>
+    </form>
+
+    <h3>Existing Images</h3>
+    <div id="galleryList" class="list"></div>
+  </main>
+
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+  <script src="../firebase-config.js"></script>
+  <script src="js/admin-core.js"></script>
+  <script src="js/gallery.js"></script>
+</body>
+</html>

@@ -1,0 +1,35 @@
+<!-- Same head + nav -->
+<section class="section">
+  <div class="section-container">
+    <h1 class="section-title">फोटो गैलरी</h1>
+    <div class="gallery-grid" id="galleryGrid">
+      <!-- Admin panel se add kiye gaye images yahan aayenge -->
+    </div>
+  </div>
+</section>
+
+<script>
+  // Load gallery from Firestore
+  window.addEventListener('load', () => {
+    setTimeout(() => {
+      if (typeof firebase === 'undefined' || !firebase.apps.length) return;
+      const db = firebase.firestore();
+      const grid = document.getElementById('galleryGrid');
+      if (!grid) return;
+
+      db.collection('gallery').orderBy('order', 'asc').onSnapshot(snap => {
+        if (snap.empty) {
+          grid.innerHTML = '<p style="text-align:center; grid-column:1/-1; color:#94a3b8;">अभी तक कोई तस्वीर नहीं जोड़ी गई</p>';
+          return;
+        }
+        grid.innerHTML = snap.docs.map(doc => {
+          const d = doc.data();
+          return `<div class="gallery-item">
+            <img src="${d.imageUrl}" loading="lazy" alt="${d.captionHi || ''}" />
+            <div class="gallery-caption">${d.captionHi || d.captionEn || ''}</div>
+          </div>`;
+        }).join('');
+      });
+    }, 500);
+  });
+</script>
