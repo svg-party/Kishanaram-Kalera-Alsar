@@ -10,14 +10,31 @@
   <link rel="stylesheet" href="styles.css" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;600;700;800&display=swap" rel="stylesheet" />
+
+  <style>
+    /* Dynamic section blocks */
+    .home-dynamic-section {
+      scroll-margin-top: 90px;
+      transition: all 0.3s;
+    }
+    .home-dynamic-section.highlighted {
+      animation: sectionHighlight 2s ease;
+    }
+    @keyframes sectionHighlight {
+      0%   { box-shadow: 0 0 0 0 rgba(255, 153, 51, 0.8); }
+      50%  { box-shadow: 0 0 0 20px rgba(255, 153, 51, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(255, 153, 51, 0); }
+    }
+  </style>
 </head>
 <body>
 
+  <!-- NAVBAR -->
   <header class="navbar">
     <div class="nav-container">
       <a href="index.html" class="brand">
         <img src="logo.png" alt="Logo" class="brand-logo" onerror="this.style.display='none'" />
-        <span id="brandText">लाच्छरसर</span>
+        <span>लाच्छरसर</span>
       </a>
       <nav class="nav-links" id="navLinks">
         <a href="index.html" class="active">होम</a>
@@ -30,6 +47,7 @@
     </div>
   </header>
 
+  <!-- HERO -->
   <section class="hero">
     <div class="hero-grid">
       <div class="hero-text">
@@ -64,44 +82,16 @@
     </div>
   </section>
 
-  <section class="section">
-    <div class="section-container">
-      <h2 class="section-title">तेज़ जानकारी</h2>
-      <div class="info-grid">
-        <div class="info-card">
-          <div class="icon">🏛️</div>
-          <h4>ग्राम पंचायत</h4>
-          <p>लाच्छरसर</p>
-        </div>
-        <div class="info-card">
-          <div class="icon">📍</div>
-          <h4>तहसील</h4>
-          <p>रतनगढ़ / राजलदेसर</p>
-        </div>
-        <div class="info-card">
-          <div class="icon">📮</div>
-          <h4>पिन कोड</h4>
-          <p>331802</p>
-        </div>
-        <div class="info-card">
-          <div class="icon">🚂</div>
-          <h4>नज़दीकी रेलवे</h4>
-          <p>परसनेउ (8.3 km)</p>
-        </div>
-        <div class="info-card">
-          <div class="icon">🗺️</div>
-          <h4>क्षेत्रफल</h4>
-          <p>10,090 हेक्टेयर</p>
-        </div>
-        <div class="info-card">
-          <div class="icon">🗳️</div>
-          <h4>विधानसभा</h4>
-          <p>रतनगढ़</p>
-        </div>
+  <!-- DYNAMIC SECTIONS -->
+  <section class="section" id="dynamic-sections">
+    <div class="section-container" id="homeContainer">
+      <div style="text-align: center; padding: 3rem; color: var(--text-muted, #64748b);">
+        ⏳ Loading sections...
       </div>
     </div>
   </section>
 
+  <!-- FOOTER -->
   <footer class="footer">
     <div class="footer-content">
       <p>© 2026 लाच्छरसर ग्राम पंचायत · चूरू, राजस्थान</p>
@@ -115,14 +105,143 @@
     </div>
   </footer>
 
+  <!-- FIREBASE -->
   <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
   <script src="firebase-config.js"></script>
   <script src="public-loader.js"></script>
+
   <script>
-    document.getElementById('hamburger')?.addEventListener('click', () => {
+  (function () {
+    'use strict';
+
+    let renderedSections = [];  // store for hashtag mapping
+
+    function init() {
+      if (typeof firebase === 'undefined' || !firebase.apps.length) {
+        setTimeout(init, 200);
+        return;
+      }
+
+      const db = firebase.firestore();
+      console.log("🏠 Home page loading...");
+
+      db.collection('site_content').doc('home').onSnapshot(function (doc) {
+        const container = document.getElementById('homeContainer');
+
+        if (!doc.exists || !doc.data().sections) {
+          container.innerHTML =
+            '<div style="text-align:center; padding:3rem; color:var(--text-muted);">' +
+            '<div style="font-size:3rem; opacity:0.4;">📄</div>' +
+            '<p style="margin-top:1rem;">अभी कोई content नहीं है — Admin panel से जोड़ें</p>' +
+            '</div>';
+          return;
+        }
+
+        renderSections(doc.data().sections);
+        // After rendering, check for hashtag in URL
+        setTimeout(handleHashScroll, 300);
+      }, function (err) {
+        console.warn("Home load error:", err);
+      });
+    }
+
+    function renderSections(sections) {
+      const container = document.getElementById('homeContainer');
+      const sorted = sections.slice().sort(function (a, b) {
+        return (a.order || 0) - (b.order || 0);
+      });
+
+      renderedSections = sorted;
+
+      container.innerHTML = sorted.map(function (sec) {
+        let body = '';
+
+        if (sec.type === 'table') {
+          body = '<table class="dyn-table">' +
+            (sec.data.rows || []).map(function (r) {
+              return '<tr><td>' + escapeHtml(r.key) + '</td><td>' + escapeHtml(r.value) + '</td></tr>';
+            }).join('') +
+          '</table>';
+        }
+        else if (sec.type === 'list') {
+          body = '<ul class="dyn-list">' +
+            (sec.data.items || []).map(function (it) {
+              return '<li><strong>' + escapeHtml(it.name) + '</strong>' +
+                (it.extra ? '<span>' + escapeHtml(it.extra) + '</span>' : '') + '</li>';
+            }).join('') +
+          '</ul>';
+        }
+        else if (sec.type === 'cards') {
+          body = '<div class="dyn-cards">' +
+            (sec.data.cards || []).map(function (c) {
+              return '<div class="dyn-card">' +
+                (c.icon ? '<div class="icon">' + escapeHtml(c.icon) + '</div>' : '') +
+                '<h4>' + escapeHtml(c.name) + '</h4>' +
+                (c.role ? '<p>' + escapeHtml(c.role) + '</p>' : '') +
+              '</div>';
+            }).join('') +
+          '</div>';
+        }
+        else if (sec.type === 'html') {
+          body = '<div class="dyn-html">' + (sec.data.html || '') + '</div>';
+        }
+
+        const hashAttr = sec.hash ? ' id="' + escapeAttr(sec.hash) + '"' : '';
+
+        return '<div class="about-section-block home-dynamic-section"' + hashAttr + '>' +
+          '<h2>' + escapeHtml(sec.title) + '</h2>' +
+          body +
+        '</div>';
+      }).join('');
+    }
+
+    /* ============================================================
+       HASHTAG SCROLL
+       ============================================================ */
+    function handleHashScroll() {
+      const hash = window.location.hash.replace('#', '');
+      if (!hash) return;
+
+      const target = document.getElementById(hash);
+      if (!target) {
+        console.log("⚠️ No section found for #" + hash);
+        return;
+      }
+
+      // Smooth scroll
+      setTimeout(function () {
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        target.classList.add('highlighted');
+        setTimeout(function () { target.classList.remove('highlighted'); }, 2200);
+        console.log("✅ Scrolled to #" + hash);
+      }, 100);
+    }
+
+    // Listen for hash changes (user clicks a hashtag link)
+    window.addEventListener('hashchange', handleHashScroll);
+
+    function escapeHtml(s) {
+      if (!s) return '';
+      const d = document.createElement('div');
+      d.textContent = s;
+      return d.innerHTML;
+    }
+    function escapeAttr(s) {
+      return String(s || '').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+    }
+
+    document.getElementById('hamburger')?.addEventListener('click', function () {
       document.getElementById('navLinks').classList.toggle('open');
     });
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', init);
+    } else {
+      init();
+    }
+  })();
   </script>
+
 </body>
 </html>
