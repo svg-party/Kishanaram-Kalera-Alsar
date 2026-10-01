@@ -3,21 +3,21 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="लाच्छरसर गाँव की फोटो गैलरी — क्रिकेट स्टेडियम, स्कूल, मंदिर, और गाँव की खूबसूरती" />
+  <meta name="description" content="लाच्छरसर गाँव की फोटो गैलरी — क्रिकेट स्टेडियम, मंदिर, स्कूल, और गाँव की खूबसूरती" />
   <title>फोटो गैलरी · लाच्छरसर</title>
   <link rel="icon" type="image/png" href="logo.png" />
   <link rel="stylesheet" href="styles.css" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;600;700;800&display=swap" rel="stylesheet" />
 
-  <!-- Gallery-specific styles -->
   <style>
     /* ============================================================
        GALLERY PAGE — Complete Styles
        ============================================================ */
 
+    /* Hero */
     .gallery-hero {
-      background: linear-gradient(145deg, #f1f5f9 0%, #ffffff 100%);
+      background: linear-gradient(145deg, var(--bg-alt, #f1f5f9) 0%, var(--bg, #fff) 100%);
       padding: 3rem 1.25rem 2rem;
       text-align: center;
     }
@@ -26,6 +26,7 @@
       font-weight: 800;
       color: var(--primary, #0c2340);
       margin-bottom: 0.5rem;
+      line-height: 1.2;
     }
     .gallery-hero h1::after {
       content: '';
@@ -39,136 +40,242 @@
     .gallery-hero p {
       color: var(--text-muted, #64748b);
       font-size: 1rem;
-      max-width: 600px;
+      max-width: 620px;
       margin: 1rem auto 0;
       line-height: 1.7;
     }
 
-    /* Filter tabs */
-    .gallery-filters {
-      display: flex;
-      gap: 0.5rem;
-      justify-content: center;
-      flex-wrap: wrap;
-      margin: 1.5rem auto 0;
-      max-width: 700px;
-    }
-    .filter-btn {
-      background: #fff;
-      border: 2px solid var(--border, #e2e8f0);
-      border-radius: 40px;
-      padding: 0.5rem 1.25rem;
-      font-weight: 600;
-      font-size: 0.85rem;
-      color: var(--text-muted, #64748b);
-      cursor: pointer;
-      transition: all 0.25s;
-      font-family: inherit;
-    }
-    .filter-btn:hover {
-      border-color: var(--accent, #ff9933);
-      color: var(--primary, #0c2340);
-    }
-    .filter-btn.active {
-      background: var(--primary, #0c2340);
-      color: #fff;
-      border-color: var(--primary, #0c2340);
-    }
-
-    /* Main gallery section */
+    /* Section */
     .gallery-section {
       padding: 2.5rem 1.25rem 4rem;
       max-width: 1280px;
       margin: 0 auto;
     }
 
-    /* Counter */
+    /* Counter / back button */
+    .gallery-toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-bottom: 1.75rem;
+      flex-wrap: wrap;
+    }
     .gallery-counter {
-      text-align: center;
       color: var(--text-muted, #64748b);
       font-size: 0.9rem;
-      margin-bottom: 1.5rem;
       font-weight: 500;
     }
     .gallery-counter strong {
       color: var(--primary, #0c2340);
       font-weight: 800;
     }
+    .back-btn {
+      background: var(--primary, #0c2340);
+      color: #fff;
+      border: none;
+      padding: 0.55rem 1.25rem;
+      border-radius: 60px;
+      font-weight: 600;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: all 0.25s;
+      font-family: inherit;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .back-btn:hover {
+      background: var(--accent, #ff9933);
+      color: var(--primary, #0c2340);
+      transform: translateX(-3px);
+    }
 
-    /* Grid */
-    .gallery-grid {
+    /* ============================================================
+       GROUPS GRID
+       ============================================================ */
+    .groups-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-      gap: 1rem;
+      gap: 1.25rem;
     }
-
-    .gallery-item {
-      position: relative;
-      border-radius: 16px;
+    .group-card {
+      background: #fff;
+      border-radius: 18px;
       overflow: hidden;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      box-shadow: 0 4px 14px rgba(0,0,0,0.08);
       transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
       cursor: pointer;
-      background: #f1f5f9;
-      aspect-ratio: 4 / 3;
+      border: 2px solid transparent;
     }
-    .gallery-item:hover {
-      transform: translateY(-6px) scale(1.02);
-      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.15);
+    .group-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 20px 44px rgba(0,0,0,0.15);
+      border-color: var(--accent, #ff9933);
     }
-    .gallery-item img {
+    .group-cover {
+      width: 100%;
+      height: 200px;
+      background: linear-gradient(135deg, #f1f5f9, #e2e8f0);
+      position: relative;
+      overflow: hidden;
+    }
+    .group-cover img {
       width: 100%;
       height: 100%;
       object-fit: cover;
       display: block;
-      transition: transform 0.5s ease;
+      transition: transform 0.5s;
     }
-    .gallery-item:hover img {
+    .group-card:hover .group-cover img {
       transform: scale(1.08);
     }
-    .gallery-item .gallery-caption {
+    .group-cover .placeholder {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      font-size: 4rem;
+      opacity: 0.35;
+    }
+    .group-cover .count-badge {
+      position: absolute;
+      bottom: 0.85rem;
+      right: 0.85rem;
+      background: rgba(12, 35, 64, 0.92);
+      color: #fff;
+      padding: 5px 12px;
+      border-radius: 20px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      backdrop-filter: blur(8px);
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .group-info {
+      padding: 1.25rem 1.35rem 1.5rem;
+    }
+    .group-info h3 {
+      color: var(--primary, #0c2340);
+      font-size: 1.15rem;
+      font-weight: 800;
+      margin: 0 0 0.5rem 0;
+      line-height: 1.3;
+    }
+    .group-info p {
+      color: var(--text-muted, #64748b);
+      font-size: 0.9rem;
+      line-height: 1.6;
+      margin: 0;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .group-info .view-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      color: var(--accent, #ff9933);
+      font-weight: 700;
+      font-size: 0.85rem;
+      margin-top: 0.85rem;
+      transition: gap 0.25s;
+    }
+    .group-card:hover .view-link {
+      gap: 0.6rem;
+    }
+
+    /* ============================================================
+       IMAGES GRID
+       ============================================================ */
+    .images-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 1rem;
+    }
+    .img-tile {
+      position: relative;
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      transition: all 0.3s;
+      cursor: pointer;
+      aspect-ratio: 4 / 3;
+      background: #f1f5f9;
+    }
+    .img-tile:hover {
+      transform: translateY(-4px) scale(1.02);
+      box-shadow: 0 16px 40px rgba(0,0,0,0.15);
+    }
+    .img-tile img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.5s;
+    }
+    .img-tile:hover img {
+      transform: scale(1.08);
+    }
+    .img-tile .overlay {
       position: absolute;
       bottom: 0;
       left: 0;
       right: 0;
-      background: linear-gradient(transparent, rgba(0, 0, 0, 0.9));
+      background: linear-gradient(transparent, rgba(0,0,0,0.9));
       color: #fff;
-      padding: 2rem 1rem 0.85rem;
-      font-size: 0.9rem;
-      font-weight: 600;
-      line-height: 1.4;
-      transform: translateY(0);
-      transition: all 0.3s;
+      padding: 1.75rem 0.85rem 0.85rem;
+      pointer-events: none;
     }
-    .gallery-item:hover .gallery-caption {
-      padding-bottom: 1rem;
+    .img-tile .overlay h4 {
+      font-size: 0.9rem;
+      font-weight: 700;
+      margin: 0 0 0.2rem 0;
+      line-height: 1.3;
+      display: -webkit-box;
+      -webkit-line-clamp: 1;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .img-tile .overlay p {
+      font-size: 0.75rem;
+      margin: 0;
+      opacity: 0.85;
+      display: -webkit-box;
+      -webkit-line-clamp: 1;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
     }
 
-    /* Zoom icon overlay */
-    .gallery-item::after {
+    /* Zoom icon */
+    .img-tile::after {
       content: '🔍';
       position: absolute;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%) scale(0);
-      font-size: 2rem;
-      background: rgba(255, 153, 51, 0.95);
-      width: 60px;
-      height: 60px;
+      font-size: 1.75rem;
+      background: var(--accent, #ff9933);
+      width: 56px;
+      height: 56px;
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
       transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
       pointer-events: none;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.3);
     }
-    .gallery-item:hover::after {
+    .img-tile:hover::after {
       transform: translate(-50%, -50%) scale(1);
     }
 
-    /* Loading skeleton */
-    .gallery-skeleton {
+    /* ============================================================
+       LOADING SKELETON
+       ============================================================ */
+    .skeleton {
       background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%);
       background-size: 200% 100%;
       animation: shimmer 1.5s infinite;
@@ -180,29 +287,30 @@
       100% { background-position: -200% 0; }
     }
 
-    /* Empty state */
-    .gallery-empty {
+    /* Empty / Error */
+    .empty-state {
       text-align: center;
       padding: 4rem 2rem;
-      grid-column: 1 / -1;
       background: #fff;
       border-radius: 20px;
       border: 2px dashed #e2e8f0;
+      grid-column: 1 / -1;
     }
-    .gallery-empty .empty-icon {
+    .empty-state .icon {
       font-size: 4rem;
       margin-bottom: 1rem;
-      opacity: 0.5;
+      opacity: 0.4;
     }
-    .gallery-empty h3 {
+    .empty-state h3 {
       color: var(--primary, #0c2340);
       font-size: 1.3rem;
-      margin-bottom: 0.5rem;
+      margin: 0 0 0.5rem 0;
       font-weight: 800;
     }
-    .gallery-empty p {
+    .empty-state p {
       color: var(--text-muted, #64748b);
       font-size: 0.95rem;
+      margin: 0;
     }
 
     /* ============================================================
@@ -211,65 +319,85 @@
     .lightbox {
       position: fixed;
       inset: 0;
-      background: rgba(0, 0, 0, 0.95);
+      background: rgba(0, 0, 0, 0.96);
       z-index: 9999;
       display: none;
       align-items: center;
       justify-content: center;
       padding: 1rem;
-      animation: fadeIn 0.3s ease;
+      animation: fadeIn 0.25s ease;
     }
-    .lightbox.active {
-      display: flex;
-    }
+    .lightbox.active { display: flex; }
     @keyframes fadeIn {
       from { opacity: 0; }
       to { opacity: 1; }
     }
 
     .lightbox-content {
-      max-width: 90vw;
+      max-width: 92vw;
       max-height: 85vh;
       position: relative;
-      animation: zoomIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      animation: zoomIn 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
     }
     @keyframes zoomIn {
       from { transform: scale(0.85); opacity: 0; }
       to { transform: scale(1); opacity: 1; }
     }
     .lightbox-content img {
-      max-width: 90vw;
-      max-height: 85vh;
+      max-width: 92vw;
+      max-height: 70vh;
       border-radius: 12px;
-      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6);
+      box-shadow: 0 30px 80px rgba(0,0,0,0.6);
       display: block;
+      object-fit: contain;
     }
-    .lightbox-caption {
-      color: #fff;
+
+    .lightbox-info {
       text-align: center;
-      margin-top: 1rem;
-      font-size: 1rem;
+      max-width: 700px;
+      padding: 1.25rem 1rem 0;
+    }
+    .lightbox-info h3 {
+      color: #fff;
+      font-size: 1.2rem;
+      font-weight: 800;
+      margin: 0 0 0.5rem 0;
+      line-height: 1.3;
+    }
+    .lightbox-info p {
+      color: #cbd5e1;
+      font-size: 0.95rem;
+      line-height: 1.6;
+      margin: 0;
+    }
+    .lightbox-info .lightbox-counter {
+      color: #94a3b8;
+      font-size: 0.8rem;
+      margin-top: 0.75rem;
       font-weight: 600;
-      padding: 0 1rem;
     }
 
     .lightbox-close {
       position: fixed;
-      top: 1.5rem;
-      right: 1.5rem;
-      background: rgba(255, 255, 255, 0.15);
+      top: 1.25rem;
+      right: 1.25rem;
+      background: rgba(255,255,255,0.15);
       border: none;
       color: #fff;
       width: 48px;
       height: 48px;
       border-radius: 50%;
-      font-size: 1.5rem;
+      font-size: 1.4rem;
       cursor: pointer;
       transition: all 0.25s;
       display: flex;
       align-items: center;
       justify-content: center;
       backdrop-filter: blur(8px);
+      z-index: 10;
     }
     .lightbox-close:hover {
       background: var(--accent, #ff9933);
@@ -280,7 +408,7 @@
       position: fixed;
       top: 50%;
       transform: translateY(-50%);
-      background: rgba(255, 255, 255, 0.15);
+      background: rgba(255,255,255,0.15);
       border: none;
       color: #fff;
       width: 52px;
@@ -293,25 +421,32 @@
       align-items: center;
       justify-content: center;
       backdrop-filter: blur(8px);
+      z-index: 10;
     }
     .lightbox-nav:hover {
       background: var(--accent, #ff9933);
       color: var(--primary, #0c2340);
     }
-    .lightbox-prev { left: 1.5rem; }
-    .lightbox-next { right: 1.5rem; }
+    .lightbox-prev { left: 1.25rem; }
+    .lightbox-next { right: 1.25rem; }
 
-    /* Mobile responsive */
-    @media (max-width: 640px) {
+    /* ============================================================
+       RESPONSIVE
+       ============================================================ */
+    @media (max-width: 768px) {
       .gallery-hero h1 { font-size: 1.8rem; }
-      .gallery-grid { grid-template-columns: repeat(2, 1fr); gap: 0.6rem; }
-      .gallery-item .gallery-caption {
-        font-size: 0.75rem;
-        padding: 1.5rem 0.5rem 0.5rem;
-      }
+      .gallery-hero p { font-size: 0.9rem; }
+      .groups-grid { grid-template-columns: 1fr; }
+      .images-grid { grid-template-columns: repeat(2, 1fr); gap: 0.6rem; }
+      .group-cover { height: 180px; }
+      .img-tile .overlay { padding: 1.25rem 0.5rem 0.5rem; }
+      .img-tile .overlay h4 { font-size: 0.78rem; }
+      .img-tile .overlay p { font-size: 0.68rem; }
       .lightbox-prev { left: 0.5rem; }
       .lightbox-next { right: 0.5rem; }
-      .lightbox-close { top: 1rem; right: 1rem; width: 40px; height: 40px; font-size: 1.2rem; }
+      .lightbox-close { top: 0.75rem; right: 0.75rem; width: 40px; height: 40px; font-size: 1.2rem; }
+      .lightbox-info h3 { font-size: 1rem; }
+      .lightbox-info p { font-size: 0.85rem; }
     }
   </style>
 </head>
@@ -339,32 +474,22 @@
   <section class="gallery-hero">
     <h1>📸 फोटो गैलरी</h1>
     <p>लाच्छरसर गाँव की खूबसूरत तस्वीरें — क्रिकेट स्टेडियम, डिजिटल लाइब्रेरी, मंदिर, और गाँव की रौनक।</p>
-
-    <!-- Filters -->
-    <div class="gallery-filters" id="galleryFilters">
-      <button class="filter-btn active" data-filter="all">सभी</button>
-      <button class="filter-btn" data-filter="stadium">🏏 क्रिकेट स्टेडियम</button>
-      <button class="filter-btn" data-filter="school">🎓 स्कूल</button>
-      <button class="filter-btn" data-filter="temple">🕉️ मंदिर</button>
-      <button class="filter-btn" data-filter="village">🏘️ गाँव</button>
-    </div>
   </section>
 
-  <!-- GALLERY -->
+  <!-- GALLERY SECTION -->
   <section class="gallery-section">
-    <div class="gallery-counter" id="galleryCounter">
-      Loading...
+    <div class="gallery-toolbar">
+      <div class="gallery-counter" id="galleryCounter">Loading...</div>
+      <button class="back-btn" id="backBtn" style="display:none;" onclick="backToGroups()">← सभी ग्रुप्स</button>
     </div>
 
-    <div class="gallery-grid" id="galleryGrid">
-      <!-- Loading skeletons -->
-      <div class="gallery-skeleton"></div>
-      <div class="gallery-skeleton"></div>
-      <div class="gallery-skeleton"></div>
-      <div class="gallery-skeleton"></div>
-      <div class="gallery-skeleton"></div>
-      <div class="gallery-skeleton"></div>
+    <div id="groupsView" class="groups-grid">
+      <div class="skeleton"></div>
+      <div class="skeleton"></div>
+      <div class="skeleton"></div>
     </div>
+
+    <div id="imagesView" class="images-grid" style="display:none;"></div>
   </section>
 
   <!-- LIGHTBOX -->
@@ -375,7 +500,11 @@
 
     <div class="lightbox-content">
       <img id="lightboxImg" src="" alt="" />
-      <div class="lightbox-caption" id="lightboxCaption"></div>
+      <div class="lightbox-info">
+        <h3 id="lightboxTitle"></h3>
+        <p id="lightboxDesc"></p>
+        <div class="lightbox-counter" id="lightboxCounter"></div>
+      </div>
     </div>
   </div>
 
@@ -401,213 +530,287 @@
 
   <!-- GALLERY LOGIC -->
   <script>
-    (function () {
-      'use strict';
+  (function () {
+    'use strict';
 
-      let allImages = [];
-      let filteredImages = [];
-      let currentFilter = 'all';
-      let currentLightboxIndex = 0;
+    let allGroups = [];
+    let currentGroup = null;
+    let currentImages = [];
+    let currentImageIndex = 0;
+    let groupsUnsub = null;
+    let imagesUnsub = null;
 
-      const grid = document.getElementById('galleryGrid');
-      const counter = document.getElementById('galleryCounter');
-      const lightbox = document.getElementById('lightbox');
-      const lightboxImg = document.getElementById('lightboxImg');
-      const lightboxCaption = document.getElementById('lightboxCaption');
+    const groupsView = document.getElementById('groupsView');
+    const imagesView = document.getElementById('imagesView');
+    const counter = document.getElementById('galleryCounter');
+    const backBtn = document.getElementById('backBtn');
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImg = document.getElementById('lightboxImg');
+    const lightboxTitle = document.getElementById('lightboxTitle');
+    const lightboxDesc = document.getElementById('lightboxDesc');
+    const lightboxCounter = document.getElementById('lightboxCounter');
 
-      /* ============================================================
-         INIT
-         ============================================================ */
-      function init() {
-        // Wait for Firebase to be ready
-        if (typeof firebase === 'undefined' || !firebase.apps.length) {
-          setTimeout(init, 200);
-          return;
-        }
-
-        const db = firebase.firestore();
-        console.log("🖼️ Gallery init...");
-
-        // Real-time listener
-        db.collection('gallery').orderBy('order', 'asc').onSnapshot(
-          function (snap) {
-            allImages = [];
-            snap.forEach(function (doc) {
-              const d = doc.data();
-              allImages.push({
-                id: doc.id,
-                url: d.imageUrl || '',
-                captionHi: d.captionHi || '',
-                captionEn: d.captionEn || '',
-                category: d.category || 'village'
-              });
-            });
-
-            console.log("✅ Loaded", allImages.length, "images");
-            applyFilter(currentFilter);
-          },
-          function (err) {
-            console.warn("Gallery load error:", err);
-            showError();
-          }
-        );
-
-        // Filter buttons
-        document.querySelectorAll('.filter-btn').forEach(function (btn) {
-          btn.addEventListener('click', function () {
-            document.querySelectorAll('.filter-btn').forEach(function (b) {
-              b.classList.remove('active');
-            });
-            btn.classList.add('active');
-            currentFilter = btn.dataset.filter;
-            applyFilter(currentFilter);
-          });
-        });
-
-        // Lightbox controls
-        document.getElementById('lightboxClose').addEventListener('click', closeLightbox);
-        document.getElementById('lightboxPrev').addEventListener('click', function () { navigateLightbox(-1); });
-        document.getElementById('lightboxNext').addEventListener('click', function () { navigateLightbox(1); });
-        lightbox.addEventListener('click', function (e) {
-          if (e.target === lightbox) closeLightbox();
-        });
-
-        // Keyboard navigation
-        document.addEventListener('keydown', function (e) {
-          if (!lightbox.classList.contains('active')) return;
-          if (e.key === 'Escape') closeLightbox();
-          if (e.key === 'ArrowLeft') navigateLightbox(-1);
-          if (e.key === 'ArrowRight') navigateLightbox(1);
-        });
+    /* ============================================================
+       INIT
+       ============================================================ */
+    function init() {
+      if (typeof firebase === 'undefined' || !firebase.apps.length) {
+        setTimeout(init, 200);
+        return;
       }
 
-      /* ============================================================
-         FILTER
-         ============================================================ */
-      function applyFilter(filter) {
-        if (filter === 'all') {
-          filteredImages = allImages.slice();
-        } else {
-          filteredImages = allImages.filter(function (img) {
-            return img.category === filter;
-          });
-        }
-        render();
-      }
+      const db = firebase.firestore();
+      console.log("🖼️ Public gallery init...");
 
-      /* ============================================================
-         RENDER
-         ============================================================ */
-      function render() {
-        if (!filteredImages.length) {
-          grid.innerHTML = '<div class="gallery-empty">' +
-            '<div class="empty-icon">📷</div>' +
-            '<h3>' + (allImages.length === 0 ? 'अभी तक कोई तस्वीर नहीं जोड़ी गई' : 'इस श्रेणी में कोई तस्वीर नहीं है') + '</h3>' +
-            '<p>' + (allImages.length === 0 ? 'Admin panel से तस्वीरें जोड़ें' : 'कृपया दूसरी श्रेणी चुनें') + '</p>' +
+      // Real-time listener for groups
+      groupsUnsub = db.collection('gallery_groups')
+        .orderBy('order', 'desc')
+        .onSnapshot(function (snap) {
+          allGroups = [];
+          snap.forEach(function (doc) {
+            allGroups.push({ id: doc.id, data: doc.data() });
+          });
+          console.log("✅ Loaded", allGroups.length, "groups");
+          renderGroups();
+        }, function (err) {
+          console.warn("Groups load error:", err);
+          groupsView.innerHTML =
+            '<div class="empty-state">' +
+            '<div class="icon">⚠️</div>' +
+            '<h3>ग्रुप्स लोड नहीं हो पाए</h3>' +
+            '<p>कृपया पेज रिफ्रेश करें</p>' +
             '</div>';
-
-          counter.textContent = '';
-          return;
-        }
-
-        counter.innerHTML = 'कुल <strong>' + filteredImages.length + '</strong> तस्वीरें';
-
-        grid.innerHTML = filteredImages.map(function (img, i) {
-          return '<div class="gallery-item" data-index="' + i + '">' +
-            '<img src="' + escapeAttr(img.url) + '" loading="lazy" alt="' + escapeAttr(img.captionHi || 'Gallery') + '" onerror="this.parentElement.style.display=\'none\'" />' +
-            '<div class="gallery-caption">' + escapeHtml(img.captionHi || img.captionEn || '') + '</div>' +
-            '</div>';
-        }).join('');
-
-        // Attach click handlers
-        grid.querySelectorAll('.gallery-item').forEach(function (item) {
-          item.addEventListener('click', function () {
-            openLightbox(parseInt(item.dataset.index));
-          });
         });
-      }
 
-      /* ============================================================
-         LIGHTBOX
-         ============================================================ */
-      function openLightbox(index) {
-        currentLightboxIndex = index;
-        updateLightbox();
-        lightbox.classList.add('active');
-        document.body.style.overflow = 'hidden';
-      }
-
-      function closeLightbox() {
-        lightbox.classList.remove('active');
-        document.body.style.overflow = '';
-      }
-
-      function updateLightbox() {
-        const img = filteredImages[currentLightboxIndex];
-        if (!img) return;
-
-        lightboxImg.src = img.url;
-        lightboxImg.alt = img.captionHi || 'Gallery';
-        lightboxCaption.textContent = img.captionHi || img.captionEn || '';
-
-        // Hide nav buttons if only one image
-        const prevBtn = document.getElementById('lightboxPrev');
-        const nextBtn = document.getElementById('lightboxNext');
-        if (filteredImages.length <= 1) {
-          prevBtn.style.display = 'none';
-          nextBtn.style.display = 'none';
-        } else {
-          prevBtn.style.display = '';
-          nextBtn.style.display = '';
-        }
-      }
-
-      function navigateLightbox(direction) {
-        currentLightboxIndex += direction;
-        if (currentLightboxIndex < 0) currentLightboxIndex = filteredImages.length - 1;
-        if (currentLightboxIndex >= filteredImages.length) currentLightboxIndex = 0;
-        updateLightbox();
-      }
-
-      /* ============================================================
-         HELPERS
-         ============================================================ */
-      function escapeHtml(s) {
-        if (!s) return '';
-        const d = document.createElement('div');
-        d.textContent = s;
-        return d.innerHTML;
-      }
-
-      function escapeAttr(s) {
-        return String(s || '').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
-      }
-
-      function showError() {
-        grid.innerHTML = '<div class="gallery-empty">' +
-          '<div class="empty-icon">⚠️</div>' +
-          '<h3>तस्वीरें लोड नहीं हो पाईं</h3>' +
-          '<p>कृपया पेज रिफ्रेश करें</p>' +
-          '</div>';
-        counter.textContent = '';
-      }
-
-      /* ============================================================
-         MOBILE MENU
-         ============================================================ */
-      document.getElementById('hamburger')?.addEventListener('click', function () {
-        document.getElementById('navLinks').classList.toggle('open');
+      // Lightbox controls
+      document.getElementById('lightboxClose').addEventListener('click', closeLightbox);
+      document.getElementById('lightboxPrev').addEventListener('click', function (e) { e.stopPropagation(); navigateLightbox(-1); });
+      document.getElementById('lightboxNext').addEventListener('click', function (e) { e.stopPropagation(); navigateLightbox(1); });
+      lightbox.addEventListener('click', function (e) {
+        if (e.target === lightbox) closeLightbox();
       });
 
-      /* ============================================================
-         BOOTSTRAP
-         ============================================================ */
-      if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', init);
-      } else {
-        init();
+      // Keyboard
+      document.addEventListener('keydown', function (e) {
+        if (!lightbox.classList.contains('active')) return;
+        if (e.key === 'Escape') closeLightbox();
+        if (e.key === 'ArrowLeft') navigateLightbox(-1);
+        if (e.key === 'ArrowRight') navigateLightbox(1);
+      });
+    }
+
+    /* ============================================================
+       RENDER GROUPS
+       ============================================================ */
+    function renderGroups() {
+      backBtn.style.display = 'none';
+      imagesView.style.display = 'none';
+      groupsView.style.display = 'grid';
+
+      if (!allGroups.length) {
+        groupsView.innerHTML =
+          '<div class="empty-state">' +
+          '<div class="icon">📷</div>' +
+          '<h3>अभी कोई ग्रुप नहीं है</h3>' +
+          '<p>Admin panel से गैलरी ग्रुप बनाएँ</p>' +
+          '</div>';
+        counter.innerHTML = '';
+        return;
       }
-    })();
+
+      counter.innerHTML = 'कुल <strong>' + allGroups.length + '</strong> ग्रुप्स';
+
+      groupsView.innerHTML = allGroups.map(function (item) {
+        const d = item.data;
+        const coverHtml = d.coverUrl
+          ? '<img src="' + escapeAttr(d.coverUrl) + '" alt="' + escapeAttr(d.name) + '" loading="lazy" onerror="this.style.display=\'none\'; this.parentElement.innerHTML=\'<div class=&quot;placeholder&quot;>📁</div>\';" />'
+          : '<div class="placeholder">📁</div>';
+
+        return '<div class="group-card" data-group-id="' + item.id + '">' +
+          '<div class="group-cover">' +
+            coverHtml +
+            '<div class="count-badge">📸 ' + (d.imageCount || 0) + '</div>' +
+          '</div>' +
+          '<div class="group-info">' +
+            '<h3>' + escapeHtml(d.name) + '</h3>' +
+            '<p>' + escapeHtml(d.description || '') + '</p>' +
+            '<span class="view-link">तस्वीरें देखें →</span>' +
+          '</div>' +
+        '</div>';
+      }).join('');
+
+      // Attach click handlers
+      groupsView.querySelectorAll('.group-card').forEach(function (card) {
+        card.addEventListener('click', function () {
+          const groupId = card.getAttribute('data-group-id');
+          const group = allGroups.find(function (g) { return g.id === groupId; });
+          if (group) openGroup(group.id, group.data);
+        });
+      });
+    }
+
+    /* ============================================================
+       OPEN GROUP — Load its images
+       ============================================================ */
+    function openGroup(groupId, groupData) {
+      currentGroup = { id: groupId, data: groupData };
+
+      groupsView.style.display = 'none';
+      imagesView.style.display = 'grid';
+      backBtn.style.display = 'inline-flex';
+      counter.innerHTML = '<strong>' + escapeHtml(groupData.name) + '</strong> · Loading...';
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+
+      if (imagesUnsub) imagesUnsub();
+
+      const db = firebase.firestore();
+      imagesUnsub = db.collection('gallery_images')
+        .where('groupId', '==', groupId)
+        .onSnapshot(function (snap) {
+          currentImages = [];
+          snap.forEach(function (doc) {
+            currentImages.push({ id: doc.id, data: doc.data() });
+          });
+          // Client-side sort (newest first)
+          currentImages.sort(function (a, b) {
+            return (b.data.order || 0) - (a.data.order || 0);
+          });
+
+          renderImages();
+        }, function (err) {
+          console.warn("Images error:", err);
+          imagesView.innerHTML =
+            '<div class="empty-state" style="grid-column:1/-1;">' +
+            '<div class="icon">⚠️</div>' +
+            '<h3>तस्वीरें लोड नहीं हो पाईं</h3>' +
+            '</div>';
+        });
+    }
+
+    /* ============================================================
+       RENDER IMAGES
+       ============================================================ */
+    function renderImages() {
+      if (!currentImages.length) {
+        counter.innerHTML = '<strong>' + escapeHtml(currentGroup.data.name) + '</strong>';
+        imagesView.innerHTML =
+          '<div class="empty-state" style="grid-column:1/-1;">' +
+          '<div class="icon">🖼️</div>' +
+          '<h3>इस ग्रुप में कोई तस्वीर नहीं है</h3>' +
+          '<p>Admin panel से तस्वीरें जोड़ें</p>' +
+          '</div>';
+        return;
+      }
+
+      counter.innerHTML = '<strong>' + escapeHtml(currentGroup.data.name) + '</strong> · ' + currentImages.length + ' तस्वीरें';
+
+      imagesView.innerHTML = currentImages.map(function (item, index) {
+        const d = item.data;
+        const title = d.title || d.captionHi || '';
+        const desc = d.description || d.captionHi || '';
+
+        return '<div class="img-tile" data-index="' + index + '">' +
+          '<img src="' + escapeAttr(d.imageUrl) + '" loading="lazy" alt="' + escapeAttr(title) + '" onerror="this.style.display=\'none\'; this.parentElement.style.background=\'#e2e8f0\';" />' +
+          (title || desc ? '<div class="overlay">' +
+            (title ? '<h4>' + escapeHtml(title) + '</h4>' : '') +
+            (desc ? '<p>' + escapeHtml(desc) + '</p>' : '') +
+          '</div>' : '') +
+        '</div>';
+      }).join('');
+
+      imagesView.querySelectorAll('.img-tile').forEach(function (tile) {
+        tile.addEventListener('click', function () {
+          openLightbox(parseInt(tile.getAttribute('data-index')));
+        });
+      });
+    }
+
+    /* ============================================================
+       BACK TO GROUPS
+       ============================================================ */
+    window.backToGroups = function () {
+      if (imagesUnsub) { imagesUnsub(); imagesUnsub = null; }
+      currentGroup = null;
+      currentImages = [];
+      renderGroups();
+    };
+
+    /* ============================================================
+       LIGHTBOX
+       ============================================================ */
+    function openLightbox(index) {
+      currentImageIndex = index;
+      updateLightbox();
+      lightbox.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeLightbox() {
+      lightbox.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    function updateLightbox() {
+      const item = currentImages[currentImageIndex];
+      if (!item) return;
+      const d = item.data;
+
+      lightboxImg.src = d.imageUrl;
+      lightboxImg.alt = d.title || '';
+      lightboxTitle.textContent = d.title || d.captionHi || '';
+      lightboxDesc.textContent = d.description || d.captionEn || '';
+      lightboxCounter.textContent = (currentImageIndex + 1) + ' / ' + currentImages.length;
+
+      // Hide/show nav
+      const prevBtn = document.getElementById('lightboxPrev');
+      const nextBtn = document.getElementById('lightboxNext');
+      if (currentImages.length <= 1) {
+        prevBtn.style.display = 'none';
+        nextBtn.style.display = 'none';
+      } else {
+        prevBtn.style.display = 'flex';
+        nextBtn.style.display = 'flex';
+      }
+    }
+
+    function navigateLightbox(direction) {
+      currentImageIndex += direction;
+      if (currentImageIndex < 0) currentImageIndex = currentImages.length - 1;
+      if (currentImageIndex >= currentImages.length) currentImageIndex = 0;
+      updateLightbox();
+    }
+
+    /* ============================================================
+       HELPERS
+       ============================================================ */
+    function escapeHtml(s) {
+      if (!s) return '';
+      const d = document.createElement('div');
+      d.textContent = s;
+      return d.innerHTML;
+    }
+
+    function escapeAttr(s) {
+      return String(s || '').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+    }
+
+    /* ============================================================
+       MOBILE MENU
+       ============================================================ */
+    document.getElementById('hamburger')?.addEventListener('click', function () {
+      document.getElementById('navLinks').classList.toggle('open');
+    });
+
+    /* ============================================================
+       BOOTSTRAP
+       ============================================================ */
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', init);
+    } else {
+      init();
+    }
+  })();
   </script>
 
 </body>
