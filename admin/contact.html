@@ -1,6 +1,112 @@
-<!-- Same head + styles as panchayat.html -->
-<!-- बस title बदलो: "Contact Editor", brand icon: "📞" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Contact Editor · Lachharsar Admin</title>
+  <link rel="stylesheet" href="admin.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
 
+  <style>
+    .sec-list { display: flex; flex-direction: column; gap: 0.75rem; margin-bottom: 1.5rem; }
+    .sec-card {
+      background: #fff; border-radius: 14px; padding: 1rem 1.25rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06); border-left: 4px solid #ff9933;
+      display: flex; justify-content: space-between; align-items: center;
+      gap: 1rem; transition: all 0.25s; cursor: grab;
+    }
+    .sec-card:active { cursor: grabbing; }
+    .sec-card.dragging { opacity: 0.4; transform: scale(0.98); }
+    .sec-card.drag-over { border-top: 3px solid #ff9933; padding-top: 1.15rem; }
+    .sec-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.1); }
+    .sec-info { flex: 1; min-width: 0; }
+    .sec-info h4 { color: #0c2340; font-size: 1rem; font-weight: 800; margin: 0 0 0.25rem 0; }
+    .sec-info .meta { color: #94a3b8; font-size: 0.78rem; display: flex; gap: 0.75rem; flex-wrap: wrap; align-items: center; }
+    .sec-info .type-badge {
+      display: inline-block; padding: 2px 8px; background: #f1f5f9; color: #0c2340;
+      border-radius: 20px; font-size: 0.7rem; font-weight: 700; text-transform: uppercase;
+    }
+    .sec-info .type-badge.table { background: #dbeafe; color: #1e40af; }
+    .sec-info .type-badge.list  { background: #dcfce7; color: #166534; }
+    .sec-info .type-badge.cards { background: #fef3c7; color: #92400e; }
+    .sec-info .type-badge.html  { background: #f3e8ff; color: #6b21a8; }
+    .sec-actions { display: flex; gap: 0.4rem; flex-shrink: 0; }
+    .sec-actions button {
+      background: #f1f5f9; border: none; width: 34px; height: 34px;
+      border-radius: 8px; cursor: pointer; font-size: 0.9rem;
+      transition: all 0.2s; display: flex; align-items: center;
+      justify-content: center; color: #334155;
+    }
+    .sec-actions button:hover { background: #0c2340; color: #fff; }
+    .sec-actions button.danger:hover { background: #dc2626; }
+    .sec-actions button.move:hover { background: #16a34a; }
+    .add-sec-btn {
+      background: linear-gradient(135deg, #0c2340, #1e3a5f); color: #fff;
+      border: none; padding: 1rem 1.5rem; border-radius: 14px;
+      font-weight: 700; font-size: 0.95rem; cursor: pointer; width: 100%;
+      transition: all 0.25s; font-family: inherit; display: flex;
+      align-items: center; justify-content: center; gap: 0.5rem;
+      box-shadow: 0 4px 14px rgba(12, 35, 64, 0.2);
+    }
+    .add-sec-btn:hover {
+      background: linear-gradient(135deg, #ff9933, #e07e1a); color: #0c2340;
+      transform: translateY(-2px);
+    }
+    .sec-modal {
+      position: fixed; inset: 0; background: rgba(0,0,0,0.8);
+      backdrop-filter: blur(6px); z-index: 9999; display: none;
+      align-items: flex-start; justify-content: center; padding: 1rem; overflow-y: auto;
+    }
+    .sec-modal.active { display: flex; }
+    .sec-modal-box {
+      background: #fff; border-radius: 20px; padding: 1.75rem;
+      max-width: 700px; width: 100%; margin: auto; position: relative;
+    }
+    .sec-modal-close {
+      position: absolute; top: 0.75rem; right: 0.75rem;
+      background: #f1f5f9; border: none; width: 36px; height: 36px;
+      border-radius: 50%; font-size: 1rem; cursor: pointer;
+      font-weight: 700; transition: all 0.25s;
+    }
+    .sec-modal-close:hover { background: #ff9933; color: #fff; transform: rotate(90deg); }
+    .sec-modal h3 { color: #0c2340; font-size: 1.3rem; font-weight: 800; margin: 0 0 0.35rem 0; }
+    .sec-modal .sub { color: #64748b; font-size: 0.85rem; margin-bottom: 1.25rem; }
+    .type-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.75rem; margin-bottom: 1.25rem; }
+    .type-option {
+      background: #fff; border: 2px solid #e2e8f0; border-radius: 12px;
+      padding: 0.85rem 0.5rem; text-align: center; cursor: pointer; transition: all 0.25s;
+    }
+    .type-option:hover { border-color: #ff9933; transform: translateY(-2px); }
+    .type-option.active { border-color: #ff9933; background: #fff8ee; }
+    .type-option .emoji { font-size: 1.75rem; display: block; margin-bottom: 0.35rem; }
+    .type-option .label { font-size: 0.78rem; font-weight: 700; color: #0c2340; }
+    .repeat-row {
+      background: #f8fafc; border-radius: 10px; padding: 0.75rem;
+      margin-bottom: 0.5rem; display: flex; gap: 0.5rem;
+      align-items: flex-start; border-left: 3px solid #ff9933;
+    }
+    .repeat-row .inputs { flex: 1; display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; }
+    .repeat-row.single .inputs { grid-template-columns: 1fr; }
+    .repeat-row .remove {
+      background: #fee2e2; color: #dc2626; border: none;
+      width: 32px; height: 32px; border-radius: 8px; cursor: pointer;
+      font-weight: 700; flex-shrink: 0; font-size: 0.85rem;
+    }
+    .repeat-row .remove:hover { background: #dc2626; color: #fff; }
+    .add-row-btn {
+      background: #f1f5f9; border: 2px dashed #cbd5e1; color: #0c2340;
+      padding: 0.65rem 1rem; border-radius: 10px; font-weight: 600;
+      font-size: 0.82rem; cursor: pointer; width: 100%;
+      transition: all 0.2s; font-family: inherit; margin-bottom: 1rem;
+    }
+    .add-row-btn:hover { border-color: #ff9933; background: #fff8ee; color: #ff9933; }
+    @media (max-width: 640px) {
+      .type-grid { grid-template-columns: 1fr 1fr; }
+      .repeat-row .inputs { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
 <body>
   <header class="topbar">
     <div class="brand"><span>📞 Contact Page Editor</span></div>
@@ -44,7 +150,52 @@
     </div>
   </main>
 
-  <!-- Same modal as panchayat.html -->
+  <!-- ============================================================
+       SECTION MODAL — YE MISSING THA!
+       ============================================================ -->
+  <div class="sec-modal" id="secModal">
+    <div class="sec-modal-box">
+      <button class="sec-modal-close" onclick="closeSectionModal()">✕</button>
+      <h3 id="modalTitle">Add New Section</h3>
+      <p class="sub" id="modalSub">Section का type और title चुनो</p>
+
+      <div class="field">
+        <label>Section Title</label>
+        <input type="text" id="secTitle" placeholder="जैसे: संपर्क जानकारी, पता, Google Map" />
+      </div>
+
+      <div id="typeSelectorWrap">
+        <label style="display:block; font-weight:600; font-size:0.85rem; color:#334155; margin-bottom:0.5rem;">Section Type</label>
+        <div class="type-grid">
+          <div class="type-option" data-type="table" onclick="selectType('table')">
+            <span class="emoji">📊</span>
+            <span class="label">Table</span>
+          </div>
+          <div class="type-option" data-type="list" onclick="selectType('list')">
+            <span class="emoji">📋</span>
+            <span class="label">List</span>
+          </div>
+          <div class="type-option" data-type="cards" onclick="selectType('cards')">
+            <span class="emoji">🎴</span>
+            <span class="label">Cards</span>
+          </div>
+          <div class="type-option" data-type="html" onclick="selectType('html')">
+            <span class="emoji">🧩</span>
+            <span class="label">Custom HTML</span>
+          </div>
+        </div>
+      </div>
+
+      <div id="typeInfo" style="background:#f1f5f9; padding:0.75rem; border-radius:10px; margin-bottom:1rem; font-size:0.82rem; color:#64748b; display:none;"></div>
+
+      <div id="contentArea"></div>
+
+      <div style="display:flex; gap:0.75rem; justify-content:flex-end; margin-top:1.25rem;">
+        <button class="btn-secondary" onclick="closeSectionModal()">Cancel</button>
+        <button class="btn-primary" onclick="saveSectionInModal()">💾 Save Section</button>
+      </div>
+    </div>
+  </div>
 
   <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
