@@ -1,0 +1,56 @@
+<!-- Same head + styles as panchayat.html -->
+<!-- बस title बदलो: "Contact Editor", brand icon: "📞" -->
+
+<body>
+  <header class="topbar">
+    <div class="brand"><span>📞 Contact Page Editor</span></div>
+    <div class="actions">
+      <span id="userEmail"></span>
+      <button id="logoutBtn" class="btn-logout">Logout</button>
+    </div>
+  </header>
+
+  <nav class="tabs">
+    <button onclick="location.href='index.html'">📊 Overview</button>
+    <button onclick="location.href='themes.html'">🎨 Themes</button>
+    <button onclick="location.href='popups.html'">📢 Popups</button>
+    <button onclick="location.href='gallery.html'">📸 Gallery</button>
+    <button onclick="location.href='about.html'">📖 About</button>
+    <button onclick="location.href='panchayat.html'">🏛️ Panchayat</button>
+    <button class="active" onclick="location.href='contact.html'">📞 Contact</button>
+    <button onclick="location.href='legal.html'">📄 Legal Pages</button>
+  </nav>
+
+  <main class="container">
+    <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:1rem; margin-bottom:1.25rem;">
+      <div>
+        <h2>📞 Contact Page Editor</h2>
+        <p class="hint" style="margin:0;">Contact page के sections जोड़ो, edit करो, delete करो।</p>
+      </div>
+      <a href="../contact.html" target="_blank" class="btn-secondary" style="text-decoration:none;">👁 Preview</a>
+    </div>
+
+    <div class="sec-list" id="secList">
+      <p style="text-align:center; color:#94a3b8; padding:2rem;">Loading sections...</p>
+    </div>
+
+    <button class="add-sec-btn" onclick="openSectionModal('create')">
+      ➕ नया Section जोड़ो
+    </button>
+
+    <div style="position:sticky; bottom:0; background:#fff; padding:1rem 1.5rem; margin-top:1.5rem; border-radius:14px; box-shadow:0 -4px 20px rgba(0,0,0,0.08); display:flex; justify-content:space-between; align-items:center; gap:1rem; flex-wrap:wrap; z-index:10;">
+      <span id="saveStatus" style="color:#64748b; font-size:0.85rem;">सब changes save हो चुके हैं</span>
+      <button class="btn-primary" onclick="saveAllSections()">💾 Save All Changes</button>
+    </div>
+  </main>
+
+  <!-- Same modal as panchayat.html -->
+
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+  <script src="../firebase-config.js"></script>
+  <script src="js/admin-core.js"></script>
+  <script src="js/contact.js"></script>
+</body>
+</html>

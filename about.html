@@ -9,9 +9,85 @@
   <link rel="stylesheet" href="styles.css" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;600;700;800&display=swap" rel="stylesheet" />
+
+  <style>
+    /* Dynamic sections styles */
+    .about-section-block {
+      background: #fff;
+      border-radius: 16px;
+      padding: 1.75rem 2rem;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.06);
+      margin-bottom: 1.5rem;
+      border-left: 5px solid var(--accent, #ff9933);
+      transition: all 0.25s;
+    }
+    .about-section-block:hover {
+      box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+    }
+    .about-section-block h2 {
+      color: var(--primary, #0c2340);
+      font-size: 1.3rem;
+      font-weight: 800;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    /* Table type */
+    .dyn-table { width: 100%; border-collapse: collapse; }
+    .dyn-table tr { border-bottom: 1px dashed var(--border, #e2e8f0); }
+    .dyn-table tr:last-child { border-bottom: none; }
+    .dyn-table td { padding: 0.85rem 0.5rem; font-size: 0.95rem; vertical-align: top; }
+    .dyn-table td:first-child { color: var(--text-muted, #64748b); font-weight: 600; width: 40%; }
+    .dyn-table td:last-child { color: var(--primary, #0c2340); font-weight: 600; }
+
+    /* List type */
+    .dyn-list { list-style: none; padding: 0; margin: 0; }
+    .dyn-list li {
+      padding: 0.7rem 0;
+      border-bottom: 1px dashed var(--border, #e2e8f0);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    .dyn-list li:last-child { border-bottom: none; }
+    .dyn-list li strong { color: var(--primary, #0c2340); font-weight: 700; }
+    .dyn-list li span { color: var(--text-muted, #64748b); font-size: 0.9rem; }
+
+    /* Cards type */
+    .dyn-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 1rem;
+    }
+    .dyn-card {
+      background: linear-gradient(135deg, #fff8ee, #ffe8cc);
+      border-radius: 14px;
+      padding: 1.25rem;
+      text-align: center;
+      border-left: 4px solid var(--accent, #ff9933);
+    }
+    .dyn-card .icon { font-size: 2rem; margin-bottom: 0.5rem; }
+    .dyn-card h4 { color: var(--primary, #0c2340); font-size: 1rem; font-weight: 800; margin: 0 0 0.35rem 0; }
+    .dyn-card p { color: var(--text-muted, #64748b); font-size: 0.85rem; margin: 0; }
+
+    /* HTML type */
+    .dyn-html { line-height: 1.8; }
+
+    /* Responsive */
+    @media (max-width: 640px) {
+      .about-section-block { padding: 1.35rem 1.25rem; }
+      .dyn-table td:first-child { width: 50%; font-size: 0.85rem; }
+      .dyn-table td:last-child { font-size: 0.85rem; }
+    }
+  </style>
 </head>
 <body>
 
+  <!-- NAVBAR -->
   <header class="navbar">
     <div class="nav-container">
       <a href="index.html" class="brand">
@@ -29,119 +105,24 @@
     </div>
   </header>
 
+  <!-- HERO -->
+  <section class="section-alt" style="padding: 3rem 1.25rem 2rem; text-align: center;">
+    <h1 class="section-title" style="margin-bottom: 0.5rem;">लाच्छरसर के बारे में</h1>
+    <p style="color: var(--text-muted, #64748b); font-size: 1rem; max-width: 620px; margin: 0 auto;">
+      गाँव की पूरी जानकारी — इतिहास, जनसांख्यिकी, भूगोल, और भी बहुत कुछ।
+    </p>
+  </section>
+
+  <!-- DYNAMIC SECTIONS -->
   <section class="section">
-    <div class="section-container">
-      <h1 class="section-title">लाच्छरसर के बारे में</h1>
-
-      <div class="about-block">
-        <h2>📌 बुनियादी परिचय</h2>
-        <table class="info-table">
-          <tr><td>गाँव का नाम</td><td>लाच्छरसर (Lachharsar)</td></tr>
-          <tr><td>जिला</td><td>चूरू, राजस्थान (भारत)</td></tr>
-          <tr><td>तहसील / सब-डिस्ट्रिक्ट</td><td>रतनगढ़ / राजलदेसर</td></tr>
-          <tr><td>ग्राम पंचायत</td><td>लाच्छरसर</td></tr>
-          <tr><td>पिन कोड</td><td>331802</td></tr>
-          <tr><td>मुख्य डाकघर</td><td>राजलदेसर</td></tr>
-          <tr><td>LGD विलेज कोड</td><td>70573</td></tr>
-          <tr><td>संभाग</td><td>बीकानेर</td></tr>
-          <tr><td>भाषा</td><td>हिंदी और राजस्थानी</td></tr>
-          <tr><td>ऊँचाई</td><td>309 मीटर (समुद्र तल से)</td></tr>
-          <tr><td>STD कोड</td><td>01567</td></tr>
-        </table>
-      </div>
-
-      <div class="about-block">
-        <h2>👥 जनसांख्यिकी (2011 जनगणना)</h2>
-        <table class="info-table">
-          <tr><td>कुल आबादी</td><td>9,459</td></tr>
-          <tr><td>कुल परिवार</td><td>1,405</td></tr>
-          <tr><td>पुरुष जनसंख्या</td><td>4,862</td></tr>
-          <tr><td>महिला जनसंख्या</td><td>4,597 (48.6%)</td></tr>
-          <tr><td>कुल साक्षरता दर</td><td>46.0% (4,349)</td></tr>
-          <tr><td>महिला साक्षरता दर</td><td>16.3% (1,541)</td></tr>
-          <tr><td>अनुसूचित जाति</td><td>14.3% (1,357)</td></tr>
-          <tr><td>अनुसूचित जनजाति</td><td>0.8% (75)</td></tr>
-          <tr><td>कार्यशील जनसंख्या</td><td>49.7%</td></tr>
-          <tr><td>बाल जनसंख्या (0-6)</td><td>1,844</td></tr>
-        </table>
-      </div>
-
-      <div class="about-block">
-        <h2>🗺️ भौगोलिक स्थिति और दूरी</h2>
-        <table class="info-table">
-          <tr><td>कुल भौगोलिक क्षेत्र</td><td>10,090.22 हेक्टेयर (~100.90 वर्ग किमी)</td></tr>
-          <tr><td>नज़दीकी शहर</td><td>राजलदेसर (~15 किमी)</td></tr>
-          <tr><td>तहसील मुख्यालय</td><td>रतनगढ़ (~29-35 किमी)</td></tr>
-          <tr><td>जिला मुख्यालय (चूरू)</td><td>~75-80 किमी पश्चिम</td></tr>
-          <tr><td>राज्य की राजधानी (जयपुर)</td><td>~228 किमी</td></tr>
-          <tr><td>नज़दीकी रेलवे स्टेशन</td><td>परसनेउ (8.3 किमी)</td></tr>
-          <tr><td>राष्ट्रीय राजमार्ग</td><td>NH52</td></tr>
-        </table>
-      </div>
-
-      <div class="about-block">
-        <h2>🗳️ राजनीतिक प्रतिनिधित्व</h2>
-        <table class="info-table">
-          <tr><td>विधानसभा क्षेत्र</td><td>रतनगढ़ विधानसभा</td></tr>
-          <tr><td>विधायक (MLA)</td><td>श्री पूसाराम गोदारा</td></tr>
-          <tr><td>लोकसभा क्षेत्र</td><td>चूरू संसदीय क्षेत्र</td></tr>
-          <tr><td>सांसद (MP)</td><td>श्री राहुल कस्वां</td></tr>
-          <tr><td>सरपंच</td><td>श्रीमती धापू देवी</td></tr>
-          <tr><td>प्रमुख राजनीतिक दल</td><td>BJP, INC</td></tr>
-        </table>
-      </div>
-
-      <div class="about-block">
-        <h2>🏘️ नज़दीकी गाँव</h2>
-        <ul class="nearby-list">
-          <li><strong>सिकराली</strong> — 11 किमी</li>
-          <li><strong>अलसर</strong> — 14 किमी</li>
-          <li><strong>भानुडा बिदावतान</strong> — 16 किमी</li>
-        </ul>
-      </div>
-
-      <div class="about-block">
-        <h2>🏙️ नज़दीकी शहर</h2>
-        <ul class="nearby-list">
-          <li><strong>राजलदेसर</strong> — 15 किमी</li>
-          <li><strong>रतनगढ़</strong> — 30 किमी</li>
-          <li><strong>सरदारशहर</strong> — 43 किमी</li>
-          <li><strong>सुजानगढ़</strong> — 50 किमी</li>
-        </ul>
-      </div>
-
-      <div class="about-block">
-        <h2>🎓 शिक्षा</h2>
-        <ul class="nearby-list">
-          <li>राजकीय वरिष्ठ माध्यमिक विद्यालय, लाच्छरसर</li>
-          <li>आदर्श विद्या मंदिर स्कूल</li>
-          <li>सरस्वती बाल विद्या मंदिर (UPS)</li>
-          <li>ओम गायत्री विद्या मंदिर (UPS)</li>
-          <li>राजकीय प्राथमिक विद्यालय, बरसाना जोहड़</li>
-        </ul>
-      </div>
-
-      <div class="about-block">
-        <h2>🏥 स्वास्थ्य सुविधाएँ</h2>
-        <ul class="nearby-list">
-          <li>राजकीय अस्पताल, लाच्छरसर</li>
-          <li>प्राथमिक स्वास्थ्य केंद्र (PHC), लाच्छरसर</li>
-          <li>उप-केंद्र, बलरामपुरा</li>
-        </ul>
-      </div>
-
-      <div class="about-block">
-        <h2>🕉️ धार्मिक स्थल</h2>
-        <ul class="nearby-list">
-          <li>विष्णु भगवान मंदिर — 0.2 किमी</li>
-          <li>श्री श्याम मंदिर, लाच्छरसर — 0.4 किमी</li>
-          <li>करणी माता मंदिर — 0.7 किमी</li>
-          <li>वीर तेजाजी धाम लाच्छरसर — 1.5 किमी</li>
-        </ul>
+    <div class="section-container" id="aboutContainer">
+      <div style="text-align: center; padding: 3rem; color: var(--text-muted);">
+        ⏳ Loading sections...
       </div>
     </div>
   </section>
 
+  <!-- FOOTER -->
   <footer class="footer">
     <div class="footer-content">
       <p>© 2026 लाच्छरसर ग्राम पंचायत · चूरू, राजस्थान</p>
@@ -155,14 +136,103 @@
     </div>
   </footer>
 
+  <!-- FIREBASE -->
   <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
   <script src="firebase-config.js"></script>
   <script src="public-loader.js"></script>
+
   <script>
-    document.getElementById('hamburger')?.addEventListener('click', () => {
+  (function () {
+    'use strict';
+
+    function init() {
+      if (typeof firebase === 'undefined' || !firebase.apps.length) {
+        setTimeout(init, 200);
+        return;
+      }
+
+      const db = firebase.firestore();
+      db.collection('site_content').doc('about').onSnapshot(function (doc) {
+        if (!doc.exists || !doc.data().sections) {
+          document.getElementById('aboutContainer').innerHTML =
+            '<div style="text-align: center; padding: 3rem; color: var(--text-muted);">' +
+            '📄 अभी कोई section नहीं है — admin panel से जोड़ें' +
+            '</div>';
+          return;
+        }
+        renderSections(doc.data().sections);
+      }, function (err) {
+        console.warn("About load error:", err);
+      });
+    }
+
+    function renderSections(sections) {
+      const container = document.getElementById('aboutContainer');
+      const sorted = sections.slice().sort(function (a, b) { return (a.order || 0) - (b.order || 0); });
+
+      container.innerHTML = sorted.map(function (sec) {
+        let body = '';
+
+        if (sec.type === 'table') {
+          body = '<table class="dyn-table">' +
+            (sec.data.rows || []).map(function (r) {
+              return '<tr><td>' + escapeHtml(r.key) + '</td><td>' + escapeHtml(r.value) + '</td></tr>';
+            }).join('') +
+          '</table>';
+        }
+
+        else if (sec.type === 'list') {
+          body = '<ul class="dyn-list">' +
+            (sec.data.items || []).map(function (it) {
+              return '<li><strong>' + escapeHtml(it.name) + '</strong>' +
+                (it.extra ? '<span>' + escapeHtml(it.extra) + '</span>' : '') +
+              '</li>';
+            }).join('') +
+          '</ul>';
+        }
+
+        else if (sec.type === 'cards') {
+          body = '<div class="dyn-cards">' +
+            (sec.data.cards || []).map(function (c) {
+              return '<div class="dyn-card">' +
+                (c.icon ? '<div class="icon">' + escapeHtml(c.icon) + '</div>' : '') +
+                '<h4>' + escapeHtml(c.name) + '</h4>' +
+                (c.role ? '<p>' + escapeHtml(c.role) + '</p>' : '') +
+              '</div>';
+            }).join('') +
+          '</div>';
+        }
+
+        else if (sec.type === 'html') {
+          body = '<div class="dyn-html">' + (sec.data.html || '') + '</div>';
+        }
+
+        return '<div class="about-section-block">' +
+          '<h2>' + escapeHtml(sec.title) + '</h2>' +
+          body +
+        '</div>';
+      }).join('');
+    }
+
+    function escapeHtml(s) {
+      if (!s) return '';
+      const d = document.createElement('div');
+      d.textContent = s;
+      return d.innerHTML;
+    }
+
+    document.getElementById('hamburger')?.addEventListener('click', function () {
       document.getElementById('navLinks').classList.toggle('open');
     });
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', init);
+    } else {
+      init();
+    }
+  })();
   </script>
+
 </body>
 </html>

@@ -3,15 +3,198 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="लाच्छरसर ग्राम पंचायत से संपर्क करें" />
+  <meta name="description" content="लाच्छरसर ग्राम पंचायत से संपर्क करें — फोन, ईमेल, WhatsApp, पता, Google Map" />
+  <meta name="theme-color" content="#0c2340" />
   <title>संपर्क करें · लाच्छरसर</title>
   <link rel="icon" type="image/png" href="logo.png" />
   <link rel="stylesheet" href="styles.css" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;600;700;800&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ============================================================
+       CONTACT PAGE — DYNAMIC SECTIONS STYLES
+       ============================================================ */
+
+    /* Hero */
+    .contact-hero {
+      background: linear-gradient(135deg, var(--primary, #0c2340) 0%, var(--primary-light, #1e3a5f) 100%);
+      padding: 3.5rem 1.25rem 3rem;
+      text-align: center;
+      color: #fff;
+      position: relative;
+      overflow: hidden;
+    }
+    .contact-hero::before {
+      content: '📞';
+      position: absolute;
+      font-size: 15rem;
+      opacity: 0.05;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+    }
+    .contact-hero h1 {
+      font-size: 2.5rem;
+      font-weight: 800;
+      color: #fff;
+      margin-bottom: 0.75rem;
+      position: relative;
+      z-index: 1;
+    }
+    .contact-hero h1::after {
+      content: '';
+      display: block;
+      width: 80px;
+      height: 4px;
+      background: var(--accent, #ff9933);
+      margin: 0.75rem auto 0;
+      border-radius: 4px;
+    }
+    .contact-hero p {
+      color: rgba(255,255,255,0.85);
+      font-size: 1rem;
+      max-width: 620px;
+      margin: 1rem auto 0;
+      line-height: 1.7;
+      position: relative;
+      z-index: 1;
+    }
+    .contact-hero .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(255,153,51,0.2);
+      border: 1.5px solid var(--accent, #ff9933);
+      color: var(--accent, #ff9933);
+      padding: 0.4rem 1rem;
+      border-radius: 60px;
+      font-weight: 700;
+      font-size: 0.8rem;
+      margin-bottom: 1rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Main section */
+    .contact-section {
+      padding: 3rem 1.25rem 4rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    /* Section blocks */
+    .about-section-block {
+      background: #fff;
+      border-radius: 16px;
+      padding: 1.75rem 2rem;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.06);
+      margin-bottom: 1.5rem;
+      border-left: 5px solid var(--accent, #ff9933);
+      transition: all 0.25s;
+    }
+    .about-section-block:hover {
+      box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+    }
+    .about-section-block h2 {
+      color: var(--primary, #0c2340);
+      font-size: 1.3rem;
+      font-weight: 800;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    /* Table */
+    .dyn-table { width: 100%; border-collapse: collapse; }
+    .dyn-table tr { border-bottom: 1px dashed var(--border, #e2e8f0); }
+    .dyn-table tr:last-child { border-bottom: none; }
+    .dyn-table td { padding: 0.85rem 0.5rem; font-size: 0.95rem; vertical-align: top; }
+    .dyn-table td:first-child { color: var(--text-muted, #64748b); font-weight: 600; width: 40%; }
+    .dyn-table td:last-child { color: var(--primary, #0c2340); font-weight: 600; }
+
+    /* List */
+    .dyn-list { list-style: none; padding: 0; margin: 0; }
+    .dyn-list li {
+      padding: 0.7rem 0;
+      border-bottom: 1px dashed var(--border, #e2e8f0);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    .dyn-list li:last-child { border-bottom: none; }
+    .dyn-list li strong { color: var(--primary, #0c2340); font-weight: 700; }
+    .dyn-list li span { color: var(--text-muted, #64748b); font-size: 0.9rem; }
+
+    /* Cards — contact cards */
+    .dyn-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 1.25rem;
+    }
+    .dyn-card {
+      background: #fff;
+      border-radius: 16px;
+      padding: 1.5rem 1.25rem;
+      text-align: center;
+      border-top: 4px solid var(--accent, #ff9933);
+      box-shadow: 0 4px 14px rgba(0,0,0,0.06);
+      transition: all 0.25s;
+    }
+    .dyn-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 30px rgba(0,0,0,0.12);
+    }
+    .dyn-card .icon { font-size: 2.5rem; margin-bottom: 0.75rem; }
+    .dyn-card h4 {
+      color: var(--primary, #0c2340);
+      font-size: 1rem;
+      font-weight: 800;
+      margin: 0 0 0.4rem 0;
+    }
+    .dyn-card p {
+      color: var(--text-muted, #64748b);
+      font-size: 0.9rem;
+      margin: 0;
+      line-height: 1.5;
+      word-break: break-word;
+    }
+
+    /* HTML */
+    .dyn-html { line-height: 1.8; }
+    .dyn-html iframe {
+      width: 100%;
+      border-radius: 16px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+      display: block;
+    }
+
+    /* Loading */
+    .loading-box {
+      text-align: center;
+      padding: 3rem;
+      color: var(--text-muted, #64748b);
+    }
+
+    /* Responsive */
+    @media (max-width: 640px) {
+      .contact-hero h1 { font-size: 1.8rem; }
+      .contact-hero p { font-size: 0.9rem; }
+      .about-section-block { padding: 1.35rem 1.25rem; }
+      .about-section-block h2 { font-size: 1.1rem; }
+      .dyn-table td:first-child { width: 50%; font-size: 0.85rem; }
+      .dyn-table td:last-child { font-size: 0.85rem; }
+      .dyn-cards { grid-template-columns: 1fr; }
+    }
+  </style>
 </head>
 <body>
 
+  <!-- NAVBAR -->
   <header class="navbar">
     <div class="nav-container">
       <a href="index.html" class="brand">
@@ -29,59 +212,21 @@
     </div>
   </header>
 
-  <section class="section">
-    <div class="section-container">
-      <h1 class="section-title">📞 संपर्क करें</h1>
+  <!-- HERO -->
+  <section class="contact-hero">
+    <div class="hero-badge">📞 संपर्क करें · लाच्छरसर</div>
+    <h1>संपर्क करें</h1>
+    <p>कोई सवाल, सुझाव, या शिकायत हो तो हमें ज़रूर बताएं — हम आपकी सहायता के लिए तैयार हैं।</p>
+  </section>
 
-      <div class="contact-grid">
-        <div class="contact-card">
-          <div class="icon">📍</div>
-          <h4>पता</h4>
-          <p>ग्राम पंचायत कार्यालय,<br>लाच्छरसर, तहसील रतनगढ़,<br>जिला चूरू, राजस्थान — 331802</p>
-        </div>
-
-        <div class="contact-card">
-          <div class="icon">📞</div>
-          <h4>फोन / STD कोड</h4>
-          <p>01567</p>
-        </div>
-
-        <div class="contact-card">
-          <div class="icon">📮</div>
-          <h4>डाकघर</h4>
-          <p>राजलदेसर — 331802</p>
-        </div>
-
-        <div class="contact-card">
-          <div class="icon">🚂</div>
-          <h4>नज़दीकी रेलवे स्टेशन</h4>
-          <p>परसनेउ (8.3 किमी)</p>
-        </div>
-
-        <div class="contact-card">
-          <div class="icon">🏛️</div>
-          <h4>ग्राम पंचायत</h4>
-          <p>लाच्छरसर</p>
-        </div>
-
-        <div class="contact-card">
-          <div class="icon">👩‍💼</div>
-          <h4>सरपंच</h4>
-          <p>श्रीमती धापू देवी</p>
-        </div>
-      </div>
-
-      <!-- Google Map -->
-      <div class="map-container">
-        <iframe 
-          src="https://www.google.com/maps?q=Lachharsar+Ratangarh+Churu+Rajasthan&output=embed"
-          width="100%" height="450" style="border:0; display:block;"
-          allowfullscreen loading="lazy">
-        </iframe>
-      </div>
+  <!-- DYNAMIC SECTIONS -->
+  <section class="contact-section">
+    <div id="contactContainer">
+      <div class="loading-box">⏳ Loading sections...</div>
     </div>
   </section>
 
+  <!-- FOOTER -->
   <footer class="footer">
     <div class="footer-content">
       <p>© 2026 लाच्छरसर ग्राम पंचायत · चूरू, राजस्थान</p>
@@ -95,14 +240,120 @@
     </div>
   </footer>
 
+  <!-- FIREBASE -->
   <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
   <script src="firebase-config.js"></script>
   <script src="public-loader.js"></script>
+
+  <!-- DYNAMIC SECTIONS LOADER -->
   <script>
-    document.getElementById('hamburger')?.addEventListener('click', () => {
+  (function () {
+    'use strict';
+
+    function init() {
+      if (typeof firebase === 'undefined' || !firebase.apps.length) {
+        setTimeout(init, 200);
+        return;
+      }
+
+      const db = firebase.firestore();
+      console.log("📞 Contact page loading...");
+
+      db.collection('site_content').doc('contact').onSnapshot(function (doc) {
+        const container = document.getElementById('contactContainer');
+
+        if (!doc.exists || !doc.data().sections) {
+          container.innerHTML =
+            '<div style="text-align:center; padding:3rem; color:var(--text-muted);">' +
+            '<div style="font-size:3rem; opacity:0.4;">📄</div>' +
+            '<p style="margin-top:1rem;">अभी कोई content नहीं है — Admin panel से जोड़ें</p>' +
+            '</div>';
+          return;
+        }
+
+        renderSections(doc.data().sections);
+      }, function (err) {
+        console.warn("Contact load error:", err);
+        document.getElementById('contactContainer').innerHTML =
+          '<div style="text-align:center; padding:3rem; color:var(--text-muted);">' +
+          '⚠️ Content load नहीं हो पाया। कृपया पेज रिफ्रेश करें।' +
+          '</div>';
+      });
+    }
+
+    function renderSections(sections) {
+      const container = document.getElementById('contactContainer');
+      const sorted = sections.slice().sort(function (a, b) {
+        return (a.order || 0) - (b.order || 0);
+      });
+
+      container.innerHTML = sorted.map(function (sec) {
+        let body = '';
+
+        if (sec.type === 'table') {
+          body = '<table class="dyn-table">' +
+            (sec.data.rows || []).map(function (r) {
+              return '<tr>' +
+                '<td>' + escapeHtml(r.key) + '</td>' +
+                '<td>' + escapeHtml(r.value) + '</td>' +
+              '</tr>';
+            }).join('') +
+          '</table>';
+        }
+
+        else if (sec.type === 'list') {
+          body = '<ul class="dyn-list">' +
+            (sec.data.items || []).map(function (it) {
+              return '<li>' +
+                '<strong>' + escapeHtml(it.name) + '</strong>' +
+                (it.extra ? '<span>' + escapeHtml(it.extra) + '</span>' : '') +
+              '</li>';
+            }).join('') +
+          '</ul>';
+        }
+
+        else if (sec.type === 'cards') {
+          body = '<div class="dyn-cards">' +
+            (sec.data.cards || []).map(function (c) {
+              return '<div class="dyn-card">' +
+                (c.icon ? '<div class="icon">' + escapeHtml(c.icon) + '</div>' : '') +
+                '<h4>' + escapeHtml(c.name) + '</h4>' +
+                (c.role ? '<p>' + escapeHtml(c.role) + '</p>' : '') +
+              '</div>';
+            }).join('') +
+          '</div>';
+        }
+
+        else if (sec.type === 'html') {
+          body = '<div class="dyn-html">' + (sec.data.html || '') + '</div>';
+        }
+
+        return '<div class="about-section-block">' +
+          '<h2>' + escapeHtml(sec.title) + '</h2>' +
+          body +
+        '</div>';
+      }).join('');
+    }
+
+    function escapeHtml(s) {
+      if (!s) return '';
+      const d = document.createElement('div');
+      d.textContent = s;
+      return d.innerHTML;
+    }
+
+    document.getElementById('hamburger')?.addEventListener('click', function () {
       document.getElementById('navLinks').classList.toggle('open');
     });
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', init);
+    } else {
+      init();
+    }
+  })();
   </script>
+
 </body>
 </html>

@@ -13,7 +13,7 @@
 
   <style>
     /* ============================================================
-       PANCHAYAT PAGE — Complete Styles
+       DYNAMIC SECTIONS STYLES
        ============================================================ */
 
     /* Hero */
@@ -77,15 +77,15 @@
       z-index: 1;
     }
 
-    /* Section */
+    /* Main section */
     .panchayat-section {
       padding: 3rem 1.25rem 4rem;
       max-width: 1200px;
       margin: 0 auto;
     }
 
-    /* Info blocks */
-    .about-block {
+    /* Section block (dynamic) */
+    .about-section-block {
       background: #fff;
       border-radius: 16px;
       padding: 1.75rem 2rem;
@@ -94,10 +94,10 @@
       border-left: 5px solid var(--accent, #ff9933);
       transition: all 0.25s;
     }
-    .about-block:hover {
+    .about-section-block:hover {
       box-shadow: 0 8px 24px rgba(0,0,0,0.1);
     }
-    .about-block h2 {
+    .about-section-block h2 {
       color: var(--primary, #0c2340);
       font-size: 1.3rem;
       font-weight: 800;
@@ -107,226 +107,69 @@
       gap: 0.5rem;
     }
 
-    /* Official cards */
-    .officials-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 1.25rem;
-    }
-    .official-card {
-      background: #fff;
-      border-radius: 16px;
-      padding: 1.5rem 1.25rem;
-      box-shadow: 0 4px 14px rgba(0,0,0,0.06);
-      text-align: center;
-      transition: all 0.25s;
-      border-top: 4px solid var(--accent, #ff9933);
-      position: relative;
-    }
-    .official-card:hover {
-      transform: translateY(-6px);
-      box-shadow: 0 14px 34px rgba(0,0,0,0.12);
-    }
-    .official-avatar {
-      width: 80px;
-      height: 80px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, var(--primary, #0c2340), var(--primary-light, #1e3a5f));
-      color: var(--accent, #ff9933);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 2rem;
-      font-weight: 800;
-      margin: 0 auto 1rem;
-      border: 3px solid var(--accent, #ff9933);
-      box-shadow: 0 4px 14px rgba(12, 35, 64, 0.2);
-    }
-    .official-card h4 {
-      color: var(--primary, #0c2340);
-      font-size: 1.05rem;
-      font-weight: 800;
-      margin: 0 0 0.35rem 0;
-    }
-    .official-card .role {
-      color: var(--accent, #ff9933);
-      font-size: 0.85rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      margin: 0 0 0.75rem 0;
-    }
-    .official-card .contact-line {
-      color: var(--text-muted, #64748b);
-      font-size: 0.9rem;
-      margin: 0.25rem 0;
-    }
-    .official-card .contact-line a {
-      color: var(--primary, #0c2340);
-      text-decoration: none;
-      font-weight: 600;
-    }
-    .official-card .contact-line a:hover {
-      color: var(--accent, #ff9933);
-    }
+    /* Table type */
+    .dyn-table { width: 100%; border-collapse: collapse; }
+    .dyn-table tr { border-bottom: 1px dashed var(--border, #e2e8f0); }
+    .dyn-table tr:last-child { border-bottom: none; }
+    .dyn-table td { padding: 0.85rem 0.5rem; font-size: 0.95rem; vertical-align: top; }
+    .dyn-table td:first-child { color: var(--text-muted, #64748b); font-weight: 600; width: 40%; }
+    .dyn-table td:last-child { color: var(--primary, #0c2340); font-weight: 600; }
 
-    /* Info table */
-    .info-table {
-      width: 100%;
-      border-collapse: collapse;
-    }
-    .info-table tr {
+    /* List type */
+    .dyn-list { list-style: none; padding: 0; margin: 0; }
+    .dyn-list li {
+      padding: 0.7rem 0;
       border-bottom: 1px dashed var(--border, #e2e8f0);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      flex-wrap: wrap;
     }
-    .info-table tr:last-child {
-      border-bottom: none;
-    }
-    .info-table td {
-      padding: 0.85rem 0.5rem;
-      font-size: 0.95rem;
-      vertical-align: top;
-    }
-    .info-table td:first-child {
-      color: var(--text-muted, #64748b);
-      font-weight: 600;
-      width: 40%;
-    }
-    .info-table td:last-child {
-      color: var(--primary, #0c2340);
-      font-weight: 600;
-    }
+    .dyn-list li:last-child { border-bottom: none; }
+    .dyn-list li strong { color: var(--primary, #0c2340); font-weight: 700; }
+    .dyn-list li span { color: var(--text-muted, #64748b); font-size: 0.9rem; }
 
-    /* Contact cards */
-    .contact-grid {
+    /* Cards type */
+    .dyn-cards {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 1.25rem;
-    }
-    .contact-card {
-      background: #fff;
-      border-radius: 16px;
-      padding: 1.5rem 1.25rem;
-      box-shadow: 0 4px 14px rgba(0,0,0,0.06);
-      text-align: center;
-      transition: all 0.25s;
-      text-decoration: none;
-      display: block;
-    }
-    .contact-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 12px 30px rgba(0,0,0,0.12);
-    }
-    .contact-card .icon {
-      font-size: 2.5rem;
-      margin-bottom: 0.75rem;
-    }
-    .contact-card h4 {
-      color: var(--primary, #0c2340);
-      margin-bottom: 0.5rem;
-      font-weight: 800;
-      font-size: 1rem;
-    }
-    .contact-card p {
-      color: var(--text-muted, #64748b);
-      font-size: 0.9rem;
-      margin: 0;
-      line-height: 1.5;
-      word-break: break-word;
-    }
-
-    /* Services list */
-    .services-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
       gap: 1rem;
     }
-    .service-item {
+    .dyn-card {
       background: linear-gradient(135deg, #fff8ee, #ffe8cc);
       border-radius: 14px;
-      padding: 1.25rem 1.35rem;
+      padding: 1.25rem;
+      text-align: center;
       border-left: 4px solid var(--accent, #ff9933);
-      display: flex;
-      align-items: flex-start;
-      gap: 0.85rem;
-    }
-    .service-item .service-icon {
-      font-size: 1.75rem;
-      flex-shrink: 0;
-    }
-    .service-item h5 {
-      color: var(--primary, #0c2340);
-      font-size: 0.95rem;
-      font-weight: 800;
-      margin: 0 0 0.25rem 0;
-    }
-    .service-item p {
-      color: var(--text-muted, #64748b);
-      font-size: 0.82rem;
-      margin: 0;
-      line-height: 1.5;
-    }
-
-    /* Ward list */
-    .wards-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-      gap: 0.75rem;
-    }
-    .ward-chip {
-      background: #fff;
-      border: 2px solid var(--border, #e2e8f0);
-      border-radius: 60px;
-      padding: 0.7rem 1rem;
-      text-align: center;
       transition: all 0.25s;
-      cursor: default;
     }
-    .ward-chip:hover {
-      border-color: var(--accent, #ff9933);
-      background: #fff8ee;
+    .dyn-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.08);
     }
-    .ward-chip strong {
-      color: var(--primary, #0c2340);
-      font-size: 0.9rem;
-      display: block;
-    }
-    .ward-chip span {
-      color: var(--text-muted, #64748b);
-      font-size: 0.78rem;
-    }
+    .dyn-card .icon { font-size: 2rem; margin-bottom: 0.5rem; }
+    .dyn-card h4 { color: var(--primary, #0c2340); font-size: 1rem; font-weight: 800; margin: 0 0 0.35rem 0; }
+    .dyn-card p { color: var(--text-muted, #64748b); font-size: 0.85rem; margin: 0; }
 
-    /* CTA section */
-    .panchayat-cta {
-      background: linear-gradient(135deg, var(--primary, #0c2340), var(--primary-light, #1e3a5f));
-      border-radius: 20px;
-      padding: 2.5rem 1.75rem;
+    /* HTML type */
+    .dyn-html { line-height: 1.8; }
+
+    /* Loading */
+    .loading-box {
       text-align: center;
-      color: #fff;
-      margin-top: 2rem;
-    }
-    .panchayat-cta h3 {
-      font-size: 1.5rem;
-      font-weight: 800;
-      color: #fff;
-      margin: 0 0 0.75rem 0;
-    }
-    .panchayat-cta p {
-      color: rgba(255,255,255,0.85);
-      font-size: 0.95rem;
-      line-height: 1.6;
-      margin: 0 auto 1.5rem;
-      max-width: 500px;
+      padding: 3rem;
+      color: var(--text-muted, #64748b);
     }
 
     /* Responsive */
     @media (max-width: 640px) {
       .panchayat-hero h1 { font-size: 1.8rem; }
       .panchayat-hero p { font-size: 0.9rem; }
-      .about-block { padding: 1.35rem 1.25rem; }
-      .about-block h2 { font-size: 1.1rem; }
-      .info-table td { font-size: 0.85rem; padding: 0.65rem 0.35rem; }
-      .info-table td:first-child { width: 45%; }
-      .official-avatar { width: 66px; height: 66px; font-size: 1.6rem; }
+      .about-section-block { padding: 1.35rem 1.25rem; }
+      .about-section-block h2 { font-size: 1.1rem; }
+      .dyn-table td:first-child { width: 50%; font-size: 0.85rem; }
+      .dyn-table td:last-child { font-size: 0.85rem; }
     }
   </style>
 </head>
@@ -357,234 +200,11 @@
     <p>बीकानेर संभाग · तहसील रतनगढ़ · जिला चूरू, राजस्थान — 331802</p>
   </section>
 
-  <!-- MAIN CONTENT -->
+  <!-- DYNAMIC SECTIONS -->
   <section class="panchayat-section">
-
-    <!-- पंचायत पदाधिकारी -->
-    <div class="about-block">
-      <h2>👩‍💼 पंचायत पदाधिकारी</h2>
-      <div class="officials-grid">
-        <div class="official-card">
-          <div class="official-avatar">धा</div>
-          <h4>श्रीमती धापू देवी</h4>
-          <p class="role">सरपंच</p>
-          <p class="contact-line">ग्राम पंचायत लाच्छरसर</p>
-        </div>
-
-        <div class="official-card">
-          <div class="official-avatar">स</div>
-          <h4>सचिव</h4>
-          <p class="role">पंचायत सचिव</p>
-          <p class="contact-line">कार्यालय समय: सुबह 10 — शाम 5</p>
-        </div>
-
-        <div class="official-card">
-          <div class="official-avatar">ग्रा</div>
-          <h4>ग्राम विकास अधिकारी</h4>
-          <p class="role">VDO</p>
-          <p class="contact-line">ग्राम पंचायत कार्यालय</p>
-        </div>
-      </div>
+    <div id="panchayatContainer">
+      <div class="loading-box">⏳ Loading sections...</div>
     </div>
-
-    <!-- पंचायत की जानकारी -->
-    <div class="about-block">
-      <h2>📋 पंचायत की जानकारी</h2>
-      <table class="info-table">
-        <tr>
-          <td>ग्राम पंचायत का नाम</td>
-          <td>लाच्छरसर (Lachharsar)</td>
-        </tr>
-        <tr>
-          <td>पंचायत समिति</td>
-          <td>रतनगढ़</td>
-        </tr>
-        <tr>
-          <td>जिला परिषद</td>
-          <td>चूरू</td>
-        </tr>
-        <tr>
-          <td>संभाग</td>
-          <td>बीकानेर</td>
-        </tr>
-        <tr>
-          <td>पिन कोड</td>
-          <td>331802</td>
-        </tr>
-        <tr>
-          <td>मुख्य डाकघर</td>
-          <td>राजलदेसर</td>
-        </tr>
-        <tr>
-          <td>LGD विलेज कोड</td>
-          <td>70573</td>
-        </tr>
-        <tr>
-          <td>STD कोड</td>
-          <td>01567</td>
-        </tr>
-        <tr>
-          <td>कुल वार्ड</td>
-          <td>— (कार्यालय से पुष्टि करें)</td>
-        </tr>
-      </table>
-    </div>
-
-    <!-- पंचायत की सेवाएँ -->
-    <div class="about-block">
-      <h2>🛠️ पंचायत की सेवाएँ</h2>
-      <div class="services-grid">
-        <div class="service-item">
-          <div class="service-icon">📜</div>
-          <div>
-            <h5>जन्म प्रमाण पत्र</h5>
-            <p>नए जन्म का पंजीकरण और प्रमाण पत्र</p>
-          </div>
-        </div>
-
-        <div class="service-item">
-          <div class="service-icon">💍</div>
-          <div>
-            <h5>विवाह प्रमाण पत्र</h5>
-            <p>विवाह का पंजीकरण और प्रमाण</p>
-          </div>
-        </div>
-
-        <div class="service-item">
-          <div class="service-icon">💀</div>
-          <div>
-            <h5>मृत्यु प्रमाण पत्र</h5>
-            <p>मृत्यु का पंजीकरण और प्रमाण</p>
-          </div>
-        </div>
-
-        <div class="service-item">
-          <div class="service-icon">🏠</div>
-          <div>
-            <h5>निवास प्रमाण पत्र</h5>
-            <p>निवास का प्रमाण पत्र</p>
-          </div>
-        </div>
-
-        <div class="service-item">
-          <div class="service-icon">💰</div>
-          <div>
-            <h5>पेंशन योजना</h5>
-            <p>वृद्धावस्था, विधवा, दिव्यांग पेंशन</p>
-          </div>
-        </div>
-
-        <div class="service-item">
-          <div class="service-icon">🏗️</div>
-          <div>
-            <h5>विकास कार्य</h5>
-            <p>सड़क, नाली, पेयजल, रोशनी</p>
-          </div>
-        </div>
-
-        <div class="service-item">
-          <div class="service-icon">🌾</div>
-          <div>
-            <h5>किसान सहायता</h5>
-            <p>बीमा, सब्सिडी, योजनाएँ</p>
-          </div>
-        </div>
-
-        <div class="service-item">
-          <div class="service-icon">🏘️</div>
-          <div>
-            <h5>आवास योजना</h5>
-            <p>प्रधानमंत्री आवास योजना</p>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- वार्ड जानकारी -->
-    <div class="about-block">
-      <h2>🗳️ वार्ड जानकारी</h2>
-      <p style="color:var(--text-muted, #64748b); font-size:0.9rem; margin-bottom:1rem;">
-        लाच्छरसर ग्राम पंचायत में कुल कितने वार्ड हैं — इसकी जानकारी पंचायत कार्यालय से प्राप्त करें। 
-        नीचे सामान्य वार्ड ढाँचा दिया गया है।
-      </p>
-      <div class="wards-grid">
-        <div class="ward-chip"><strong>वार्ड 1</strong><span>पंचायत सदस्य</span></div>
-        <div class="ward-chip"><strong>वार्ड 2</strong><span>पंचायत सदस्य</span></div>
-        <div class="ward-chip"><strong>वार्ड 3</strong><span>पंचायत सदस्य</span></div>
-        <div class="ward-chip"><strong>वार्ड 4</strong><span>पंचायत सदस्य</span></div>
-        <div class="ward-chip"><strong>वार्ड 5</strong><span>पंचायत सदस्य</span></div>
-        <div class="ward-chip"><strong>वार्ड 6</strong><span>पंचायत सदस्य</span></div>
-        <div class="ward-chip"><strong>वार्ड 7</strong><span>पंचायत सदस्य</span></div>
-        <div class="ward-chip"><strong>वार्ड 8</strong><span>पंचायत सदस्य</span></div>
-      </div>
-      <p style="color:var(--text-muted, #64748b); font-size:0.82rem; margin-top:1rem; font-style:italic;">
-        * वार्ड सदस्यों के नाम और संपर्क के लिए पंचायत कार्यालय से संपर्क करें।
-      </p>
-    </div>
-
-    <!-- पंचायत कार्यालय -->
-    <div class="about-block">
-      <h2>📍 पंचायत कार्यालय</h2>
-      <p style="color:var(--text, #1e293b); font-size:1rem; line-height:1.8; margin:0 0 1rem 0;">
-        <strong style="color:var(--primary, #0c2340);">ग्राम पंचायत लाच्छरसर</strong><br>
-        ग्राम पंचायत भवन, मुख्य बाज़ार<br>
-        लाच्छरसर, तहसील रतनगढ़<br>
-        जिला चूरू, राजस्थान — 331802
-      </p>
-
-      <table class="info-table" style="margin-top:1rem;">
-        <tr>
-          <td>कार्यालय समय</td>
-          <td>सोमवार — शनिवार · सुबह 10:00 — शाम 5:00</td>
-        </tr>
-        <tr>
-          <td>दोपहर विश्राम</td>
-          <td>दोपहर 1:30 — 2:00</td>
-        </tr>
-        <tr>
-          <td>अवकाश</td>
-          <td>रविवार और सरकारी अवकाश</td>
-        </tr>
-      </table>
-    </div>
-
-    <!-- संपर्क -->
-    <div class="about-block">
-      <h2>📞 संपर्क करें</h2>
-      <div class="contact-grid">
-        <a href="tel:+911567" class="contact-card">
-          <div class="icon">📞</div>
-          <h4>फोन</h4>
-          <p>STD कोड: 01567</p>
-        </a>
-
-        <div class="contact-card">
-          <div class="icon">📮</div>
-          <h4>डाकघर</h4>
-          <p>राजलदेसर — 331802</p>
-        </div>
-
-        <a href="https://maps.google.com/?q=Lachharsar+Ratangarh+Churu+Rajasthan" target="_blank" rel="noopener" class="contact-card">
-          <div class="icon">🗺️</div>
-          <h4>नक्शा</h4>
-          <p>Google Maps पर देखें</p>
-        </a>
-
-        <a href="contact.html" class="contact-card">
-          <div class="icon">✉️</div>
-          <h4>संदेश भेजें</h4>
-          <p>Contact page पर जाएँ</p>
-        </a>
-      </div>
-    </div>
-
-    <!-- CTA -->
-    <div class="panchayat-cta">
-      <h3>किसी भी समस्या के लिए</h3>
-      <p>ग्राम पंचायत कार्यालय में संपर्क करें — हम आपकी सहायता के लिए तैयार हैं।</p>
-      <a href="contact.html" class="btn-primary">📞 संपर्क करें</a>
-    </div>
-
   </section>
 
   <!-- FOOTER -->
@@ -601,15 +221,120 @@
     </div>
   </footer>
 
-  <!-- SCRIPTS -->
+  <!-- FIREBASE -->
   <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
   <script src="firebase-config.js"></script>
   <script src="public-loader.js"></script>
+
+  <!-- DYNAMIC SECTIONS LOADER -->
   <script>
+  (function () {
+    'use strict';
+
+    function init() {
+      if (typeof firebase === 'undefined' || !firebase.apps.length) {
+        setTimeout(init, 200);
+        return;
+      }
+
+      const db = firebase.firestore();
+      console.log("🏛️ Panchayat page loading...");
+
+      db.collection('site_content').doc('panchayat').onSnapshot(function (doc) {
+        const container = document.getElementById('panchayatContainer');
+
+        if (!doc.exists || !doc.data().sections) {
+          container.innerHTML =
+            '<div style="text-align:center; padding:3rem; color:var(--text-muted);">' +
+            '<div style="font-size:3rem; opacity:0.4;">📄</div>' +
+            '<p style="margin-top:1rem;">अभी कोई content नहीं है — Admin panel से जोड़ें</p>' +
+            '</div>';
+          return;
+        }
+
+        renderSections(doc.data().sections);
+      }, function (err) {
+        console.warn("Panchayat load error:", err);
+        document.getElementById('panchayatContainer').innerHTML =
+          '<div style="text-align:center; padding:3rem; color:var(--text-muted);">' +
+          '⚠️ Content load नहीं हो पाया। कृपया पेज रिफ्रेश करें।' +
+          '</div>';
+      });
+    }
+
+    function renderSections(sections) {
+      const container = document.getElementById('panchayatContainer');
+      const sorted = sections.slice().sort(function (a, b) {
+        return (a.order || 0) - (b.order || 0);
+      });
+
+      container.innerHTML = sorted.map(function (sec) {
+        let body = '';
+
+        if (sec.type === 'table') {
+          body = '<table class="dyn-table">' +
+            (sec.data.rows || []).map(function (r) {
+              return '<tr>' +
+                '<td>' + escapeHtml(r.key) + '</td>' +
+                '<td>' + escapeHtml(r.value) + '</td>' +
+              '</tr>';
+            }).join('') +
+          '</table>';
+        }
+
+        else if (sec.type === 'list') {
+          body = '<ul class="dyn-list">' +
+            (sec.data.items || []).map(function (it) {
+              return '<li>' +
+                '<strong>' + escapeHtml(it.name) + '</strong>' +
+                (it.extra ? '<span>' + escapeHtml(it.extra) + '</span>' : '') +
+              '</li>';
+            }).join('') +
+          '</ul>';
+        }
+
+        else if (sec.type === 'cards') {
+          body = '<div class="dyn-cards">' +
+            (sec.data.cards || []).map(function (c) {
+              return '<div class="dyn-card">' +
+                (c.icon ? '<div class="icon">' + escapeHtml(c.icon) + '</div>' : '') +
+                '<h4>' + escapeHtml(c.name) + '</h4>' +
+                (c.role ? '<p>' + escapeHtml(c.role) + '</p>' : '') +
+              '</div>';
+            }).join('') +
+          '</div>';
+        }
+
+        else if (sec.type === 'html') {
+          body = '<div class="dyn-html">' + (sec.data.html || '') + '</div>';
+        }
+
+        return '<div class="about-section-block">' +
+          '<h2>' + escapeHtml(sec.title) + '</h2>' +
+          body +
+        '</div>';
+      }).join('');
+    }
+
+    function escapeHtml(s) {
+      if (!s) return '';
+      const d = document.createElement('div');
+      d.textContent = s;
+      return d.innerHTML;
+    }
+
     document.getElementById('hamburger')?.addEventListener('click', function () {
       document.getElementById('navLinks').classList.toggle('open');
     });
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', init);
+    } else {
+      init();
+    }
+  })();
   </script>
+
 </body>
 </html>
