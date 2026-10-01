@@ -1,35 +1,614 @@
-<!-- Same head + nav -->
-<section class="section">
-  <div class="section-container">
-    <h1 class="section-title">फोटो गैलरी</h1>
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="लाच्छरसर गाँव की फोटो गैलरी — क्रिकेट स्टेडियम, स्कूल, मंदिर, और गाँव की खूबसूरती" />
+  <title>फोटो गैलरी · लाच्छरसर</title>
+  <link rel="icon" type="image/png" href="logo.png" />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;600;700;800&display=swap" rel="stylesheet" />
+
+  <!-- Gallery-specific styles -->
+  <style>
+    /* ============================================================
+       GALLERY PAGE — Complete Styles
+       ============================================================ */
+
+    .gallery-hero {
+      background: linear-gradient(145deg, #f1f5f9 0%, #ffffff 100%);
+      padding: 3rem 1.25rem 2rem;
+      text-align: center;
+    }
+    .gallery-hero h1 {
+      font-size: 2.5rem;
+      font-weight: 800;
+      color: var(--primary, #0c2340);
+      margin-bottom: 0.5rem;
+    }
+    .gallery-hero h1::after {
+      content: '';
+      display: block;
+      width: 80px;
+      height: 4px;
+      background: var(--accent, #ff9933);
+      margin: 0.75rem auto 0;
+      border-radius: 4px;
+    }
+    .gallery-hero p {
+      color: var(--text-muted, #64748b);
+      font-size: 1rem;
+      max-width: 600px;
+      margin: 1rem auto 0;
+      line-height: 1.7;
+    }
+
+    /* Filter tabs */
+    .gallery-filters {
+      display: flex;
+      gap: 0.5rem;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin: 1.5rem auto 0;
+      max-width: 700px;
+    }
+    .filter-btn {
+      background: #fff;
+      border: 2px solid var(--border, #e2e8f0);
+      border-radius: 40px;
+      padding: 0.5rem 1.25rem;
+      font-weight: 600;
+      font-size: 0.85rem;
+      color: var(--text-muted, #64748b);
+      cursor: pointer;
+      transition: all 0.25s;
+      font-family: inherit;
+    }
+    .filter-btn:hover {
+      border-color: var(--accent, #ff9933);
+      color: var(--primary, #0c2340);
+    }
+    .filter-btn.active {
+      background: var(--primary, #0c2340);
+      color: #fff;
+      border-color: var(--primary, #0c2340);
+    }
+
+    /* Main gallery section */
+    .gallery-section {
+      padding: 2.5rem 1.25rem 4rem;
+      max-width: 1280px;
+      margin: 0 auto;
+    }
+
+    /* Counter */
+    .gallery-counter {
+      text-align: center;
+      color: var(--text-muted, #64748b);
+      font-size: 0.9rem;
+      margin-bottom: 1.5rem;
+      font-weight: 500;
+    }
+    .gallery-counter strong {
+      color: var(--primary, #0c2340);
+      font-weight: 800;
+    }
+
+    /* Grid */
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 1rem;
+    }
+
+    .gallery-item {
+      position: relative;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      cursor: pointer;
+      background: #f1f5f9;
+      aspect-ratio: 4 / 3;
+    }
+    .gallery-item:hover {
+      transform: translateY(-6px) scale(1.02);
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.15);
+    }
+    .gallery-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.5s ease;
+    }
+    .gallery-item:hover img {
+      transform: scale(1.08);
+    }
+    .gallery-item .gallery-caption {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: linear-gradient(transparent, rgba(0, 0, 0, 0.9));
+      color: #fff;
+      padding: 2rem 1rem 0.85rem;
+      font-size: 0.9rem;
+      font-weight: 600;
+      line-height: 1.4;
+      transform: translateY(0);
+      transition: all 0.3s;
+    }
+    .gallery-item:hover .gallery-caption {
+      padding-bottom: 1rem;
+    }
+
+    /* Zoom icon overlay */
+    .gallery-item::after {
+      content: '🔍';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0);
+      font-size: 2rem;
+      background: rgba(255, 153, 51, 0.95);
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      pointer-events: none;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+    }
+    .gallery-item:hover::after {
+      transform: translate(-50%, -50%) scale(1);
+    }
+
+    /* Loading skeleton */
+    .gallery-skeleton {
+      background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.5s infinite;
+      border-radius: 16px;
+      aspect-ratio: 4 / 3;
+    }
+    @keyframes shimmer {
+      0% { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+
+    /* Empty state */
+    .gallery-empty {
+      text-align: center;
+      padding: 4rem 2rem;
+      grid-column: 1 / -1;
+      background: #fff;
+      border-radius: 20px;
+      border: 2px dashed #e2e8f0;
+    }
+    .gallery-empty .empty-icon {
+      font-size: 4rem;
+      margin-bottom: 1rem;
+      opacity: 0.5;
+    }
+    .gallery-empty h3 {
+      color: var(--primary, #0c2340);
+      font-size: 1.3rem;
+      margin-bottom: 0.5rem;
+      font-weight: 800;
+    }
+    .gallery-empty p {
+      color: var(--text-muted, #64748b);
+      font-size: 0.95rem;
+    }
+
+    /* ============================================================
+       LIGHTBOX
+       ============================================================ */
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.95);
+      z-index: 9999;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+      animation: fadeIn 0.3s ease;
+    }
+    .lightbox.active {
+      display: flex;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .lightbox-content {
+      max-width: 90vw;
+      max-height: 85vh;
+      position: relative;
+      animation: zoomIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    @keyframes zoomIn {
+      from { transform: scale(0.85); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+    .lightbox-content img {
+      max-width: 90vw;
+      max-height: 85vh;
+      border-radius: 12px;
+      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6);
+      display: block;
+    }
+    .lightbox-caption {
+      color: #fff;
+      text-align: center;
+      margin-top: 1rem;
+      font-size: 1rem;
+      font-weight: 600;
+      padding: 0 1rem;
+    }
+
+    .lightbox-close {
+      position: fixed;
+      top: 1.5rem;
+      right: 1.5rem;
+      background: rgba(255, 255, 255, 0.15);
+      border: none;
+      color: #fff;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      font-size: 1.5rem;
+      cursor: pointer;
+      transition: all 0.25s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      backdrop-filter: blur(8px);
+    }
+    .lightbox-close:hover {
+      background: var(--accent, #ff9933);
+      transform: rotate(90deg);
+    }
+
+    .lightbox-nav {
+      position: fixed;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(255, 255, 255, 0.15);
+      border: none;
+      color: #fff;
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      font-size: 1.5rem;
+      cursor: pointer;
+      transition: all 0.25s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      backdrop-filter: blur(8px);
+    }
+    .lightbox-nav:hover {
+      background: var(--accent, #ff9933);
+      color: var(--primary, #0c2340);
+    }
+    .lightbox-prev { left: 1.5rem; }
+    .lightbox-next { right: 1.5rem; }
+
+    /* Mobile responsive */
+    @media (max-width: 640px) {
+      .gallery-hero h1 { font-size: 1.8rem; }
+      .gallery-grid { grid-template-columns: repeat(2, 1fr); gap: 0.6rem; }
+      .gallery-item .gallery-caption {
+        font-size: 0.75rem;
+        padding: 1.5rem 0.5rem 0.5rem;
+      }
+      .lightbox-prev { left: 0.5rem; }
+      .lightbox-next { right: 0.5rem; }
+      .lightbox-close { top: 1rem; right: 1rem; width: 40px; height: 40px; font-size: 1.2rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <header class="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="brand">
+        <img src="logo.png" alt="Logo" class="brand-logo" onerror="this.style.display='none'" />
+        <span>लाच्छरसर</span>
+      </a>
+      <nav class="nav-links" id="navLinks">
+        <a href="index.html">होम</a>
+        <a href="about.html">गाँव के बारे में</a>
+        <a href="panchayat.html">पंचायत</a>
+        <a href="gallery.html" class="active">गैलरी</a>
+        <a href="contact.html">संपर्क</a>
+      </nav>
+      <button class="hamburger" id="hamburger">☰</button>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section class="gallery-hero">
+    <h1>📸 फोटो गैलरी</h1>
+    <p>लाच्छरसर गाँव की खूबसूरत तस्वीरें — क्रिकेट स्टेडियम, डिजिटल लाइब्रेरी, मंदिर, और गाँव की रौनक।</p>
+
+    <!-- Filters -->
+    <div class="gallery-filters" id="galleryFilters">
+      <button class="filter-btn active" data-filter="all">सभी</button>
+      <button class="filter-btn" data-filter="stadium">🏏 क्रिकेट स्टेडियम</button>
+      <button class="filter-btn" data-filter="school">🎓 स्कूल</button>
+      <button class="filter-btn" data-filter="temple">🕉️ मंदिर</button>
+      <button class="filter-btn" data-filter="village">🏘️ गाँव</button>
+    </div>
+  </section>
+
+  <!-- GALLERY -->
+  <section class="gallery-section">
+    <div class="gallery-counter" id="galleryCounter">
+      Loading...
+    </div>
+
     <div class="gallery-grid" id="galleryGrid">
-      <!-- Admin panel se add kiye gaye images yahan aayenge -->
+      <!-- Loading skeletons -->
+      <div class="gallery-skeleton"></div>
+      <div class="gallery-skeleton"></div>
+      <div class="gallery-skeleton"></div>
+      <div class="gallery-skeleton"></div>
+      <div class="gallery-skeleton"></div>
+      <div class="gallery-skeleton"></div>
+    </div>
+  </section>
+
+  <!-- LIGHTBOX -->
+  <div class="lightbox" id="lightbox">
+    <button class="lightbox-close" id="lightboxClose" aria-label="Close">✕</button>
+    <button class="lightbox-nav lightbox-prev" id="lightboxPrev" aria-label="Previous">‹</button>
+    <button class="lightbox-nav lightbox-next" id="lightboxNext" aria-label="Next">›</button>
+
+    <div class="lightbox-content">
+      <img id="lightboxImg" src="" alt="" />
+      <div class="lightbox-caption" id="lightboxCaption"></div>
     </div>
   </div>
-</section>
 
-<script>
-  // Load gallery from Firestore
-  window.addEventListener('load', () => {
-    setTimeout(() => {
-      if (typeof firebase === 'undefined' || !firebase.apps.length) return;
-      const db = firebase.firestore();
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-content">
+      <p>© 2026 लाच्छरसर ग्राम पंचायत · चूरू, राजस्थान</p>
+      <div class="footer-links">
+        <a href="privacy.html">Privacy</a>
+        <a href="terms.html">Terms</a>
+        <a href="disclaimer.html">Disclaimer</a>
+        <a href="contact.html">Contact</a>
+      </div>
+      <p class="footer-sub">पिन कोड 331802 · रतनगढ़ तहसील · बीकानेर संभाग</p>
+    </div>
+  </footer>
+
+  <!-- FIREBASE -->
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+  <script src="firebase-config.js"></script>
+  <script src="public-loader.js"></script>
+
+  <!-- GALLERY LOGIC -->
+  <script>
+    (function () {
+      'use strict';
+
+      let allImages = [];
+      let filteredImages = [];
+      let currentFilter = 'all';
+      let currentLightboxIndex = 0;
+
       const grid = document.getElementById('galleryGrid');
-      if (!grid) return;
+      const counter = document.getElementById('galleryCounter');
+      const lightbox = document.getElementById('lightbox');
+      const lightboxImg = document.getElementById('lightboxImg');
+      const lightboxCaption = document.getElementById('lightboxCaption');
 
-      db.collection('gallery').orderBy('order', 'asc').onSnapshot(snap => {
-        if (snap.empty) {
-          grid.innerHTML = '<p style="text-align:center; grid-column:1/-1; color:#94a3b8;">अभी तक कोई तस्वीर नहीं जोड़ी गई</p>';
+      /* ============================================================
+         INIT
+         ============================================================ */
+      function init() {
+        // Wait for Firebase to be ready
+        if (typeof firebase === 'undefined' || !firebase.apps.length) {
+          setTimeout(init, 200);
           return;
         }
-        grid.innerHTML = snap.docs.map(doc => {
-          const d = doc.data();
-          return `<div class="gallery-item">
-            <img src="${d.imageUrl}" loading="lazy" alt="${d.captionHi || ''}" />
-            <div class="gallery-caption">${d.captionHi || d.captionEn || ''}</div>
-          </div>`;
+
+        const db = firebase.firestore();
+        console.log("🖼️ Gallery init...");
+
+        // Real-time listener
+        db.collection('gallery').orderBy('order', 'asc').onSnapshot(
+          function (snap) {
+            allImages = [];
+            snap.forEach(function (doc) {
+              const d = doc.data();
+              allImages.push({
+                id: doc.id,
+                url: d.imageUrl || '',
+                captionHi: d.captionHi || '',
+                captionEn: d.captionEn || '',
+                category: d.category || 'village'
+              });
+            });
+
+            console.log("✅ Loaded", allImages.length, "images");
+            applyFilter(currentFilter);
+          },
+          function (err) {
+            console.warn("Gallery load error:", err);
+            showError();
+          }
+        );
+
+        // Filter buttons
+        document.querySelectorAll('.filter-btn').forEach(function (btn) {
+          btn.addEventListener('click', function () {
+            document.querySelectorAll('.filter-btn').forEach(function (b) {
+              b.classList.remove('active');
+            });
+            btn.classList.add('active');
+            currentFilter = btn.dataset.filter;
+            applyFilter(currentFilter);
+          });
+        });
+
+        // Lightbox controls
+        document.getElementById('lightboxClose').addEventListener('click', closeLightbox);
+        document.getElementById('lightboxPrev').addEventListener('click', function () { navigateLightbox(-1); });
+        document.getElementById('lightboxNext').addEventListener('click', function () { navigateLightbox(1); });
+        lightbox.addEventListener('click', function (e) {
+          if (e.target === lightbox) closeLightbox();
+        });
+
+        // Keyboard navigation
+        document.addEventListener('keydown', function (e) {
+          if (!lightbox.classList.contains('active')) return;
+          if (e.key === 'Escape') closeLightbox();
+          if (e.key === 'ArrowLeft') navigateLightbox(-1);
+          if (e.key === 'ArrowRight') navigateLightbox(1);
+        });
+      }
+
+      /* ============================================================
+         FILTER
+         ============================================================ */
+      function applyFilter(filter) {
+        if (filter === 'all') {
+          filteredImages = allImages.slice();
+        } else {
+          filteredImages = allImages.filter(function (img) {
+            return img.category === filter;
+          });
+        }
+        render();
+      }
+
+      /* ============================================================
+         RENDER
+         ============================================================ */
+      function render() {
+        if (!filteredImages.length) {
+          grid.innerHTML = '<div class="gallery-empty">' +
+            '<div class="empty-icon">📷</div>' +
+            '<h3>' + (allImages.length === 0 ? 'अभी तक कोई तस्वीर नहीं जोड़ी गई' : 'इस श्रेणी में कोई तस्वीर नहीं है') + '</h3>' +
+            '<p>' + (allImages.length === 0 ? 'Admin panel से तस्वीरें जोड़ें' : 'कृपया दूसरी श्रेणी चुनें') + '</p>' +
+            '</div>';
+
+          counter.textContent = '';
+          return;
+        }
+
+        counter.innerHTML = 'कुल <strong>' + filteredImages.length + '</strong> तस्वीरें';
+
+        grid.innerHTML = filteredImages.map(function (img, i) {
+          return '<div class="gallery-item" data-index="' + i + '">' +
+            '<img src="' + escapeAttr(img.url) + '" loading="lazy" alt="' + escapeAttr(img.captionHi || 'Gallery') + '" onerror="this.parentElement.style.display=\'none\'" />' +
+            '<div class="gallery-caption">' + escapeHtml(img.captionHi || img.captionEn || '') + '</div>' +
+            '</div>';
         }).join('');
+
+        // Attach click handlers
+        grid.querySelectorAll('.gallery-item').forEach(function (item) {
+          item.addEventListener('click', function () {
+            openLightbox(parseInt(item.dataset.index));
+          });
+        });
+      }
+
+      /* ============================================================
+         LIGHTBOX
+         ============================================================ */
+      function openLightbox(index) {
+        currentLightboxIndex = index;
+        updateLightbox();
+        lightbox.classList.add('active');
+        document.body.style.overflow = 'hidden';
+      }
+
+      function closeLightbox() {
+        lightbox.classList.remove('active');
+        document.body.style.overflow = '';
+      }
+
+      function updateLightbox() {
+        const img = filteredImages[currentLightboxIndex];
+        if (!img) return;
+
+        lightboxImg.src = img.url;
+        lightboxImg.alt = img.captionHi || 'Gallery';
+        lightboxCaption.textContent = img.captionHi || img.captionEn || '';
+
+        // Hide nav buttons if only one image
+        const prevBtn = document.getElementById('lightboxPrev');
+        const nextBtn = document.getElementById('lightboxNext');
+        if (filteredImages.length <= 1) {
+          prevBtn.style.display = 'none';
+          nextBtn.style.display = 'none';
+        } else {
+          prevBtn.style.display = '';
+          nextBtn.style.display = '';
+        }
+      }
+
+      function navigateLightbox(direction) {
+        currentLightboxIndex += direction;
+        if (currentLightboxIndex < 0) currentLightboxIndex = filteredImages.length - 1;
+        if (currentLightboxIndex >= filteredImages.length) currentLightboxIndex = 0;
+        updateLightbox();
+      }
+
+      /* ============================================================
+         HELPERS
+         ============================================================ */
+      function escapeHtml(s) {
+        if (!s) return '';
+        const d = document.createElement('div');
+        d.textContent = s;
+        return d.innerHTML;
+      }
+
+      function escapeAttr(s) {
+        return String(s || '').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+      }
+
+      function showError() {
+        grid.innerHTML = '<div class="gallery-empty">' +
+          '<div class="empty-icon">⚠️</div>' +
+          '<h3>तस्वीरें लोड नहीं हो पाईं</h3>' +
+          '<p>कृपया पेज रिफ्रेश करें</p>' +
+          '</div>';
+        counter.textContent = '';
+      }
+
+      /* ============================================================
+         MOBILE MENU
+         ============================================================ */
+      document.getElementById('hamburger')?.addEventListener('click', function () {
+        document.getElementById('navLinks').classList.toggle('open');
       });
-    }, 500);
-  });
-</script>
+
+      /* ============================================================
+         BOOTSTRAP
+         ============================================================ */
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+      } else {
+        init();
+      }
+    })();
+  </script>
+
+</body>
+</html>
