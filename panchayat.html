@@ -1,28 +1,615 @@
-<!-- Same head + nav -->
-<section class="section">
-  <div class="section-container">
-    <h1 class="section-title">ग्राम पंचायत लाच्छरसर</h1>
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="ग्राम पंचायत लाच्छरसर — सरपंच, सचिव, वार्ड सदस्य, और पंचायत की सेवाएँ" />
+  <meta name="theme-color" content="#0c2340" />
+  <title>ग्राम पंचायत · लाच्छरसर</title>
+  <link rel="icon" type="image/png" href="logo.png" />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;600;700;800&display=swap" rel="stylesheet" />
 
+  <style>
+    /* ============================================================
+       PANCHAYAT PAGE — Complete Styles
+       ============================================================ */
+
+    /* Hero */
+    .panchayat-hero {
+      background: linear-gradient(135deg, var(--primary, #0c2340) 0%, var(--primary-light, #1e3a5f) 100%);
+      padding: 3.5rem 1.25rem 3rem;
+      text-align: center;
+      color: #fff;
+      position: relative;
+      overflow: hidden;
+    }
+    .panchayat-hero::before {
+      content: '🏛️';
+      position: absolute;
+      font-size: 15rem;
+      opacity: 0.05;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+    }
+    .panchayat-hero h1 {
+      font-size: 2.5rem;
+      font-weight: 800;
+      color: #fff;
+      margin-bottom: 0.75rem;
+      position: relative;
+      z-index: 1;
+    }
+    .panchayat-hero h1::after {
+      content: '';
+      display: block;
+      width: 80px;
+      height: 4px;
+      background: var(--accent, #ff9933);
+      margin: 0.75rem auto 0;
+      border-radius: 4px;
+    }
+    .panchayat-hero p {
+      color: rgba(255,255,255,0.85);
+      font-size: 1rem;
+      max-width: 620px;
+      margin: 1rem auto 0;
+      line-height: 1.7;
+      position: relative;
+      z-index: 1;
+    }
+    .panchayat-hero .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(255,153,51,0.2);
+      border: 1.5px solid var(--accent, #ff9933);
+      color: var(--accent, #ff9933);
+      padding: 0.4rem 1rem;
+      border-radius: 60px;
+      font-weight: 700;
+      font-size: 0.8rem;
+      margin-bottom: 1rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Section */
+    .panchayat-section {
+      padding: 3rem 1.25rem 4rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    /* Info blocks */
+    .about-block {
+      background: #fff;
+      border-radius: 16px;
+      padding: 1.75rem 2rem;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.06);
+      margin-bottom: 1.5rem;
+      border-left: 5px solid var(--accent, #ff9933);
+      transition: all 0.25s;
+    }
+    .about-block:hover {
+      box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+    }
+    .about-block h2 {
+      color: var(--primary, #0c2340);
+      font-size: 1.3rem;
+      font-weight: 800;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    /* Official cards */
+    .officials-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.25rem;
+    }
+    .official-card {
+      background: #fff;
+      border-radius: 16px;
+      padding: 1.5rem 1.25rem;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.06);
+      text-align: center;
+      transition: all 0.25s;
+      border-top: 4px solid var(--accent, #ff9933);
+      position: relative;
+    }
+    .official-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 14px 34px rgba(0,0,0,0.12);
+    }
+    .official-avatar {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary, #0c2340), var(--primary-light, #1e3a5f));
+      color: var(--accent, #ff9933);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      font-weight: 800;
+      margin: 0 auto 1rem;
+      border: 3px solid var(--accent, #ff9933);
+      box-shadow: 0 4px 14px rgba(12, 35, 64, 0.2);
+    }
+    .official-card h4 {
+      color: var(--primary, #0c2340);
+      font-size: 1.05rem;
+      font-weight: 800;
+      margin: 0 0 0.35rem 0;
+    }
+    .official-card .role {
+      color: var(--accent, #ff9933);
+      font-size: 0.85rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin: 0 0 0.75rem 0;
+    }
+    .official-card .contact-line {
+      color: var(--text-muted, #64748b);
+      font-size: 0.9rem;
+      margin: 0.25rem 0;
+    }
+    .official-card .contact-line a {
+      color: var(--primary, #0c2340);
+      text-decoration: none;
+      font-weight: 600;
+    }
+    .official-card .contact-line a:hover {
+      color: var(--accent, #ff9933);
+    }
+
+    /* Info table */
+    .info-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .info-table tr {
+      border-bottom: 1px dashed var(--border, #e2e8f0);
+    }
+    .info-table tr:last-child {
+      border-bottom: none;
+    }
+    .info-table td {
+      padding: 0.85rem 0.5rem;
+      font-size: 0.95rem;
+      vertical-align: top;
+    }
+    .info-table td:first-child {
+      color: var(--text-muted, #64748b);
+      font-weight: 600;
+      width: 40%;
+    }
+    .info-table td:last-child {
+      color: var(--primary, #0c2340);
+      font-weight: 600;
+    }
+
+    /* Contact cards */
+    .contact-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.25rem;
+    }
+    .contact-card {
+      background: #fff;
+      border-radius: 16px;
+      padding: 1.5rem 1.25rem;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.06);
+      text-align: center;
+      transition: all 0.25s;
+      text-decoration: none;
+      display: block;
+    }
+    .contact-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 30px rgba(0,0,0,0.12);
+    }
+    .contact-card .icon {
+      font-size: 2.5rem;
+      margin-bottom: 0.75rem;
+    }
+    .contact-card h4 {
+      color: var(--primary, #0c2340);
+      margin-bottom: 0.5rem;
+      font-weight: 800;
+      font-size: 1rem;
+    }
+    .contact-card p {
+      color: var(--text-muted, #64748b);
+      font-size: 0.9rem;
+      margin: 0;
+      line-height: 1.5;
+      word-break: break-word;
+    }
+
+    /* Services list */
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1rem;
+    }
+    .service-item {
+      background: linear-gradient(135deg, #fff8ee, #ffe8cc);
+      border-radius: 14px;
+      padding: 1.25rem 1.35rem;
+      border-left: 4px solid var(--accent, #ff9933);
+      display: flex;
+      align-items: flex-start;
+      gap: 0.85rem;
+    }
+    .service-item .service-icon {
+      font-size: 1.75rem;
+      flex-shrink: 0;
+    }
+    .service-item h5 {
+      color: var(--primary, #0c2340);
+      font-size: 0.95rem;
+      font-weight: 800;
+      margin: 0 0 0.25rem 0;
+    }
+    .service-item p {
+      color: var(--text-muted, #64748b);
+      font-size: 0.82rem;
+      margin: 0;
+      line-height: 1.5;
+    }
+
+    /* Ward list */
+    .wards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 0.75rem;
+    }
+    .ward-chip {
+      background: #fff;
+      border: 2px solid var(--border, #e2e8f0);
+      border-radius: 60px;
+      padding: 0.7rem 1rem;
+      text-align: center;
+      transition: all 0.25s;
+      cursor: default;
+    }
+    .ward-chip:hover {
+      border-color: var(--accent, #ff9933);
+      background: #fff8ee;
+    }
+    .ward-chip strong {
+      color: var(--primary, #0c2340);
+      font-size: 0.9rem;
+      display: block;
+    }
+    .ward-chip span {
+      color: var(--text-muted, #64748b);
+      font-size: 0.78rem;
+    }
+
+    /* CTA section */
+    .panchayat-cta {
+      background: linear-gradient(135deg, var(--primary, #0c2340), var(--primary-light, #1e3a5f));
+      border-radius: 20px;
+      padding: 2.5rem 1.75rem;
+      text-align: center;
+      color: #fff;
+      margin-top: 2rem;
+    }
+    .panchayat-cta h3 {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: #fff;
+      margin: 0 0 0.75rem 0;
+    }
+    .panchayat-cta p {
+      color: rgba(255,255,255,0.85);
+      font-size: 0.95rem;
+      line-height: 1.6;
+      margin: 0 auto 1.5rem;
+      max-width: 500px;
+    }
+
+    /* Responsive */
+    @media (max-width: 640px) {
+      .panchayat-hero h1 { font-size: 1.8rem; }
+      .panchayat-hero p { font-size: 0.9rem; }
+      .about-block { padding: 1.35rem 1.25rem; }
+      .about-block h2 { font-size: 1.1rem; }
+      .info-table td { font-size: 0.85rem; padding: 0.65rem 0.35rem; }
+      .info-table td:first-child { width: 45%; }
+      .official-avatar { width: 66px; height: 66px; font-size: 1.6rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <header class="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="brand">
+        <img src="logo.png" alt="Logo" class="brand-logo" onerror="this.style.display='none'" />
+        <span>लाच्छरसर</span>
+      </a>
+      <nav class="nav-links" id="navLinks">
+        <a href="index.html">होम</a>
+        <a href="about.html">गाँव के बारे में</a>
+        <a href="panchayat.html" class="active">पंचायत</a>
+        <a href="gallery.html">गैलरी</a>
+        <a href="contact.html">संपर्क</a>
+      </nav>
+      <button class="hamburger" id="hamburger">☰</button>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section class="panchayat-hero">
+    <div class="hero-badge">🏛️ ग्राम पंचायत · चूरू जिला</div>
+    <h1>ग्राम पंचायत लाच्छरसर</h1>
+    <p>बीकानेर संभाग · तहसील रतनगढ़ · जिला चूरू, राजस्थान — 331802</p>
+  </section>
+
+  <!-- MAIN CONTENT -->
+  <section class="panchayat-section">
+
+    <!-- पंचायत पदाधिकारी -->
     <div class="about-block">
       <h2>👩‍💼 पंचायत पदाधिकारी</h2>
+      <div class="officials-grid">
+        <div class="official-card">
+          <div class="official-avatar">धा</div>
+          <h4>श्रीमती धापू देवी</h4>
+          <p class="role">सरपंच</p>
+          <p class="contact-line">ग्राम पंचायत लाच्छरसर</p>
+        </div>
+
+        <div class="official-card">
+          <div class="official-avatar">स</div>
+          <h4>सचिव</h4>
+          <p class="role">पंचायत सचिव</p>
+          <p class="contact-line">कार्यालय समय: सुबह 10 — शाम 5</p>
+        </div>
+
+        <div class="official-card">
+          <div class="official-avatar">ग्रा</div>
+          <h4>ग्राम विकास अधिकारी</h4>
+          <p class="role">VDO</p>
+          <p class="contact-line">ग्राम पंचायत कार्यालय</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- पंचायत की जानकारी -->
+    <div class="about-block">
+      <h2>📋 पंचायत की जानकारी</h2>
       <table class="info-table">
-        <tr><td>सरपंच</td><td>श्रीमती धापू देवी</td></tr>
-        <tr><td>सचिव</td><td>(ग्राम पंचायत कार्यालय से संपर्क करें)</td></tr>
-        <tr><td>ग्राम पंचायत का नाम</td><td>लाच्छरसर</td></tr>
-        <tr><td>पिन कोड</td><td>331802</td></tr>
+        <tr>
+          <td>ग्राम पंचायत का नाम</td>
+          <td>लाच्छरसर (Lachharsar)</td>
+        </tr>
+        <tr>
+          <td>पंचायत समिति</td>
+          <td>रतनगढ़</td>
+        </tr>
+        <tr>
+          <td>जिला परिषद</td>
+          <td>चूरू</td>
+        </tr>
+        <tr>
+          <td>संभाग</td>
+          <td>बीकानेर</td>
+        </tr>
+        <tr>
+          <td>पिन कोड</td>
+          <td>331802</td>
+        </tr>
+        <tr>
+          <td>मुख्य डाकघर</td>
+          <td>राजलदेसर</td>
+        </tr>
+        <tr>
+          <td>LGD विलेज कोड</td>
+          <td>70573</td>
+        </tr>
+        <tr>
+          <td>STD कोड</td>
+          <td>01567</td>
+        </tr>
+        <tr>
+          <td>कुल वार्ड</td>
+          <td>— (कार्यालय से पुष्टि करें)</td>
+        </tr>
       </table>
     </div>
 
+    <!-- पंचायत की सेवाएँ -->
     <div class="about-block">
-      <h2>📍 पता</h2>
-      <p>ग्राम पंचायत कार्यालय,<br>
-      लाच्छरसर, तहसील रतनगढ़,<br>
-      जिला चूरू, राजस्थान — 331802</p>
+      <h2>🛠️ पंचायत की सेवाएँ</h2>
+      <div class="services-grid">
+        <div class="service-item">
+          <div class="service-icon">📜</div>
+          <div>
+            <h5>जन्म प्रमाण पत्र</h5>
+            <p>नए जन्म का पंजीकरण और प्रमाण पत्र</p>
+          </div>
+        </div>
+
+        <div class="service-item">
+          <div class="service-icon">💍</div>
+          <div>
+            <h5>विवाह प्रमाण पत्र</h5>
+            <p>विवाह का पंजीकरण और प्रमाण</p>
+          </div>
+        </div>
+
+        <div class="service-item">
+          <div class="service-icon">💀</div>
+          <div>
+            <h5>मृत्यु प्रमाण पत्र</h5>
+            <p>मृत्यु का पंजीकरण और प्रमाण</p>
+          </div>
+        </div>
+
+        <div class="service-item">
+          <div class="service-icon">🏠</div>
+          <div>
+            <h5>निवास प्रमाण पत्र</h5>
+            <p>निवास का प्रमाण पत्र</p>
+          </div>
+        </div>
+
+        <div class="service-item">
+          <div class="service-icon">💰</div>
+          <div>
+            <h5>पेंशन योजना</h5>
+            <p>वृद्धावस्था, विधवा, दिव्यांग पेंशन</p>
+          </div>
+        </div>
+
+        <div class="service-item">
+          <div class="service-icon">🏗️</div>
+          <div>
+            <h5>विकास कार्य</h5>
+            <p>सड़क, नाली, पेयजल, रोशनी</p>
+          </div>
+        </div>
+
+        <div class="service-item">
+          <div class="service-icon">🌾</div>
+          <div>
+            <h5>किसान सहायता</h5>
+            <p>बीमा, सब्सिडी, योजनाएँ</p>
+          </div>
+        </div>
+
+        <div class="service-item">
+          <div class="service-icon">🏘️</div>
+          <div>
+            <h5>आवास योजना</h5>
+            <p>प्रधानमंत्री आवास योजना</p>
+          </div>
+        </div>
+      </div>
     </div>
 
+    <!-- वार्ड जानकारी -->
     <div class="about-block">
-      <h2>📞 संपर्क</h2>
-      <p>फोन: STD कोड 01567</p>
+      <h2>🗳️ वार्ड जानकारी</h2>
+      <p style="color:var(--text-muted, #64748b); font-size:0.9rem; margin-bottom:1rem;">
+        लाच्छरसर ग्राम पंचायत में कुल कितने वार्ड हैं — इसकी जानकारी पंचायत कार्यालय से प्राप्त करें। 
+        नीचे सामान्य वार्ड ढाँचा दिया गया है।
+      </p>
+      <div class="wards-grid">
+        <div class="ward-chip"><strong>वार्ड 1</strong><span>पंचायत सदस्य</span></div>
+        <div class="ward-chip"><strong>वार्ड 2</strong><span>पंचायत सदस्य</span></div>
+        <div class="ward-chip"><strong>वार्ड 3</strong><span>पंचायत सदस्य</span></div>
+        <div class="ward-chip"><strong>वार्ड 4</strong><span>पंचायत सदस्य</span></div>
+        <div class="ward-chip"><strong>वार्ड 5</strong><span>पंचायत सदस्य</span></div>
+        <div class="ward-chip"><strong>वार्ड 6</strong><span>पंचायत सदस्य</span></div>
+        <div class="ward-chip"><strong>वार्ड 7</strong><span>पंचायत सदस्य</span></div>
+        <div class="ward-chip"><strong>वार्ड 8</strong><span>पंचायत सदस्य</span></div>
+      </div>
+      <p style="color:var(--text-muted, #64748b); font-size:0.82rem; margin-top:1rem; font-style:italic;">
+        * वार्ड सदस्यों के नाम और संपर्क के लिए पंचायत कार्यालय से संपर्क करें।
+      </p>
     </div>
-  </div>
-</section>
+
+    <!-- पंचायत कार्यालय -->
+    <div class="about-block">
+      <h2>📍 पंचायत कार्यालय</h2>
+      <p style="color:var(--text, #1e293b); font-size:1rem; line-height:1.8; margin:0 0 1rem 0;">
+        <strong style="color:var(--primary, #0c2340);">ग्राम पंचायत लाच्छरसर</strong><br>
+        ग्राम पंचायत भवन, मुख्य बाज़ार<br>
+        लाच्छरसर, तहसील रतनगढ़<br>
+        जिला चूरू, राजस्थान — 331802
+      </p>
+
+      <table class="info-table" style="margin-top:1rem;">
+        <tr>
+          <td>कार्यालय समय</td>
+          <td>सोमवार — शनिवार · सुबह 10:00 — शाम 5:00</td>
+        </tr>
+        <tr>
+          <td>दोपहर विश्राम</td>
+          <td>दोपहर 1:30 — 2:00</td>
+        </tr>
+        <tr>
+          <td>अवकाश</td>
+          <td>रविवार और सरकारी अवकाश</td>
+        </tr>
+      </table>
+    </div>
+
+    <!-- संपर्क -->
+    <div class="about-block">
+      <h2>📞 संपर्क करें</h2>
+      <div class="contact-grid">
+        <a href="tel:+911567" class="contact-card">
+          <div class="icon">📞</div>
+          <h4>फोन</h4>
+          <p>STD कोड: 01567</p>
+        </a>
+
+        <div class="contact-card">
+          <div class="icon">📮</div>
+          <h4>डाकघर</h4>
+          <p>राजलदेसर — 331802</p>
+        </div>
+
+        <a href="https://maps.google.com/?q=Lachharsar+Ratangarh+Churu+Rajasthan" target="_blank" rel="noopener" class="contact-card">
+          <div class="icon">🗺️</div>
+          <h4>नक्शा</h4>
+          <p>Google Maps पर देखें</p>
+        </a>
+
+        <a href="contact.html" class="contact-card">
+          <div class="icon">✉️</div>
+          <h4>संदेश भेजें</h4>
+          <p>Contact page पर जाएँ</p>
+        </a>
+      </div>
+    </div>
+
+    <!-- CTA -->
+    <div class="panchayat-cta">
+      <h3>किसी भी समस्या के लिए</h3>
+      <p>ग्राम पंचायत कार्यालय में संपर्क करें — हम आपकी सहायता के लिए तैयार हैं।</p>
+      <a href="contact.html" class="btn-primary">📞 संपर्क करें</a>
+    </div>
+
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-content">
+      <p>© 2026 लाच्छरसर ग्राम पंचायत · चूरू, राजस्थान</p>
+      <div class="footer-links">
+        <a href="privacy.html">Privacy</a>
+        <a href="terms.html">Terms</a>
+        <a href="disclaimer.html">Disclaimer</a>
+        <a href="contact.html">Contact</a>
+      </div>
+      <p class="footer-sub">पिन कोड 331802 · रतनगढ़ तहसील · बीकानेर संभाग</p>
+    </div>
+  </footer>
+
+  <!-- SCRIPTS -->
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+  <script src="firebase-config.js"></script>
+  <script src="public-loader.js"></script>
+  <script>
+    document.getElementById('hamburger')?.addEventListener('click', function () {
+      document.getElementById('navLinks').classList.toggle('open');
+    });
+  </script>
+</body>
+</html>
