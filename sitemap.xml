@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
+                            http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+
+  <!-- ============================================================
+       LACHHARSAR VILLAGE PORTAL — Sitemap
+       Domain: www.lachharsar.mywire.org
+       Last Updated: 2026-10-02
+       ============================================================ -->
+
+  <!-- 🏠 Home Page -->
+  <url>
+    <loc>https://www.lachharsar.mywire.org/</loc>
+    <lastmod>2026-10-02</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+  </url>
+
+  <!-- 📖 About Page -->
+  <url>
+    <loc>https://www.lachharsar.mywire.org/about.html</loc>
+    <lastmod>2026-10-02</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- 🏛️ Panchayat Page -->
+  <url>
+    <loc>https://www.lachharsar.mywire.org/panchayat.html</loc>
+    <lastmod>2026-10-02</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- 📸 Gallery Page -->
+  <url>
+    <loc>https://www.lachharsar.mywire.org/gallery.html</loc>
+    <lastmod>2026-10-02</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- 📞 Contact Page -->
+  <url>
+    <loc>https://www.lachharsar.mywire.org/contact.html</loc>
+    <lastmod>2026-10-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- 🔒 Privacy Policy -->
+  <url>
+    <loc>https://www.lachharsar.mywire.org/privacy.html</loc>
+    <lastmod>2026-10-02</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+
+  <!-- 📜 Terms & Conditions -->
+  <url>
+    <loc>https://www.lachharsar.mywire.org/terms.html</loc>
+    <lastmod>2026-10-02</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+
+  <!-- ⚠️ Disclaimer -->
+  <url>
+    <loc>https://www.lachharsar.mywire.org/disclaimer.html</loc>
+    <lastmod>2026-10-02</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+
+</urlset>
