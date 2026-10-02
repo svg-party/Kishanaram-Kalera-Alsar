@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="theme-color" content="#0c2340" />
+  <title>404 · पेज नहीं मिला · लाच्छरसर</title>
+  <link rel="icon" type="image/png" href="logo.png" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;600;700;800&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ============================================================
+       404 PAGE — Complete Styles
+       ============================================================ */
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', 'Noto Sans Devanagari', system-ui, -apple-system, sans-serif;
+      background: linear-gradient(135deg, #0c2340 0%, #1e3a5f 100%);
+      color: #fff;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* Animated background elements */
+    body::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -50%;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle, rgba(255, 153, 51, 0.15) 0%, transparent 70%);
+      animation: float1 15s ease-in-out infinite;
+      pointer-events: none;
+    }
+
+    body::after {
+      content: '';
+      position: absolute;
+      bottom: -50%;
+      left: -50%;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle, rgba(255, 153, 51, 0.1) 0%, transparent 70%);
+      animation: float2 20s ease-in-out infinite;
+      pointer-events: none;
+    }
+
+    @keyframes float1 {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      50% { transform: translate(-50px, 50px) scale(1.1); }
+    }
+
+    @keyframes float2 {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      50% { transform: translate(50px, -50px) scale(1.1); }
+    }
+
+    /* Container */
+    .error-container {
+      position: relative;
+      z-index: 10;
+      max-width: 720px;
+      width: 100%;
+      text-align: center;
+      padding: 2rem 1.5rem;
+    }
+
+    /* Brand */
+    .error-brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      margin-bottom: 2rem;
+      text-decoration: none;
+      color: #fff;
+      font-weight: 800;
+      font-size: 1.1rem;
+      transition: all 0.25s;
+    }
+
+    .error-brand:hover {
+      transform: translateY(-2px);
+    }
+
+    .error-brand img {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      object-fit: cover;
+      background: #fff;
+    }
+
+    /* 404 Number */
+    .error-code {
+      font-size: clamp(6rem, 20vw, 12rem);
+      font-weight: 800;
+      line-height: 1;
+      background: linear-gradient(135deg, #ff9933 0%, #e07e1a 50%, #ff9933 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: -0.05em;
+      margin-bottom: 0.5rem;
+      animation: pulseCode 3s ease-in-out infinite;
+      position: relative;
+    }
+
+    @keyframes pulseCode {
+      0%, 100% { transform: scale(1); filter: drop-shadow(0 0 30px rgba(255, 153, 51, 0.5)); }
+      50% { transform: scale(1.03); filter: drop-shadow(0 0 50px rgba(255, 153, 51, 0.7)); }
+    }
+
+    /* Emoji Icon */
+    .error-icon {
+      font-size: 3.5rem;
+      margin-bottom: 1rem;
+      display: block;
+      animation: floatIcon 3s ease-in-out infinite;
+    }
+
+    @keyframes floatIcon {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    /* Title */
+    .error-title {
+      font-size: clamp(1.5rem, 4vw, 2.2rem);
+      font-weight: 800;
+      color: #fff;
+      margin-bottom: 1rem;
+      line-height: 1.25;
+    }
+
+    /* Subtitle */
+    .error-subtitle {
+      font-size: 1rem;
+      color: rgba(255, 255, 255, 0.75);
+      line-height: 1.7;
+      max-width: 500px;
+      margin: 0 auto 2rem;
+    }
+
+    .error-subtitle strong {
+      color: #ff9933;
+      font-weight: 700;
+    }
+
+    /* CTA Buttons */
+    .error-actions {
+      display: flex;
+      gap: 0.75rem;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 2.5rem;
+    }
+
+    .btn-home {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: #ff9933;
+      color: #0c2340;
+      padding: 0.9rem 1.75rem;
+      border-radius: 60px;
+      font-weight: 800;
+      font-size: 0.95rem;
+      text-decoration: none;
+      transition: all 0.3s;
+      box-shadow: 0 8px 24px rgba(255, 153, 51, 0.4);
+      border: 2px solid transparent;
+    }
+
+    .btn-home:hover {
+      background: #e07e1a;
+      color: #fff;
+      transform: translateY(-3px);
+      box-shadow: 0 12px 32px rgba(255, 153, 51, 0.6);
+    }
+
+    .btn-back {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: transparent;
+      color: #fff;
+      padding: 0.9rem 1.75rem;
+      border-radius: 60px;
+      font-weight: 700;
+      font-size: 0.95rem;
+      text-decoration: none;
+      transition: all 0.3s;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .btn-back:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: #ff9933;
+      color: #ff9933;
+      transform: translateY(-3px);
+    }
+
+    /* Quick Links */
+    .quick-links-title {
+      font-size: 0.85rem;
+      color: rgba(255, 255, 255, 0.5);
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin-bottom: 1rem;
+      font-weight: 600;
+    }
+
+    .quick-links {
+      display: flex;
+      gap: 0.5rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .quick-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: rgba(255, 255, 255, 0.9);
+      padding: 0.6rem 1.1rem;
+      border-radius: 40px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.25s;
+    }
+
+    .quick-link:hover {
+      background: rgba(255, 153, 51, 0.2);
+      border-color: #ff9933;
+      color: #ff9933;
+      transform: translateY(-2px);
+    }
+
+    /* Divider */
+    .divider {
+      width: 60px;
+      height: 3px;
+      background: linear-gradient(90deg, transparent, #ff9933, transparent);
+      margin: 2rem auto;
+      border-radius: 3px;
+    }
+
+    /* Help text */
+    .error-help {
+      font-size: 0.85rem;
+      color: rgba(255, 255, 255, 0.5);
+      line-height: 1.6;
+      max-width: 480px;
+      margin: 0 auto;
+    }
+
+    .error-help a {
+      color: #ff9933;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .error-help a:hover {
+      text-decoration: underline;
+    }
+
+    /* Footer */
+    .error-footer {
+      position: absolute;
+      bottom: 1.5rem;
+      left: 0;
+      right: 0;
+      text-align: center;
+      font-size: 0.8rem;
+      color: rgba(255, 255, 255, 0.4);
+      z-index: 10;
+    }
+
+    /* Responsive */
+    @media (max-width: 640px) {
+      .error-container {
+        padding: 1.5rem 1rem;
+      }
+      .error-brand {
+        font-size: 1rem;
+        margin-bottom: 1.5rem;
+      }
+      .error-brand img {
+        width: 34px;
+        height: 34px;
+      }
+      .error-icon {
+        font-size: 2.5rem;
+      }
+      .error-actions {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .btn-home,
+      .btn-back {
+        justify-content: center;
+        padding: 0.85rem 1.5rem;
+      }
+      .quick-links {
+        gap: 0.4rem;
+      }
+      .quick-link {
+        padding: 0.5rem 0.9rem;
+        font-size: 0.8rem;
+      }
+      .error-footer {
+        position: relative;
+        bottom: auto;
+        margin-top: 2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="error-container">
+
+    <!-- Brand -->
+    <a href="/" class="error-brand">
+      <img src="logo.png" alt="Lachharsar" onerror="this.style.display='none'" />
+      <span>लाच्छरसर</span>
+    </a>
+
+    <!-- Icon -->
+    <span class="error-icon">🔍</span>
+
+    <!-- 404 Number -->
+    <div class="error-code">404</div>
+
+    <!-- Title -->
+    <h1 class="error-title">पेज नहीं मिला</h1>
+
+    <!-- Subtitle -->
+    <p class="error-subtitle">
+      आप जिस पेज को ढूंढ रहे हैं वो <strong>मौजूद नहीं है</strong> या हटा दिया गया है।
+      <br>
+      कृपया नीचे दिए गए लिंक्स से वापस जाएं।
+    </p>
+
+    <!-- CTA Buttons -->
+    <div class="error-actions">
+      <a href="/" class="btn-home">
+        🏠 होम पेज पर जाएं
+      </a>
+      <a href="javascript:history.back()" class="btn-back">
+        ← पीछे जाएं
+      </a>
+    </div>
+
+    <!-- Divider -->
+    <div class="divider"></div>
+
+    <!-- Quick Links -->
+    <p class="quick-links-title">जल्दी पहुंचें</p>
+    <div class="quick-links">
+      <a href="/about.html" class="quick-link">
+        📖 गाँव के बारे में
+      </a>
+      <a href="/panchayat.html" class="quick-link">
+        🏛️ पंचायत
+      </a>
+      <a href="/gallery.html" class="quick-link">
+        📸 गैलरी
+      </a>
+      <a href="/contact.html" class="quick-link">
+        📞 संपर्क
+      </a>
+    </div>
+
+    <!-- Help Text -->
+    <p class="error-help" style="margin-top: 2rem;">
+      कोई समस्या आ रही है? हमें बताएं:
+      <a href="mailto:help@lachharsar.xubi.org">help@lachharsar.xubi.org</a>
+    </p>
+
+  </div>
+
+  <!-- Footer -->
+  <div class="error-footer">
+    © 2026 लाच्छरसर ग्राम पंचायत · चूरू, राजस्थान · PIN 331802
+  </div>
+
+  <!-- Auto-redirect after 30 seconds (optional) -->
+  <script>
+    // Auto-redirect to home after 30 seconds
+    setTimeout(function() {
+      if (confirm('30 seconds के बाद home page पर जाना है?')) {
+        window.location.href = '/';
+      }
+    }, 30000);
+  </script>
+
+</body>
+</html>
